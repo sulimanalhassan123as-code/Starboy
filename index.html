@@ -2,68 +2,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>STARBOY</title>
-<style>
-  @keyframes sparkle {
-    0%, 100% { opacity: 0.8; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.2); }
-  }
-
-  body {
-    margin: 0;
-    height: 100vh;
-    background: linear-gradient(135deg, #b28704, #d4af37, #8e7a0e);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    font-family: 'Arial Black', Arial, sans-serif;
-  }
-
-  h1 {
-    font-size: 10vw;
-    color: #ffd700;
-    text-shadow:
-      0 0 10px #fffacd,
-      0 0 20px #ffea00,
-      0 0 30px #ffd700,
-      0 0 40px #ffb800,
-      0 0 50px #ffa500;
-    letter-spacing: 0.5em;
-  }.diamond {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(45deg, #ffffff, #d4af37);
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    filter: drop-shadow(0 0 5px #ffd700);
-    animation: sparkle 3s infinite ease-in-out;
-  }.diamond:nth-child(1) {
-    top: 20%;
-    left: 15%;
-    animation-delay: 0s;
-  }.diamond:nth-child(2) {
-    top: 25%;
-    right: 20%;
-    animation-delay: 1s;
-  }.diamond:nth-child(3) {
-    bottom: 20%;
-    left: 30%;
-    animation-delay: 2s;
-  }.diamond:nth-child(4) {
-    bottom: 25%;
-    right: 25%;
-    animation-delay: 1.5s;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotating Triangle</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>STARBOY</h1>
-  <div class="diamond"></div>
-  <div class="diamond"></div>
-  <div class="diamond"></div>
-  <div class="diamond"></div>
+    <div class="container">
+        <div class="triangle"></div>
+    </div>
 </body>
 </html>
