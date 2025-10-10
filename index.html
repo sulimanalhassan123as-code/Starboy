@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starboy Animation</title>
+    <style>
+        body {
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background-image: url('https://www.canva.com/design/DAG1bvMRF08/1fpeOkg8epfpWdZcM-hzOg/edit?utm_content=DAG1bvMRF08&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton); /* Use your own forest background image */
+            background-size: cover;
+            border: 1px solid #fff;
+            overflow: hidden;
+        }
+        .diamond-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border: 2px solid gold;
+            transform-origin: center;
+            animation: rotate 10s linear infinite;
+        }
+        .starboy-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: gold;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .ground-diamonds {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+        .diamond-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: silver;
+            transform: rotate(45deg);
+            margin: 0 10px;
+        }
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="diamond-frame"></div>
+        <div class="starboy-text">STARBOY</div>
+        <div class="ground-diamonds">
+            <div class="diamond-icon"></div>
+            <div class="diamond-icon"></div>
+            <div class="diamond-icon"></div>
+            <div class="diamond-icon"></div>
+            <div class="diamond-icon"></div>
+        </div>
+    </div>
+
+    <script>
+        // Basic JavaScript for potential future interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Starboy animation loaded');
+        });
+    </script>
+</body>
+</html>
