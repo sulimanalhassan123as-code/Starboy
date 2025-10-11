@@ -1,87 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Starboy Animation</title>
-    <style>
-        body {
-            background-color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            position: relative;
-            width: 600px;
-            height: 400px;
-            background-image: url('https://www.canva.com/design/DAG1bvMRF08/1fpeOkg8epfpWdZcM-hzOg/edit?utm_content=DAG1bvMRF08&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton); /* Use your own forest background image */
-            background-size: cover;
-            border: 1px solid #fff;
-            overflow: hidden;
-        }
-        .diamond-frame {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 200px;
-            height: 200px;
-            border: 2px solid gold;
-            transform-origin: center;
-            animation: rotate 10s linear infinite;
-        }
-        .starboy-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: gold;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .ground-diamonds {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-        }
-        .diamond-icon {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            background-color: silver;
-            transform: rotate(45deg);
-            margin: 0 10px;
-        }
-        @keyframes rotate {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Starry Name Display</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    background: black;
+    color: gold;
+    font-family: "Poppins", sans-serif;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5vw;
+    color: gold;
+    text-shadow: 0 0 20px gold, 0 0 40px orange, 0 0 80px yellow;
+    letter-spacing: 5px;
+    text-align: center;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 10px gold, 0 0 20px orange, 0 0 40px yellow;
+    }
+    to {
+      text-shadow: 0 0 30px gold, 0 0 60px orange, 0 0 100px yellow;
+    }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="diamond-frame"></div>
-        <div class="starboy-text">STARBOY</div>
-        <div class="ground-diamonds">
-            <div class="diamond-icon"></div>
-            <div class="diamond-icon"></div>
-            <div class="diamond-icon"></div>
-            <div class="diamond-icon"></div>
-            <div class="diamond-icon"></div>
-        </div>
-    </div>
+<canvas id="stars"></canvas>
+<h1 id="username"></h1>
 
-    <script>
-        // Basic JavaScript for potential future interactions
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Starboy animation loaded');
-        });
-    </script>
+<script>
+  // Ask for user's name
+  let name = prompt("Enter your name:");
+  if (!name) name = "Guest";
+  document.getElementById("username").textContent = name.toUpperCase();
+
+  // Create starry background
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+
+  let stars = [];
+  let w, h;
+
+  function init() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    stars = [];
+
+    for (let i = 0; i < 200; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        radius: Math.random() * 1.5,
+        alpha: Math.random(),
+        speed: Math.random() * 0.02,
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, w, h);
+    for (let s of stars) {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255, 255, 255," + s.alpha + ")";
+      ctx.fill();
+    }
+  }
+
+  function updateStars() {
+    for (let s of stars) {
+      s.alpha += s.speed;
+      if (s.alpha <= 0 || s.alpha >= 1) s.speed = -s.speed;
+    }
+  }
+
+  // Shooting stars
+  let shootingStars = [];
+  function createShootingStar() {
+    shootingStars.push({
+      x: Math.random() * w,
+      y: Math.random() * h * 0.5,
+      length: Math.random() * 80 + 10,
+      speed: Math.random() * 10 + 6,
+      size: Math.random() * 2 + 1,
+    });
+  }
+
+  function drawShootingStars() {
+    for (let s of shootingStars) {
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y);
+      ctx.lineTo(s.x - s.length, s.y + s.length / 2);
+      ctx.lineWidth = s.size;
+      ctx.strokeStyle = "white";
+      ctx.stroke();
+      s.x += s.speed;
+      s.y -= s.speed / 2;
+    }
+
+    shootingStars = shootingStars.filter(s => s.x < w && s.y > 0);
+  }
+
+  function animate() {
+    drawStars();
+    updateStars();
+    drawShootingStars();
+    if (Math.random() < 0.02) createShootingStar();
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener("resize", init);
+  init();
+  animate();
+</script>
 </body>
 </html>
