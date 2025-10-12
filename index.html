@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Islamic Google</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>Islamic Google</h1>
+      <p class="subtitle">Search curated Islamic knowledge</p>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="submit.html">Submit</a>
+      <a href="about.html">About</a>
+      <a href="mailto:sulleyalhassan.178.as@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h2>Find authentic Islamic resources</h2>
+      <form id="searchForm" class="searchForm">
+        <input id="q" placeholder="Search Qur'an, Hadith, scholars, topics..." />
+        <button id="btnSearch">Search</button>
+      </form>
+      <div class="filters">
+        <label>Filter:
+          <select id="filter">
+            <option value="all">All</option>
+            <option value="quran">Quran</option>
+            <option value="hadith">Hadith</option>
+            <option value="history">History</option>
+            <option value="fiqh">Fiqh</option>
+          </select>
+        </label>
+      </div>
+      <div class="carousel" id="carousel">
+        <div class="slide">Quran Explorer — Tafsir & Translations</div>
+        <div class="slide">Authentic Hadith — Collections & Verification</div>
+        <div class="slide">Islamic History — Biographies & Timelines</div>
+      </div>
+    </section>
+
+    <section id="results" class="results" aria-live="polite"></section>
+  </main>
+
+  <footer class="footer">
+    <div>Developer by Suleiman Alhassan — Contact: +233599931348 | sulleyalhassan.178.as@gmail.com</div>
+    <div>© 2025 Islamic Google</div>
+  </footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
