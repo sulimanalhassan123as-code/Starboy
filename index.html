@@ -3,56 +3,107 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Islamic Google</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <title>Suleiman Play Store</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="theme-color" content="#20B2AA">
 </head>
 <body>
-  <header class="topbar">
+  <header class="site-header">
     <div class="brand">
-      <h1>Islamic Google</h1>
-      <p class="subtitle">Search curated Islamic knowledge</p>
+      <img src="icons/default-app.png" alt="logo" class="logo">
+      <div class="brand-text">
+        <h1>Suleiman Play Store</h1>
+        <p class="tag">All my apps — one place. Powered by Suleiman Alhassan</p>
+      </div>
     </div>
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="submit.html">Submit</a>
-      <a href="about.html">About</a>
-      <a href="mailto:sulleyalhassan.178.as@gmail.com">Contact</a>
-    </nav>
+
+    <input id="search" placeholder="Search apps, e.g. recorder, islamic" />
   </header>
 
   <main class="container">
-    <section class="hero">
-      <h2>Find authentic Islamic resources</h2>
-      <form id="searchForm" class="searchForm">
-        <input id="q" placeholder="Search Qur'an, Hadith, scholars, topics..." />
-        <button id="btnSearch">Search</button>
-      </form>
-      <div class="filters">
-        <label>Filter:
-          <select id="filter">
-            <option value="all">All</option>
-            <option value="quran">Quran</option>
-            <option value="hadith">Hadith</option>
-            <option value="history">History</option>
-            <option value="fiqh">Fiqh</option>
-          </select>
-        </label>
-      </div>
-      <div class="carousel" id="carousel">
-        <div class="slide">Quran Explorer — Tafsir & Translations</div>
-        <div class="slide">Authentic Hadith — Collections & Verification</div>
-        <div class="slide">Islamic History — Biographies & Timelines</div>
-      </div>
-    </section>
+    <section id="featured" class="carousel"></section>
 
-    <section id="results" class="results" aria-live="polite"></section>
+    <section>
+      <h2>Your apps</h2>
+      <div id="apps-grid" class="grid"></div>
+    </section>
   </main>
 
-  <footer class="footer">
-    <div>Developer by Suleiman Alhassan — Contact: +233599931348 | sulleyalhassan.178.as@gmail.com</div>
-    <div>© 2025 Islamic Google</div>
+  <footer>
+    <p>Contact: +233599931348 · sulleyalhassan.178.as@gmail.com</p>
+    <p>© <span id="year"></span> Suleiman Alhassan</p>
   </footer>
 
-<script src="js/app.js"></script>
+<script type="module">
+/* Load apps from apps.json and render */
+async function loadApps() {
+  let APPS = [];
+  try {
+    const r = await fetch('apps.json', {cache: "no-store"});
+    APPS = await r.json();
+  } catch (e) {
+    // fallback hard-coded (if apps.json missing)
+    APPS = [
+      {
+        "id":"islamic-google",
+        "title":"Islamic Google",
+        "desc":"Islamic knowledge search engine",
+        "icon":"icons/islamic-google.png",
+        "tags":["Islam","Search","PWA"],
+        "url":"https://islamic-google-final.vercel.app"
+      },
+      {
+        "id":"dhikr-counter",
+        "title":"Dhikr Counter",
+        "desc":"The most powerful Dhikr counter",
+        "icon":"icons/dhikr-counter.png",
+        "tags":["Islam","Tools"],
+        "url":"https://url-shortener.me/6F00"
+      }
+    ];
+  }
+
+  const grid = document.getElementById('apps-grid');
+  const featured = document.getElementById('featured');
+  const search = document.getElementById('search');
+
+  function createCard(a){
+    const div = document.createElement('div');
+    div.className='card';
+    div.innerHTML = `
+      <img class="app-icon" src="${a.icon||'icons/default-app.png'}" alt="${a.title}">
+      <div class="card-body">
+        <h3>${a.title}</h3>
+        <p class="desc">${a.desc}</p>
+        <div class="tags">${(a.tags||[]).map(t=>`<span>${t}</span>`).join(' ')}</div>
+        <div class="actions">
+          <a class="btn open" href="${a.url}" target="_blank" rel="noopener">Open</a>
+          ${a.download ? `<a class="btn download" href="${a.download}" target="_blank" rel="noopener">Download</a>` : ''}
+        </div>
+      </div>
+    `;
+    return div;
+  }
+
+  function render(list){
+    grid.innerHTML='';
+    list.forEach(a=>grid.appendChild(createCard(a)));
+    featured.innerHTML = (list.slice(0,2).map(a=>`<div class="feature"><img src="${a.icon||'icons/default-app.png'}"><div><h3>${a.title}</h3><p>${a.desc}</p></div></div>`)).join('');
+  }
+
+  render(APPS);
+
+  search.addEventListener('input', (e)=> {
+    const q = e.target.value.toLowerCase();
+    const filtered = APPS.filter(a => (a.title + a.desc + (a.tags||[]).join(' ')).toLowerCase().includes(q));
+    render(filtered);
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+}
+
+loadApps();
+</script>
 </body>
 </html>
