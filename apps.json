@@ -1,0 +1,18 @@
+[
+  {
+    "id": "islamic-google",
+    "title": "Islamic Google",
+    "desc": "Islamic knowledge search engine",
+    "icon": "icons/islamic-google.png",
+    "tags": ["Islam","Search","PWA"],
+    "url": "https://islamic-google-final.vercel.app"
+  },
+  {
+    "id": "dhikr-counter",
+    "title": "Dhikr Counter",
+    "desc": "The most powerful Dhikr counter",
+    "icon": "icons/dhikr-counter.png",
+    "tags": ["Islam","Tools"],
+    "url": "https://url-shortener.me/6F00"
+  }
+]
