@@ -1,109 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Suleiman Play Store</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#20B2AA">
+  <title>Suleiman Play Store</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/suleiman-logo.svg" type="image/svg+xml" />
 </head>
 <body>
+
   <header class="site-header">
     <div class="brand">
-      <img src="icons/default-app.png" alt="logo" class="logo">
+      <img src="icons/suleiman-logo.svg" alt="Suleiman Play Store" class="logo">
       <div class="brand-text">
         <h1>Suleiman Play Store</h1>
         <p class="tag">All my apps — one place. Powered by Suleiman Alhassan</p>
       </div>
     </div>
 
-    <input id="search" placeholder="Search apps, e.g. recorder, islamic" />
+    <input id="search" placeholder="Search apps (e.g. Dhikr, Islamic...)" />
   </header>
 
-  <main class="container">
-    <section id="featured" class="carousel"></section>
-
-    <section>
-      <h2>Your apps</h2>
-      <div id="apps-grid" class="grid"></div>
-    </section>
+  <main id="apps-container" class="apps-container">
+    <!-- Apps will load here -->
   </main>
 
   <footer>
-    <p>Contact: +233599931348 · sulleyalhassan.178.as@gmail.com</p>
-    <p>© <span id="year"></span> Suleiman Alhassan</p>
+    <p>© 2025 Suleiman Alhassan — Powered by Suleiman Alhassan</p>
   </footer>
 
-<script type="module">
-/* Load apps from apps.json and render */
-async function loadApps() {
-  let APPS = [];
-  try {
-    const r = await fetch('apps.json', {cache: "no-store"});
-    APPS = await r.json();
-  } catch (e) {
-    // fallback hard-coded (if apps.json missing)
-    APPS = [
-      {
-        "id":"islamic-google",
-        "title":"Islamic Google",
-        "desc":"Islamic knowledge search engine",
-        "icon":"icons/islamic-google.png",
-        "tags":["Islam","Search","PWA"],
-        "url":"https://islamic-google-final.vercel.app"
-      },
-      {
-        "id":"dhikr-counter",
-        "title":"Dhikr Counter",
-        "desc":"The most powerful Dhikr counter",
-        "icon":"icons/dhikr-counter.png",
-        "tags":["Islam","Tools"],
-        "url":"https://url-shortener.me/6F00"
-      }
-    ];
-  }
-
-  const grid = document.getElementById('apps-grid');
-  const featured = document.getElementById('featured');
-  const search = document.getElementById('search');
-
-  function createCard(a){
-    const div = document.createElement('div');
-    div.className='card';
-    div.innerHTML = `
-      <img class="app-icon" src="${a.icon||'icons/default-app.png'}" alt="${a.title}">
-      <div class="card-body">
-        <h3>${a.title}</h3>
-        <p class="desc">${a.desc}</p>
-        <div class="tags">${(a.tags||[]).map(t=>`<span>${t}</span>`).join(' ')}</div>
-        <div class="actions">
-          <a class="btn open" href="${a.url}" target="_blank" rel="noopener">Open</a>
-          ${a.download ? `<a class="btn download" href="${a.download}" target="_blank" rel="noopener">Download</a>` : ''}
-        </div>
-      </div>
-    `;
-    return div;
-  }
-
-  function render(list){
-    grid.innerHTML='';
-    list.forEach(a=>grid.appendChild(createCard(a)));
-    featured.innerHTML = (list.slice(0,2).map(a=>`<div class="feature"><img src="${a.icon||'icons/default-app.png'}"><div><h3>${a.title}</h3><p>${a.desc}</p></div></div>`)).join('');
-  }
-
-  render(APPS);
-
-  search.addEventListener('input', (e)=> {
-    const q = e.target.value.toLowerCase();
-    const filtered = APPS.filter(a => (a.title + a.desc + (a.tags||[]).join(' ')).toLowerCase().includes(q));
-    render(filtered);
-  });
-
-  document.getElementById('year').textContent = new Date().getFullYear();
-}
-
-loadApps();
-</script>
+  <script src="js/main.js"></script>
 </body>
 </html>
