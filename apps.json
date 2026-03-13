@@ -7,6 +7,13 @@
     "url": "https://islamic-google-final.vercel.app"
   },
   {
+    "id": "Prophet's",
+    "title": "prophet and time line",
+    "desc": "history search engine",
+    "icon": "icons/suleiman-logo.svg",
+    "url": "https://prophets-omega.vercel.app"
+  },
+  {
     "id": "dhikr-counter",
     "title": "Dhikr Counter",
     "desc": "The most powerful Dhikr counter",
