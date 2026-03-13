@@ -8,7 +8,7 @@
   },
   {
     "id": "Prophet's",
-    "title": "prophet and time line",
+    "title": "prophet's timeline line",
     "desc": "history search engine",
     "icon": "icons/suleiman-logo.svg",
     "url": "https://prophets-omega.vercel.app"
@@ -19,12 +19,5 @@
     "desc": "The most powerful Dhikr counter",
     "icon": "icons/suleiman-logo.svg",
     "url": "https://sulimanalhassan123as-code.github.io/Sulieman-Alhassan-/"
-  },
- {
-  "id": "SULIEMAN AI PRO",
-  "title": "Sulieman-Alhassan-AI-pro",
-  "desc": "the best AI ever ",
-  "icon": "icons/suleiman-logo.svg",
-  "url": "https://sulieman-alhassan-a-pro.vercel.app"
- } 
+  } 
 ]
