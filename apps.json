@@ -21,6 +21,13 @@
     "url": "https://prophets-omega.vercel.app"
   },
   {
+    "id": "dhikr-counter",
+    "title": "Dhikr Counter",
+    "desc": "simple dhikr counter",
+    "icon": "icons/suleiman-logo.svg",
+    "url": "https://sulimanalhassan123as-code.github.io/Alhamdulillah-/"
+  },
+  {
     "id": "dhikr-counter🔄",
     "title": "Dhikr Counter",
     "desc": "The most powerful Dhikr counter",
