@@ -8,7 +8,16 @@ async function loadApps() {
     function render(list) {
       container.innerHTML = list.map(app => `
         <div class="app-card">
-          <img src="${app.icon}" alt="${app.title}">
+          <div class="logo-3d-container">
+            <div class="logo-flipper">
+              <div class="logo-front">
+                <img src="${app.icon}" alt="${app.title} Front">
+              </div>
+              <div class="logo-back">
+                <img src="${app.iconBack}" alt="${app.title} Back">
+              </div>
+            </div>
+          </div>
           <h2>${app.title}</h2>
           <p>${app.desc}</p>
           <a href="${app.url}" target="_blank">Open App</a>
