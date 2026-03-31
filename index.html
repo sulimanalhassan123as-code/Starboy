@@ -5,65 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#20B2AA">
   <title>Suleiman Play Store :: Tech Empire ::</title>
+
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/suleiman-logo.png" type="image/png" />
 </head>
-<body data-theme="light">
+<body>
 
-  <div id="home-screen">
-    <header class="site-header">
-      <div class="brand">
-        <img src="icons/suleiman-logo.png" alt="Logo" class="logo">
-        <div class="brand-text">
-          <h1>Suleiman Play Store</h1>
-          <p class="tag">Never Hide Tech Empire</p>
-        </div>
+  <header class="site-header">
+    <div class="brand">
+      <img src="icons/suleiman-logo.png" alt="Suleiman Play Store" class="logo">
+      <div class="brand-text">
+        <h1>Suleiman Play Store</h1>
+        <p class="tag">All apps by Suleiman Alhassan — one place.</p>
       </div>
-      <input id="search" placeholder="Search apps..." autocomplete="off" />
-      <div id="theme-switcher">
-        <select id="theme-select">
-          <option value="light">☀️ Light</option>
-          <option value="dark">🌙 Dark</option>
-          <option value="green">🕌 Islamic Green</option>
-        </select>
-      </div>
-    </header>
+    </div>
 
-    <main class="main-content">
-      <div class="category-wrapper">
-        <h2 class="category-title">🕌 Islamic Apps</h2>
-        <div id="islamic-container" class="apps-container"></div>
-      </div>
-      <div class="category-wrapper">
-        <h2 class="category-title">💻 Tech & Cyber Security</h2>
-        <div id="tech-container" class="apps-container"></div>
-      </div>
-      <div class="category-wrapper">
-        <h2 class="category-title">🎮 Games</h2>
-        <div id="games-container" class="apps-container"></div>
-      </div>
+    <input id="search" placeholder="Search apps (e.g. Dhikr, Islamic...)" />
+    
+    <div id="theme-switcher">
+      <select id="theme-select">
+        <option value="light">☀️ Light</option>
+        <option value="dark">🌙 Dark</option>
+        <option value="green">🕌 Islamic Green</option>
+      </select>
+    </div>
+  </header>
+
+  <main id="apps-container" class="apps-container">
     </main>
-  </div>
-
-  <div id="category-view" style="display: none;">
-    <nav class="sub-nav">
-      <button onclick="goHome()" class="back-btn">⬅ Back to Home</button>
-      <h2 id="current-category-name">Category</h2>
-    </nav>
-    <div id="category-apps-list" class="detailed-list">
-      </div>
-  </div>
 
   <footer>
-    <p>© 2026 Suleiman Alhassan — Powered by Never Hide</p>
+    <p>© 2026 Suleiman Alhassan — Never Hide Tech Empire</p>
   </footer>
 
   <script src="js/main.js"></script>
+
   <script>
-    // Simple Theme Toggle
     const themeSelect = document.getElementById('theme-select');
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+    themeSelect.value = savedTheme;
+
     themeSelect.addEventListener('change', (e) => {
-      document.body.setAttribute('data-theme', e.target.value);
+      const newTheme = e.target.value;
+      document.body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
     });
   </script>
 </body>
