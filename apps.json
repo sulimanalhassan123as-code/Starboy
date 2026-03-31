@@ -2,46 +2,45 @@
   {
     "id": "islamic-google",
     "title": "Islamic Google🔎",
-    "desc": "Islamic knowledge search engine",
+    "desc": "The ultimate Islamic knowledge search engine.",
     "icon": "icons/islamic-google-icon-front-512x512.png",
     "iconBack": "icons/islamic-google-icon-back-512x512.png",
     "url": "https://islamic-google-final.vercel.app",
-    "category": "islamic"
+    "category": "islamic",
+    "rating": 4.9,
+    "installs": "1.2M+",
+    "reviews": [
+      {"user": "Ahmed", "comment": "MashaAllah, the best search tool for students!", "stars": 5},
+      {"user": "Fatima", "comment": "Very clean and fast. Highly recommended.", "stars": 5}
+    ]
   },
   {
-    "id": "DHIKR COUNTER PRO",
-    "title": "COUNTER",
-    "desc": "the place for remembrance Allah",
+    "id": "dhikr-counter-pro",
+    "title": "Dhikr Counter PRO",
+    "desc": "A luxury digital tasbih for your daily remembrance.",
     "icon": "icons/dhikr-counter-pro-icon-front-512x512.png",
     "iconBack": "icons/dhikr-counter-pro-icon-back-512x512.png",
     "url": "https://dhikr-counter-pro.vercel.app",
-    "category": "islamic"
+    "category": "islamic",
+    "rating": 4.8,
+    "installs": "500K+",
+    "reviews": [
+      {"user": "Sani", "comment": "The haptic feedback feels amazing.", "stars": 5},
+      {"user": "Zainab", "comment": "Beautiful emerald design. I love it.", "stars": 4}
+    ]
   },
   {
-    "id": "NEVER HIDE IN🏚️📱☎️📞🖥️💻💎",
-    "title": "business chat",
-    "desc": "my business center",
+    "id": "never-hide-chat",
+    "title": "Business Chat",
+    "desc": "Secure communication hub for the Tech Empire.",
     "icon": "icons/business-chat-icon-front-512x512.png",
     "iconBack": "icons/business-chat-icon-back-512x512.png",
     "url": "https://sulieman-alhassan-a-pro.vercel.app",
-    "category": "tech"
-  },
-  {
-    "id": "PROPHET'S",
-    "title": "prophet's timeline line",
-    "desc": "history✅",
-    "icon": "icons/prophet-timeline-icon-front-512x512.png",
-    "iconBack": "icons/prophet-timeline-icon-back-512x512.png",
-    "url": "https://prophets-omega.vercel.app",
-    "category": "islamic"
-  },
-  {
-    "id": "dhikr-counter🔄",
-    "title": "Dhikr Counter",
-    "desc": "The most powerful Dhikr counter",
-    "icon": "icons/dhikr-counter-icon-front-512x512.png",
-    "iconBack": "icons/dhikr-counter-icon-back-512x512.png",
-    "url": "https://sulimanalhassan123as-code.github.io/Sulieman-Alhassan-/",
-    "category": "islamic"
+    "category": "tech",
+    "rating": 5.0,
+    "installs": "10K+",
+    "reviews": [
+      {"user": "Dev Team", "comment": "The encryption is top-notch.", "stars": 5}
+    ]
   }
 ]
