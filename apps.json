@@ -1,1 +1,47 @@
-[{"id": "islamic-google","title": "Islamic Google🔎","desc": "Islamic knowledge search engine","icon": "icons/islamic-google-icon-front-512x512.png","iconBack": "icons/islamic-google-icon-back-512x512.png","url": "https://islamic-google-final.vercel.app"},{"id": "DHIKR COUNTER PRO","title": "COUNTER","desc": "the place for remembrance Allah","icon": "icons/dhikr-counter-pro-icon-front-512x512.png","iconBack": "icons/dhikr-counter-pro-icon-back-512x512.png","url": "https://dhikr-counter-pro.vercel.app"},{"id": "NEVER HIDE IN🏚️📱☎️📞🖥️💻💎","title": "business chat","desc": "my business center","icon": "icons/business-chat-icon-front-512x512.png","iconBack": "icons/business-chat-icon-back-512x512.png","url": "https://sulieman-alhassan-a-pro.vercel.app"},{"id": "PROPHET'S","title": "prophet's timeline line","desc": "history✅","icon": "icons/prophet-timeline-icon-front-512x512.png","iconBack": "icons/prophet-timeline-icon-back-512x512.png","url": "https://prophets-omega.vercel.app"},{"id": "dhikr-counter🔄","title": "Dhikr Counter","desc": "The most powerful Dhikr counter","icon": "icons/dhikr-counter-icon-front-512x512.png","iconBack": "icons/dhikr-counter-icon-back-512x512.png","url": "https://sulimanalhassan123as-code.github.io/Sulieman-Alhassan-/"}]
+[
+  {
+    "id": "islamic-google",
+    "title": "Islamic Google🔎",
+    "desc": "Islamic knowledge search engine",
+    "icon": "icons/islamic-google-icon-front-512x512.png",
+    "iconBack": "icons/islamic-google-icon-back-512x512.png",
+    "url": "https://islamic-google-final.vercel.app",
+    "category": "islamic"
+  },
+  {
+    "id": "DHIKR COUNTER PRO",
+    "title": "COUNTER",
+    "desc": "the place for remembrance Allah",
+    "icon": "icons/dhikr-counter-pro-icon-front-512x512.png",
+    "iconBack": "icons/dhikr-counter-pro-icon-back-512x512.png",
+    "url": "https://dhikr-counter-pro.vercel.app",
+    "category": "islamic"
+  },
+  {
+    "id": "NEVER HIDE IN🏚️📱☎️📞🖥️💻💎",
+    "title": "business chat",
+    "desc": "my business center",
+    "icon": "icons/business-chat-icon-front-512x512.png",
+    "iconBack": "icons/business-chat-icon-back-512x512.png",
+    "url": "https://sulieman-alhassan-a-pro.vercel.app",
+    "category": "tech"
+  },
+  {
+    "id": "PROPHET'S",
+    "title": "prophet's timeline line",
+    "desc": "history✅",
+    "icon": "icons/prophet-timeline-icon-front-512x512.png",
+    "iconBack": "icons/prophet-timeline-icon-back-512x512.png",
+    "url": "https://prophets-omega.vercel.app",
+    "category": "islamic"
+  },
+  {
+    "id": "dhikr-counter🔄",
+    "title": "Dhikr Counter",
+    "desc": "The most powerful Dhikr counter",
+    "icon": "icons/dhikr-counter-icon-front-512x512.png",
+    "iconBack": "icons/dhikr-counter-icon-back-512x512.png",
+    "url": "https://sulimanalhassan123as-code.github.io/Sulieman-Alhassan-/",
+    "category": "islamic"
+  }
+]
