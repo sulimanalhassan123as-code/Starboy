@@ -10,7 +10,7 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/suleiman-logo.png" type="image/png" />
 </head>
-<body>
+<body data-theme="light">
 
   <header class="site-header">
     <div class="brand">
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <input id="search" placeholder="Search apps (e.g. Dhikr, Islamic...)" />
+    <input id="search" placeholder="Search apps (e.g. Dhikr, Tech...)" autocomplete="off" />
     
     <div id="theme-switcher">
       <select id="theme-select">
@@ -32,16 +32,37 @@
     </div>
   </header>
 
-  <main id="apps-container" class="apps-container">
-    </main>
+  <main class="main-content">
+    
+    <div class="category-wrapper">
+      <h2 class="category-title">🕌 Islamic Apps</h2>
+      <div id="islamic-container" class="apps-container"></div>
+    </div>
+
+    <div class="category-wrapper">
+      <h2 class="category-title">💻 Tech & Cyber Security</h2>
+      <div id="tech-container" class="apps-container"></div>
+    </div>
+
+    <div class="category-wrapper">
+      <h2 class="category-title">🎮 Games</h2>
+      <div id="games-container" class="apps-container"></div>
+    </div>
+
+    <div class="category-wrapper">
+      <h2 class="category-title">💎 Premium Apps</h2>
+      <div id="premium-container" class="apps-container"></div>
+    </div>
+
+  </main>
 
   <footer>
     <p>© 2026 Suleiman Alhassan — Never Hide Tech Empire</p>
   </footer>
 
   <script src="js/main.js"></script>
-
   <script>
+    // Theme Management
     const themeSelect = document.getElementById('theme-select');
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.body.setAttribute('data-theme', savedTheme);
