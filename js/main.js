@@ -36,7 +36,8 @@ async function loadApps() {
       render(filtered);
     });
   } catch (err) {
-    console.error(err);
+    console.error("Error loading apps:", err);
+    document.getElementById('apps-container').innerHTML = "<p>Failed to load apps. Check apps.json!</p>";
   }
 }
 
