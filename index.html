@@ -10,45 +10,48 @@
 </head>
 <body data-theme="light">
 
-  <header class="site-header">
-    <div class="brand">
-      <img src="icons/suleiman-logo.png" alt="Logo" class="logo">
-      <div class="brand-text">
-        <h1>Suleiman Play Store</h1>
-        <p class="tag">Never Hide Tech Empire</p>
-      </div>
-    </div>
-    <input id="search" placeholder="Search apps..." autocomplete="off" />
-    <div id="theme-switcher">
-      <select id="theme-select">
-        <option value="light">☀️ Light</option>
-        <option value="dark">🌙 Dark</option>
-        <option value="green">🕌 Islamic Green</option>
-      </select>
-    </div>
-  </header>
-
-  <main class="main-content">
-    <div class="category-wrapper">
-      <h2 class="category-title">🕌 Islamic Apps</h2>
-      <div id="islamic-container" class="apps-container"></div>
-    </div>
-    <div class="category-wrapper">
-      <h2 class="category-title">💻 Tech & Cyber Security</h2>
-      <div id="tech-container" class="apps-container"></div>
-    </div>
-    <div class="category-wrapper">
-      <h2 class="category-title">🎮 Games</h2>
-      <div id="games-container" class="apps-container"></div>
-    </div>
-  </main>
-
-  <div id="app-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <div id="modal-body">
+  <div id="home-screen">
+    <header class="site-header">
+      <div class="brand">
+        <img src="icons/suleiman-logo.png" alt="Logo" class="logo">
+        <div class="brand-text">
+          <h1>Suleiman Play Store</h1>
+          <p class="tag">Never Hide Tech Empire</p>
         </div>
-    </div>
+      </div>
+      <input id="search" placeholder="Search apps..." autocomplete="off" />
+      <div id="theme-switcher">
+        <select id="theme-select">
+          <option value="light">☀️ Light</option>
+          <option value="dark">🌙 Dark</option>
+          <option value="green">🕌 Islamic Green</option>
+        </select>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="category-wrapper">
+        <h2 class="category-title">🕌 Islamic Apps</h2>
+        <div id="islamic-container" class="apps-container"></div>
+      </div>
+      <div class="category-wrapper">
+        <h2 class="category-title">💻 Tech & Cyber Security</h2>
+        <div id="tech-container" class="apps-container"></div>
+      </div>
+      <div class="category-wrapper">
+        <h2 class="category-title">🎮 Games</h2>
+        <div id="games-container" class="apps-container"></div>
+      </div>
+    </main>
+  </div>
+
+  <div id="category-view" style="display: none;">
+    <nav class="sub-nav">
+      <button onclick="goHome()" class="back-btn">⬅ Back to Home</button>
+      <h2 id="current-category-name">Category</h2>
+    </nav>
+    <div id="category-apps-list" class="detailed-list">
+      </div>
   </div>
 
   <footer>
@@ -56,5 +59,12 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script>
+    // Simple Theme Toggle
+    const themeSelect = document.getElementById('theme-select');
+    themeSelect.addEventListener('change', (e) => {
+      document.body.setAttribute('data-theme', e.target.value);
+    });
+  </script>
 </body>
 </html>
