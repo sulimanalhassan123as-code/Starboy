@@ -4,47 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#20B2AA">
-  <title>Suleiman app store ::Islamic apps📱::</title>
+  <title>Suleiman Play Store :: Tech Empire ::</title>
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icons/suleiman-logo.svg" type="image/svg+xml" />
+  <link rel="icon" href="icons/suleiman-logo.png" type="image/png" />
 </head>
 <body>
 
   <header class="site-header">
     <div class="brand">
-      <img src="icons/suleiman-logo.svg" alt="Suleiman Play Store" class="logo">
+      <img src="icons/suleiman-logo.png" alt="Suleiman Play Store" class="logo">
       <div class="brand-text">
         <h1>Suleiman Play Store</h1>
-        <p class="tag">All my apps — one place.</p>
+        <p class="tag">All apps by Suleiman Alhassan — one place.</p>
       </div>
     </div>
 
     <input id="search" placeholder="Search apps (e.g. Dhikr, Islamic...)" />
+    
+    <div id="theme-switcher">
+      <select id="theme-select">
+        <option value="light">☀️ Light</option>
+        <option value="dark">🌙 Dark</option>
+        <option value="green">🕌 Islamic Green</option>
+      </select>
+    </div>
   </header>
 
-  <!-- 🎨 Theme Switcher -->
-  <div id="theme-switcher">
-    <label for="theme-select">🎨 Choose Theme:</label>
-    <select id="theme-select">
-      <option value="light">Light</option>
-      <option value="dark">Dark</option>
-      <option value="green">Islamic Green</option>
-    </select>
-  </div>
-
   <main id="apps-container" class="apps-container">
-    <!-- Apps will load here -->
-  </main>
+    </main>
 
   <footer>
-    <p>© 2025 Suleiman Alhassan — Powered by Suleiman Alhassan</p>
+    <p>© 2026 Suleiman Alhassan — Never Hide Tech Empire</p>
   </footer>
 
   <script src="js/main.js"></script>
 
-  <!-- 🌗 Theme System Script -->
   <script>
     const themeSelect = document.getElementById('theme-select');
     const savedTheme = localStorage.getItem('theme') || 'light';
@@ -58,4 +54,4 @@
     });
   </script>
 </body>
-    </html>
+</html>
