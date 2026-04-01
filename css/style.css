@@ -13,6 +13,7 @@
   --primary: #20B2AA;
   --secondary: #189e99;
   --header-text: #ffffff;
+  --border-color: rgba(0,0,0,0.05);
 }
 
 [data-theme="dark"] {
@@ -21,6 +22,7 @@
   --card-bg: #242526;
   --primary: #2e2e2e;
   --secondary: #3e3e3e;
+  --border-color: rgba(255,255,255,0.1);
 }
 
 [data-theme="green"] {
@@ -29,6 +31,7 @@
   --card-bg: #ffffff;
   --primary: #2e7d32;
   --secondary: #1b5e20;
+  --border-color: rgba(0,0,0,0.05);
 }
 
 body {
@@ -59,7 +62,7 @@ body {
   width: 70px;
   height: 70px;
   border-radius: 18px;
-  border: 2px solid gold; /* Giving your main logo the gold border */
+  border: 2px solid gold;
   object-fit: cover;
 }
 
@@ -77,13 +80,9 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-#search::placeholder {
-  color: rgba(255,255,255,0.8);
-}
+#search::placeholder { color: rgba(255,255,255,0.8); }
 
-#theme-switcher {
-  margin-top: 15px;
-}
+#theme-switcher { margin-top: 15px; }
 
 #theme-select {
   background: transparent;
@@ -108,11 +107,49 @@ body {
   text-align: center;
   box-shadow: 0 10px 20px rgba(0,0,0,0.05);
   transition: transform 0.3s ease;
+  position: relative;
 }
 
-.app-card:hover {
-  transform: translateY(-8px);
+.app-card:hover { transform: translateY(-8px); }
+
+/* Premium Social Stats */
+.app-stats {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.8;
 }
+
+.review-btn {
+  color: var(--primary);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Review Drawer */
+.review-drawer {
+  display: none;
+  background: rgba(0,0,0,0.03);
+  border-radius: 12px;
+  padding: 15px;
+  margin: 10px 0;
+  text-align: left;
+  font-size: 0.8rem;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+}
+
+.review-item {
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 5px;
+}
+
+.review-item b { color: var(--primary); }
 
 /* 3D Animation System */
 .logo-3d-container {
@@ -131,9 +168,7 @@ body {
   animation: continuous-flip 7s ease-in-out infinite;
 }
 
-.app-card:hover .logo-flipper {
-  animation-play-state: paused;
-}
+.app-card:hover .logo-flipper { animation-play-state: paused; }
 
 .logo-front, .logo-back {
   position: absolute;
@@ -161,8 +196,8 @@ body {
   100% { transform: rotateY(360deg); }
 }
 
-.app-card h2 { margin-bottom: 8px; font-size: 1.3rem; }
-.app-card p { opacity: 0.7; font-size: 0.95rem; margin-bottom: 20px; min-height: 40px; }
+.app-card h2 { margin-bottom: 5px; font-size: 1.3rem; }
+.app-card p { opacity: 0.7; font-size: 0.95rem; margin-bottom: 15px; min-height: 40px; }
 
 .app-card a {
   text-decoration: none;
@@ -172,8 +207,10 @@ body {
   border-radius: 50px;
   font-weight: bold;
   display: inline-block;
-  transition: opacity 0.2s;
+  transition: background 0.2s;
 }
+
+.app-card a:hover { background: var(--secondary); }
 
 footer {
   text-align: center;
