@@ -1,58 +1,1025 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#20B2AA">
-  <title>Suleiman Play Store :: Tech Empire ::</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>Suleiman Play Store — Never Hide Tech Empire</title>
+<meta name="theme-color" content="#0a6a4a"/>
+<style>
+/* ══ TOKENS & THEMES ══ */
+:root {
+  --p:#0a6a4a; --p2:#157850; --p3:#064;
+  --gold:#c9a84c; --gold2:#f0d080;
+  --bg:#f4f6f8; --card:#fff; --hdr:#fff;
+  --txt:#111; --txt2:#555; --bdr:#e0e0e0;
+  --nav-h:62px; --r:16px;
+  --sh:0 2px 12px rgba(0,0,0,.08);
+  --sh2:0 6px 24px rgba(0,0,0,.13);
+}
+[data-theme="dark"] {
+  --bg:#0d1117; --card:#161b22; --hdr:#0d1117;
+  --txt:#e6edf3; --txt2:#8b949e; --bdr:#30363d;
+  --sh:0 2px 12px rgba(0,0,0,.4);
+  --sh2:0 6px 24px rgba(0,0,0,.5);
+  --hdr-grad: linear-gradient(135deg,#0a0f1e 0%,#0d1f3c 50%,#091428 100%);
+}
+[data-theme="light"] {
+  --hdr-grad: linear-gradient(135deg,#0a6a4a,#157850);
+}
+[data-theme="islamic"] {
+  --hdr-grad: linear-gradient(135deg,#064 0%,#0a6a4a 50%,#157850 100%);
+}
+[data-theme="islamic"] {
+  --p:#0a6a4a; --p2:#157850;
+  --bg:#f0f9f5; --card:#fff; --hdr:#0a6a4a;
+  --txt:#0d2b1e; --txt2:#3a6a50; --bdr:#c8e6d8;
+}
+[data-theme="islamic"] .hdr-title,
+[data-theme="islamic"] .hdr-sub,
+[data-theme="islamic"] .sh-sub { color:#fff !important; }
+[data-theme="islamic"] .bnav { background:#0a6a4a; border-color:#064; }
+[data-theme="islamic"] .ni { color:rgba(255,255,255,.55); }
+[data-theme="islamic"] .ni.on { color:#fff; }
 
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icons/suleiman-logo.png" type="image/png" />
+/* ══ RESET ══ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;min-height:100vh;font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);}
+img{display:block;max-width:100%;}
+button{font-family:inherit;cursor:pointer;}
+input,textarea,select{font-family:inherit;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-thumb{background:var(--p);border-radius:2px;}
+
+/* ══ VIEW SYSTEM ══ */
+.view{display:none;position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:var(--bg);}
+.view.active{display:block;}
+#chat-view{display:none;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);background:var(--bg);overflow:hidden;}
+#chat-view.active{display:flex;}
+#app-detail-view{display:none;position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);background:var(--bg);overflow-y:auto;}
+#app-detail-view.active{display:block;}
+
+/* ══ BOTTOM NAV ══ */
+.bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--hdr);border-top:1.5px solid var(--bdr);display:flex;z-index:500;box-shadow:0 -2px 12px rgba(0,0,0,.07);}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:var(--txt2);font-size:.6rem;font-weight:600;transition:color .18s;user-select:none;padding:6px 0;}
+.ni .ico{font-size:1.3rem;line-height:1;transition:transform .18s;}
+.ni.on{color:var(--p);}
+.ni.on .ico{transform:scale(1.15);}
+
+/* ══ TOAST ══ */
+#toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:7px;pointer-events:none;width:88%;max-width:340px;}
+.toast{padding:11px 16px;border-radius:12px;font-size:.82rem;font-weight:600;text-align:center;box-shadow:0 4px 18px rgba(0,0,0,.22);animation:tin .28s ease;color:#fff;}
+@keyframes tin{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.t-ok{background:#0a6a4a;} .t-err{background:#c0392b;} .t-info{background:#1a6fa8;}
+
+/* ══ STORE HEADER ══ */
+.store-header{background:var(--hdr-grad,linear-gradient(135deg,var(--p),var(--p2)));padding:44px 18px 20px;position:relative;overflow:hidden;}
+.store-header::after{content:'';position:absolute;bottom:-30px;left:-20px;right:-20px;height:60px;background:var(--bg);border-radius:50% 50% 0 0;}
+/* stars + moon for dark mode */
+.hdr-sky{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;}
+.hdr-moon{position:absolute;top:10px;right:16px;font-size:30px;opacity:0;transition:opacity .5s,transform .5s;animation:moonF 5s ease-in-out infinite;filter:drop-shadow(0 0 10px rgba(255,255,200,.7));}
+.hdr-sun{position:absolute;top:12px;right:18px;font-size:26px;opacity:1;transition:opacity .5s,transform .5s;animation:sunS 12s linear infinite;}
+[data-theme="dark"] .hdr-moon{opacity:1;}
+[data-theme="dark"] .hdr-sun{opacity:0;}
+[data-theme="islamic"] .hdr-moon{opacity:1;}
+[data-theme="islamic"] .hdr-sun{opacity:0;}
+/* dark header overlay — deep navy sky */
+[data-theme="dark"] .store-header::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,10,30,.7) 0%,rgba(9,20,50,.4) 100%);pointer-events:none;z-index:0;}
+[data-theme="dark"] .sh-brand,[data-theme="dark"] .hdr-sky{position:relative;z-index:1;}
+/* moon glow ring */
+[data-theme="dark"] .hdr-moon::after{content:'';display:none;}
+@keyframes moonF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.05)}}
+@keyframes sunS{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+/* stars */
+.hdr-star{position:absolute;border-radius:50%;opacity:0;transition:opacity .6s;animation:twink 2.5s infinite;}
+[data-theme="dark"] .hdr-star{opacity:1;}
+[data-theme="islamic"] .hdr-star{opacity:.6;}
+@keyframes twink{0%{opacity:.9;transform:scale(1)}50%{opacity:.15;transform:scale(.7)}100%{opacity:.9;transform:scale(1)}}
+/* shooting star */
+.shooting-star{position:absolute;width:60px;height:2px;background:linear-gradient(90deg,rgba(255,255,255,0),#fff);border-radius:2px;opacity:0;animation:shoot 6s linear infinite;}
+[data-theme="dark"] .shooting-star{opacity:1;}
+@keyframes shoot{0%{transform:translate(0,0) rotate(-30deg);opacity:0}5%{opacity:.8}20%{transform:translate(150px,60px) rotate(-30deg);opacity:0}100%{opacity:0}}
+
+.sh-brand{display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
+.sh-logo{width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+.sh-title{font-size:1.35rem;font-weight:800;color:#fff;letter-spacing:-.3px;}
+.sh-sub{font-size:.74rem;color:rgba(255,255,255,.7);margin-top:1px;}
+
+/* ══ SEARCH ══ */
+.store-search-wrap{padding:40px 16px 12px;position:relative;}
+.store-search{width:100%;padding:12px 16px 12px 42px;border:2px solid var(--bdr);border-radius:24px;background:var(--card);color:var(--txt);font-size:.9rem;outline:none;transition:border-color .2s;}
+.store-search:focus{border-color:var(--p);}
+.search-ico{position:absolute;left:28px;top:50%;transform:translateY(-50%);font-size:1rem;color:var(--txt2);pointer-events:none;}
+
+/* ══ CATEGORIES ══ */
+.cats-bar{display:flex;gap:8px;padding:0 16px 14px;overflow-x:auto;scrollbar-width:none;}
+.cats-bar::-webkit-scrollbar{display:none;}
+.cat-pill{padding:7px 16px;border-radius:20px;font-size:.76rem;font-weight:700;border:2px solid var(--bdr);background:transparent;color:var(--txt2);cursor:pointer;white-space:nowrap;transition:all .18s;}
+.cat-pill.on{background:var(--p);border-color:var(--p);color:#fff;}
+.sec-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--txt2);padding:0 16px 10px;}
+
+/* ══ APP CARDS — 2-column grid ══ */
+.apps-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px 90px;}
+.app-card{background:var(--card);border-radius:var(--r);border:1.5px solid var(--bdr);padding:14px;box-shadow:var(--sh);cursor:pointer;transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden;}
+.app-card:active{transform:scale(.97);}
+.app-card:hover{box-shadow:var(--sh2);}
+.ac-icon-wrap{width:64px;height:64px;border-radius:16px;margin:0 auto 10px;overflow:hidden;background:linear-gradient(135deg,rgba(10,106,74,.1),rgba(21,120,80,.1));display:flex;align-items:center;justify-content:center;font-size:2rem;animation:logoSpin 5s ease-in-out infinite;}
+@keyframes logoSpin{0%{transform:perspective(200px) rotateY(0)}25%{transform:perspective(200px) rotateY(12deg)}75%{transform:perspective(200px) rotateY(-12deg)}100%{transform:perspective(200px) rotateY(0)}}
+.ac-icon-wrap img{width:100%;height:100%;object-fit:cover;border-radius:16px;}
+.ac-name{font-size:.85rem;font-weight:800;text-align:center;color:var(--txt);margin-bottom:4px;line-height:1.3;}
+.ac-meta{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.68rem;color:var(--txt2);margin-bottom:6px;}
+.ac-desc{font-size:.72rem;color:var(--txt2);text-align:center;line-height:1.55;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.ac-open-btn{display:block;width:100%;padding:8px;border-radius:10px;background:var(--p);border:none;color:#fff;font-size:.76rem;font-weight:700;transition:background .18s;}
+.ac-open-btn:hover{background:var(--p2);}
+.ac-badge{position:absolute;top:10px;right:10px;background:var(--gold);color:#fff;font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:8px;}
+
+/* ══ APP DETAIL ══ */
+.detail-back{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--hdr);border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:10;}
+.back-btn{background:var(--bg);border:1.5px solid var(--bdr);padding:7px 14px;border-radius:20px;font-size:.78rem;font-weight:700;color:var(--txt2);cursor:pointer;transition:all .15s;}
+.back-btn:active{background:var(--p);color:#fff;border-color:var(--p);}
+.detail-title-hd{font-weight:800;font-size:.92rem;color:var(--txt);flex:1;text-align:center;}
+.detail-hero{background:var(--hdr-grad,linear-gradient(135deg,var(--p),var(--p2)));padding:28px 20px 22px;text-align:center;}
+.dh-icon{width:86px;height:86px;border-radius:22px;margin:0 auto 12px;overflow:hidden;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:2.8rem;}
+.dh-icon img{width:100%;height:100%;object-fit:cover;border-radius:22px;}
+.dh-name{font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:4px;}
+.dh-dev{font-size:.76rem;color:rgba(255,255,255,.7);}
+.dh-meta{display:flex;justify-content:center;gap:18px;margin-top:12px;}
+.dhm{text-align:center;}
+.dhm-n{font-size:1rem;font-weight:800;color:#fff;}
+.dhm-l{font-size:.62rem;color:rgba(255,255,255,.6);}
+.dh-open-btn{display:inline-block;margin-top:14px;padding:11px 32px;border-radius:24px;background:#fff;color:var(--p);font-weight:800;font-size:.88rem;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.18);transition:all .18s;}
+.dh-open-btn:hover{transform:scale(1.04);}
+/* install progress */
+.install-wrap{padding:14px 20px 0;}
+.install-btn{width:100%;padding:13px;border-radius:14px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;transition:.2s;}
+.install-btn.done{background:#22c55e;}
+.prog-bg{background:var(--bdr);border-radius:10px;height:8px;margin-top:10px;overflow:hidden;display:none;}
+.prog-fill{height:100%;background:var(--p);border-radius:10px;width:0%;transition:width .1s linear;}
+.prog-lbl{font-size:.7rem;color:var(--txt2);text-align:center;margin-top:4px;display:none;}
+.detail-body{padding:16px;}
+.det-sec{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.det-sec-title{font-size:.72rem;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
+.det-desc{font-size:.84rem;color:var(--txt2);line-height:1.75;}
+.screenshots-row{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
+.screenshots-row::-webkit-scrollbar{display:none;}
+.ss-mock{width:130px;height:220px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-weight:800;}
+.reviews-list{display:flex;flex-direction:column;gap:10px;}
+.review-item{background:var(--bg);border-radius:12px;padding:12px;}
+.rv-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.rv-avatar{width:32px;height:32px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-weight:700;flex-shrink:0;}
+.rv-name{font-size:.8rem;font-weight:700;color:var(--txt);}
+.rv-stars{font-size:.72rem;color:var(--gold);}
+.rv-text{font-size:.78rem;color:var(--txt2);line-height:1.6;}
+/* comment box in detail */
+.comment-box{display:flex;gap:8px;margin-top:10px;}
+.comment-inp{flex:1;background:var(--bg);border:1.5px solid var(--bdr);border-radius:20px;padding:9px 14px;font-size:.82rem;color:var(--txt);outline:none;}
+.comment-inp:focus{border-color:var(--p);}
+.comment-send-btn{width:38px;height:38px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+/* share row */
+.share-row{display:flex;gap:8px;padding:0 20px 12px;}
+.share-btn,.like-btn{flex:1;background:var(--bg);border:1.5px solid var(--bdr);border-radius:12px;padding:10px;font-size:.8rem;font-weight:700;color:var(--txt);cursor:pointer;transition:.15s;}
+.share-btn:active,.like-btn:active{background:var(--p);color:#fff;border-color:var(--p);}
+
+/* ══ CHAT VIEW ══ */
+.chat-header{background:var(--hdr-grad,linear-gradient(135deg,var(--p),var(--p2)));padding:44px 14px 12px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.chat-hdr-av{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.chat-hdr-name{font-size:.93rem;font-weight:800;color:#fff;flex:1;}
+.chat-hdr-sub{font-size:.67rem;color:rgba(255,255,255,.65);}
+.chat-hdr-actions{display:flex;gap:6px;}
+.chat-hdr-btn{background:rgba(255,255,255,.15);border:none;border-radius:8px;color:#fff;font-size:.9rem;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.online-bar{background:rgba(10,106,74,.07);border-bottom:1px solid var(--bdr);padding:7px 14px;display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--p);font-weight:600;flex-shrink:0;}
+.chat-messages{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:6px;}
+.chat-day-divider{text-align:center;font-size:.68rem;color:var(--txt2);margin:6px 0;background:var(--bg);}
+.cmsg{display:flex;flex-direction:column;max-width:78%;}
+.cmsg.mine{align-self:flex-end;align-items:flex-end;}
+.cmsg.other{align-self:flex-start;}
+.cmsg-bubble{padding:9px 13px;font-size:.84rem;line-height:1.5;word-break:break-word;}
+.cmsg.mine .cmsg-bubble{background:var(--p);color:#fff;border-radius:16px 16px 4px 16px;}
+.cmsg.other .cmsg-bubble{background:var(--card);color:var(--txt);border:1px solid var(--bdr);border-radius:16px 16px 16px 4px;}
+.cmsg-meta{font-size:.6rem;color:var(--txt2);margin-top:2px;padding:0 4px;}
+.cmsg-sender{font-size:.68rem;font-weight:700;color:var(--p);margin-bottom:3px;padding:0 2px;}
+.chat-system-msg{text-align:center;font-size:.7rem;color:var(--txt2);background:rgba(0,0,0,.05);padding:5px 14px;border-radius:12px;align-self:center;}
+.chat-input-bar{padding:10px 12px;display:flex;gap:8px;background:var(--hdr);border-top:1px solid var(--bdr);flex-shrink:0;}
+.chat-input{flex:1;padding:10px 14px;border:2px solid var(--bdr);border-radius:22px;background:var(--card);color:var(--txt);font-size:.88rem;outline:none;transition:border-color .2s;}
+.chat-input:focus{border-color:var(--p);}
+.chat-send-btn{width:42px;height:42px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ══ ADMIN ══ */
+.admin-header{background:var(--hdr-grad,linear-gradient(135deg,var(--p),var(--p2)));padding:50px 18px 22px;color:#fff;}
+.admin-header h2{font-size:1.1rem;font-weight:800;margin-bottom:4px;}
+.admin-header p{font-size:.76rem;opacity:.75;}
+.admin-body{padding:14px 14px 90px;}
+.adm-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.adm-card-title{font-size:.76rem;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;}
+.adm-field-label{font-size:.74rem;font-weight:600;color:var(--txt2);margin-bottom:5px;margin-top:10px;}
+.adm-field{width:100%;padding:10px 13px;border:1.5px solid var(--bdr);border-radius:10px;background:var(--bg);color:var(--txt);font-size:.86rem;outline:none;resize:vertical;}
+.adm-field:focus{border-color:var(--p);}
+.adm-btn{width:100%;padding:12px;border-radius:11px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;margin-top:14px;cursor:pointer;}
+.adm-app-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bdr);}
+.adm-app-row:last-child{border-bottom:none;}
+.adm-app-ico{width:38px;height:38px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;border:1px solid var(--bdr);}
+.adm-app-name{font-size:.82rem;font-weight:700;color:var(--txt);}
+.adm-app-status{font-size:.66rem;font-weight:700;padding:3px 9px;border-radius:8px;margin-left:auto;}
+.status-live{background:rgba(10,106,74,.12);color:#0a6a4a;border:1px solid rgba(10,106,74,.25);}
+.status-pending{background:rgba(201,168,76,.12);color:#a07820;border:1px solid rgba(201,168,76,.3);}
+.adm-del-btn{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.2);color:#c0392b;border-radius:8px;padding:5px 9px;font-size:.72rem;cursor:pointer;font-weight:700;}
+.adm-login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;padding:20px;}
+.adm-login-box{background:var(--card);border:1.5px solid var(--bdr);border-radius:20px;padding:30px 22px;width:100%;max-width:340px;text-align:center;}
+.alb-icon{font-size:3rem;margin-bottom:10px;}
+.alb-title{font-size:1.05rem;font-weight:800;color:var(--txt);margin-bottom:4px;}
+.alb-sub{font-size:.75rem;color:var(--txt2);margin-bottom:18px;}
+.alb-input{width:100%;padding:11px 14px;border:2px solid var(--bdr);border-radius:11px;background:var(--bg);color:var(--txt);font-size:.9rem;outline:none;margin-bottom:10px;text-align:center;transition:border-color .2s;}
+.alb-input:focus{border-color:var(--p);}
+.alb-btn{width:100%;padding:12px;border-radius:11px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;}
+.alb-err{font-size:.74rem;color:#c0392b;margin-top:6px;min-height:16px;}
+
+/* ══ PROFILE ══ */
+.profile-header{background:var(--hdr-grad,linear-gradient(135deg,var(--p),var(--p2)));padding:50px 18px 30px;text-align:center;}
+.pf-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.2);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;border:3px solid rgba(255,255,255,.4);}
+.pf-name{font-size:1.2rem;font-weight:800;color:#fff;}
+.pf-role{font-size:.76rem;color:rgba(255,255,255,.65);margin-top:3px;}
+.pf-stats{display:flex;justify-content:center;gap:24px;margin-top:16px;}
+.pfs{text-align:center;}
+.pfs-n{font-size:1.1rem;font-weight:800;color:#fff;}
+.pfs-l{font-size:.62rem;color:rgba(255,255,255,.55);}
+.profile-body{padding:14px 14px 90px;}
+.pf-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.pf-card-title{font-size:.74rem;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;}
+.pf-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bdr);}
+.pf-row:last-child{border-bottom:none;}
+.pf-row-ico{width:36px;height:36px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;border:1px solid var(--bdr);}
+.pf-row-label{flex:1;font-size:.84rem;font-weight:600;color:var(--txt);}
+.pf-row-val{font-size:.78rem;color:var(--txt2);}
+.pf-row-arrow{font-size:.8rem;color:var(--txt2);}
+.theme-row{display:flex;gap:8px;flex-wrap:wrap;}
+.theme-opt{padding:8px 14px;border-radius:12px;border:2px solid var(--bdr);background:transparent;font-size:.76rem;font-weight:700;color:var(--txt2);cursor:pointer;transition:all .18s;}
+.theme-opt.on{border-color:var(--p);color:var(--p);background:rgba(10,106,74,.07);}
+
+/* ══ LOGIN POPUP ══ */
+.login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;display:none;align-items:center;justify-content:center;padding:20px;}
+.login-overlay.open{display:flex;}
+.login-card{background:var(--card);border-radius:24px;padding:28px 22px;width:100%;max-width:340px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.2);}
+.login-card h2{font-size:1.1rem;font-weight:800;margin-bottom:6px;}
+.login-card p{font-size:.76rem;color:var(--txt2);margin-bottom:18px;}
+.login-inp{width:100%;padding:11px 14px;border:2px solid var(--bdr);border-radius:11px;background:var(--bg);color:var(--txt);font-size:.9rem;outline:none;margin-bottom:10px;}
+.login-inp:focus{border-color:var(--p);}
+.login-btn{width:100%;padding:12px;border-radius:11px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;}
+.login-skip{display:block;font-size:.76rem;color:var(--txt2);margin-top:10px;cursor:pointer;}
+
+/* ══ EMPTY STATE ══ */
+.empty-state{text-align:center;padding:50px 20px;color:var(--txt2);}
+.empty-state .es-icon{font-size:3rem;margin-bottom:12px;}
+.empty-state p{font-size:.86rem;line-height:1.6;}
+
+/* ══ DRAGGABLE THEME FAB ══ */
+#theme-fab{position:fixed;bottom:90px;right:16px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:6px;touch-action:none;user-select:none;}
+#theme-fab-btn{width:52px;height:52px;border-radius:50%;background:var(--hdr-grad,linear-gradient(135deg,#0a6a4a,#157850));border:2.5px solid rgba(255,255,255,.3);color:#fff;font-size:1.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.3);transition:transform .18s,box-shadow .18s;}
+#theme-fab-btn:active{transform:scale(.92);box-shadow:0 2px 8px rgba(0,0,0,.3);}
+#theme-fab-menu{display:none;flex-direction:column;align-items:center;gap:6px;animation:fabIn .2s ease;}
+#theme-fab-menu.open{display:flex;}
+@keyframes fabIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fab-opt{width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,.25);background:var(--card);color:var(--txt);font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.2);transition:transform .15s,background .2s;}
+.fab-opt:active{transform:scale(.88);}
+.fab-opt.active-theme{background:var(--p);color:#fff;border-color:var(--p);}
+
+</style>
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="brand">
-      <img src="icons/suleiman-logo.png" alt="Suleiman Play Store" class="logo">
-      <div class="brand-text">
-        <h1>Suleiman Play Store</h1>
-        <p class="tag">All apps by Suleiman Alhassan — one place.</p>
+<div id="toasts"></div>
+
+<!-- ════ STORE VIEW ════ -->
+<div id="store-view" class="view active" style="display:block">
+  <div class="store-header">
+    <div class="hdr-sky" id="hdr-sky">
+      <div class="hdr-sun">☀️</div>
+      <div class="hdr-moon">🌙</div>
+      <div class="shooting-star"></div>
+    </div>
+    <div class="sh-brand">
+      <div class="sh-logo">🏪</div>
+      <div>
+        <div class="sh-title hdr-title">Suleiman Play Store</div>
+        <div class="sh-sub">Never Hide Tech Empire · All apps one place</div>
       </div>
     </div>
+  </div>
+  <div class="store-search-wrap">
+    <span class="search-ico">🔍</span>
+    <input class="store-search" id="store-search" placeholder="Search apps…" oninput="filterApps()"/>
+  </div>
+  <div class="cats-bar" id="cats-bar">
+    <button class="cat-pill on" onclick="setCat('all',this)">All</button>
+    <button class="cat-pill" onclick="setCat('Islamic',this)">🕌 Islamic</button>
+    <button class="cat-pill" onclick="setCat('Business',this)">💼 Business</button>
+    <button class="cat-pill" onclick="setCat('Chat',this)">💬 Chat</button>
+    <button class="cat-pill" onclick="setCat('Tools',this)">🔧 Tools</button>
+    <button class="cat-pill" onclick="setCat('Education',this)">📚 Education</button>
+    <button class="cat-pill" onclick="setCat('AI',this)">🤖 AI</button>
+  </div>
+  <div class="sec-label" id="apps-sec-label">🔥 Featured Apps</div>
+  <div class="apps-grid" id="apps-grid"></div>
+</div>
 
-    <input id="search" placeholder="Search apps (e.g. Dhikr, Islamic...)" />
-    
-    <div id="theme-switcher">
-      <select id="theme-select">
-        <option value="light">☀️ Light</option>
-        <option value="dark">🌙 Dark</option>
-        <option value="green">🕌 Islamic Green</option>
-      </select>
+<!-- ════ APP DETAIL VIEW ════ -->
+<div id="app-detail-view">
+  <div class="detail-back">
+    <button class="back-btn" onclick="closeDetail()">← Back</button>
+    <div class="detail-title-hd" id="detail-title-hd">App</div>
+    <div style="width:60px"></div>
+  </div>
+  <div id="detail-content"></div>
+</div>
+
+<!-- ════ CHAT VIEW ════ -->
+<div id="chat-view">
+  <div class="chat-header">
+    <div class="chat-hdr-av">💬</div>
+    <div style="flex:1">
+      <div class="chat-hdr-name">Tech Empire Community</div>
+      <div class="chat-hdr-sub" id="chat-hdr-sub">127 members · 14 online</div>
     </div>
-  </header>
+    <div class="chat-hdr-actions">
+      <button class="chat-hdr-btn" onclick="showToast('🔍 Search coming soon','info')">🔍</button>
+      <button class="chat-hdr-btn" onclick="showToast('📌 Pinned messages coming soon','info')">📌</button>
+    </div>
+  </div>
+  <div class="online-bar">🟢 <span id="chat-online-bar">127 members · 14 online right now</span></div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-input-bar">
+    <input class="chat-input" id="chat-input" placeholder="Message the community…" onkeydown="if(event.key==='Enter')sendChat()"/>
+    <button class="chat-send-btn" onclick="sendChat()">➤</button>
+  </div>
+</div>
 
-  <main id="apps-container" class="apps-container">
-    </main>
+<!-- ════ ADMIN VIEW ════ -->
+<div id="admin-view" class="view">
+  <div id="admin-login-section">
+    <div class="adm-login-wrap">
+      <div class="adm-login-box">
+        <div class="alb-icon">🔐</div>
+        <div class="alb-title">Admin Panel</div>
+        <div class="alb-sub">Enter your admin password to continue</div>
+        <input class="alb-input" type="password" id="adm-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"/>
+        <button class="alb-btn" onclick="adminLogin()">Login</button>
+        <div class="alb-err" id="adm-err"></div>
+      </div>
+    </div>
+  </div>
+  <div id="admin-dashboard" style="display:none">
+    <div class="admin-header">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><h2>⚙️ Admin Dashboard</h2><p>Manage your apps — publish instantly to the store</p></div>
+        <button onclick="adminLogout()" style="background:rgba(255,255,255,.15);border:none;color:#fff;padding:7px 13px;border-radius:10px;font-size:.75rem;font-weight:700;cursor:pointer;">Logout</button>
+      </div>
+    </div>
+    <div class="admin-body">
+      <div class="adm-card">
+        <div class="adm-card-title">➕ Submit New App</div>
+        <div class="adm-field-label">App Name *</div>
+        <input class="adm-field" id="adm-name" placeholder="e.g. Islamic Google"/>
+        <div class="adm-field-label">Short Description *</div>
+        <textarea class="adm-field" id="adm-desc" rows="3" placeholder="What does this app do?"></textarea>
+        <div class="adm-field-label">App URL *</div>
+        <input class="adm-field" id="adm-url" type="url" placeholder="https://yourapp.vercel.app"/>
+        <div class="adm-field-label">Category</div>
+        <select class="adm-field" id="adm-cat">
+          <option value="Islamic">🕌 Islamic</option>
+          <option value="Business">💼 Business</option>
+          <option value="Chat">💬 Chat</option>
+          <option value="Tools">🔧 Tools</option>
+          <option value="Education">📚 Education</option>
+        </select>
+        <div class="adm-field-label">Icon Emoji</div>
+        <input class="adm-field" id="adm-emoji" placeholder="e.g. 📖" maxlength="4" style="font-size:1.3rem;text-align:center"/>
+        <button class="adm-btn" onclick="submitApp()">🚀 Publish App to Store</button>
+      </div>
+      <div class="adm-card">
+        <div class="adm-card-title">📦 All Apps in Store</div>
+        <div id="adm-apps-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <footer>
-    <p>© 2026 Suleiman Alhassan — Never Hide Tech Empire</p>
-  </footer>
+<!-- ════ PROFILE VIEW ════ -->
+<div id="profile-view" class="view">
+  <div class="profile-header">
+    <div class="pf-avatar">👤</div>
+    <div class="pf-name" id="pf-name">Suleiman Alhassan</div>
+    <div class="pf-role">Never Hide Tech Empire · Developer</div>
+    <div class="pf-stats">
+      <div class="pfs"><div class="pfs-n" id="pf-stat-apps">0</div><div class="pfs-l">Apps</div></div>
+      <div class="pfs"><div class="pfs-n">127</div><div class="pfs-l">Community</div></div>
+      <div class="pfs"><div class="pfs-n">2026</div><div class="pfs-l">Since</div></div>
+    </div>
+  </div>
+  <div class="profile-body">
+    <div class="pf-card">
+      <div class="pf-card-title">🎨 Theme</div>
+      <div class="theme-row">
+        <button class="theme-opt on" data-t="light" onclick="setTheme('light',this)">☀️ Light</button>
+        <button class="theme-opt" data-t="dark" onclick="setTheme('dark',this)">🌙 Dark</button>
+        <button class="theme-opt" data-t="islamic" onclick="setTheme('islamic',this)">🕌 Islamic</button>
+      </div>
+    </div>
+    <div class="pf-card">
+      <div class="pf-card-title">👤 My Account</div>
+      <div class="pf-row">
+        <div class="pf-row-ico">📛</div>
+        <div class="pf-row-label">Name</div>
+        <div class="pf-row-val" id="pf-disp-name">—</div>
+      </div>
+      <div class="pf-row">
+        <div class="pf-row-ico">📱</div>
+        <div class="pf-row-label">Phone</div>
+        <div class="pf-row-val" id="pf-disp-phone">—</div>
+      </div>
 
-  <script src="js/main.js"></script>
+    </div>
+    <div class="pf-card">
+      <div class="pf-card-title">📞 Contact</div>
+      <div class="pf-row">
+        <div class="pf-row-ico">📞</div>
+        <div class="pf-row-label">0599931348</div>
+        <div class="pf-row-arrow">›</div>
+      </div>
+      <div class="pf-row">
+        <div class="pf-row-ico">📞</div>
+        <div class="pf-row-label">0248503631</div>
+        <div class="pf-row-arrow">›</div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <script>
-    // Theme initialization
-    const themeSelect = document.getElementById('theme-select');
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.body.setAttribute('data-theme', savedTheme);
-    themeSelect.value = savedTheme;
+<!-- ════ BOTTOM NAV ════ -->
+<nav class="bnav">
+  <div class="ni on" id="ni-store" onclick="showView('store-view')"><div class="ico">🏪</div><div>Store</div></div>
+  <div class="ni" id="ni-chat" onclick="showView('chat-view')"><div class="ico">💬</div><div>Community</div></div>
+  <div class="ni" id="ni-profile" onclick="showView('profile-view')"><div class="ico">👤</div><div>Profile</div></div>
+</nav>
 
-    themeSelect.addEventListener('change', (e) => {
-      const newTheme = e.target.value;
-      document.body.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-    });
-  </script>
+<!-- ════ LOGIN POPUP ════ -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-card">
+    <div style="font-size:3rem;margin-bottom:8px">👋</div>
+    <h2>Welcome!</h2>
+    <p>Enter your name and phone to join.<br>We'll send you a welcome message!</p>
+    <input class="login-inp" id="login-name" type="text" placeholder="Your full name"/>
+    <input class="login-inp" id="login-phone" type="tel" placeholder="Phone (e.g. 0599931348)"/>
+    <button class="login-btn" onclick="submitLogin()">🚀 Join the Community</button>
+    <span class="login-skip" onclick="skipLogin()">Skip for now</span>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════
+//  NEVER HIDE PLAY STORE
+// ════════════════════════════════
+
+// ── APPS DATA ──
+let APPS = [
+  { id:1, name:'Islamic Google', emoji:'🔍', cat:'Islamic',
+    desc:'The ultimate Islamic knowledge search engine. Search Qur\'an, Hadith, Scholars and Lectures instantly.',
+    url:'https://sulimanalhassan123as-code.github.io/ISLAMIC-GOOGEL/',
+    rating:4.9, downloads:'1.2M+',
+    reviews:[{name:'Ahmad K',stars:5,text:'MashaAllah — exactly what I needed!'},{name:'Fatima M',stars:5,text:'Beautiful design and very fast. JazakAllah Khayr!'},{name:'Ibrahim O',stars:4,text:'Amazing app. Would love more Tafsir content.'}],
+    badge:'Popular', screenshots:['📖','🔍','📚'], likes:8420, installed:false },
+  { id:2, name:'Dhikr Counter PRO', emoji:'📿', cat:'Islamic',
+    desc:'A luxury digital tasbih. SubhanAllah, Alhamdulillah, Allahu Akbar with beautiful animations and progress tracking.',
+    url:'https://juz-amma-pro-max.vercel.app',
+    rating:4.8, downloads:'500K+',
+    reviews:[{name:'Musa T',stars:5,text:'Best Dhikr app I have used!'},{name:'Aisha B',stars:5,text:'So simple and beautiful.'}],
+    badge:'New', screenshots:['📿','🏔️','✨'], likes:3210, installed:false },
+  { id:3, name:'Business Chat', emoji:'💼', cat:'Chat',
+    desc:'Secure communication hub for the Never Hide Tech Empire. Real-time messaging for your team.',
+    url:'#', rating:5.0, downloads:'10K+',
+    reviews:[{name:'David A',stars:5,text:'Great for team communications!'},{name:'Sandra L',stars:5,text:'Simple and not cluttered!'}],
+    badge:'', screenshots:['💬','🔒','📱'], likes:620, installed:false },
+  { id:4, name:'Never Hide App Store', emoji:'🏪', cat:'Business',
+    desc:'The official app store for all Never Hide Tech Empire projects. Discover, install and review apps.',
+    url:'https://starboy-pi.vercel.app', rating:4.7, downloads:'50K+',
+    reviews:[{name:'Tech Fan',stars:5,text:'Love having all apps in one place!'},{name:'Zaid M',stars:4,text:'Great store. More apps please!'}],
+    badge:'', screenshots:['🏪','📱','⭐'], likes:980, installed:false },
+  { id:5, name:'Juz Amma Pro Max', emoji:'📖', cat:'Islamic',
+    desc:'Complete Juz 30 Qur\'an app — Read, Listen, Memorize with 4 reciters, Stories of 25 Prophets and Night Radio.',
+    url:'https://juz-amma-pro-max.vercel.app', rating:4.9, downloads:'200K+',
+    reviews:[{name:'Khalid R',stars:5,text:'SubhanAllah — this app has everything!'},{name:'Noor H',stars:5,text:'I completed Juz 30 in one week using this!'}],
+    badge:'Top', screenshots:['📖','🌙','🧠'], likes:5100, installed:false },
+  { id:6, name:'SecureCheck', emoji:'🔒', cat:'Tools',
+    desc:'Professional web security scanner. Detect payment API leaks, exposed keys and vulnerabilities.',
+    url:'#', rating:4.6, downloads:'8K+',
+    reviews:[{name:'Dev Pro',stars:5,text:'This tool saved my website!'},{name:'Web Admin',stars:4,text:'Very thorough scanning.'}],
+    badge:'', screenshots:['🔒','🔍','⚠️'], likes:320, installed:false },
+  { id:7, name:'Islamic AI Assistant', emoji:'🤖', cat:'AI',
+    desc:'Ask any Islamic question — Qur\'an, Hadith, Fiqh, Fatwa. Powered by Groq AI for instant, scholar-verified answers.',
+    url:'#', rating:4.9, downloads:'75K+',
+    reviews:[{name:'Yusuf A',stars:5,text:'SubhanAllah! This AI gives proper Islamic answers with references!'},{name:'Maryam S',stars:5,text:'Finally an AI that understands Islam. MashaAllah!'}],
+    badge:'New', screenshots:['🤖','📖','💡'], likes:2100, installed:false },
+  { id:8, name:'Never Hide AI Chat', emoji:'💬', cat:'AI',
+    desc:'Smart AI-powered team assistant for the Tech Empire. Ask questions, summarise documents, generate content — all in one place.',
+    url:'#', rating:4.8, downloads:'20K+',
+    reviews:[{name:'Tech User',stars:5,text:'This AI chat is a game changer for productivity!'},{name:'Sara M',stars:4,text:'Very fast responses and very accurate.'}],
+    badge:'Beta', screenshots:['💬','🤖','⚡'], likes:890, installed:false },
+  { id:9, name:'Quran AI Tafsir', emoji:'📖', cat:'AI',
+    desc:'Deep Qur\'an understanding powered by AI. Get verse-by-verse Tafsir, word meanings, context and life applications instantly.',
+    url:'#', rating:5.0, downloads:'30K+',
+    reviews:[{name:'Imam K',stars:5,text:'Incredible tool for understanding the Qur\'an deeply.'},{name:'Student H',stars:5,text:'Every Muslim student needs this app.'}],
+    badge:'Top', screenshots:['📖','✨','🧠'], likes:3400, installed:false },
+  { id:10, name:'Prayer Times Pro', emoji:'🕌', cat:'Islamic',
+    desc:'Accurate prayer times for any city worldwide. Qibla direction, Hijri calendar, Azan notifications and Ramadan countdown.',
+    url:'#', rating:4.9, downloads:'150K+',
+    reviews:[{name:'Bilal O',stars:5,text:'Never miss a prayer again with this app!'},{name:'Hawa D',stars:5,text:'Best prayer times app — accurate and beautiful.'}],
+    badge:'', screenshots:['🕌','🧭','🌙'], likes:4700, installed:false },
+  { id:11, name:'Islamic Finance Calc', emoji:'💰', cat:'Business',
+    desc:'Halal finance calculator. Zakat computation, Islamic mortgage comparison, profit-sharing (Musharakah) and Riba-free savings planner.',
+    url:'#', rating:4.7, downloads:'25K+',
+    reviews:[{name:'Ahmad B',stars:5,text:'This app helped me make my finances 100% halal!'},{name:'Fatima L',stars:5,text:'The Zakat calculator alone is worth installing.'}],
+    badge:'', screenshots:['💰','📊','✅'], likes:1200, installed:false },
+];
+
+let currentCat = 'all', currentSearch = '';
+let currentDetailApp = null;
+let adminLoggedIn = false;
+const ADMIN_PASS = 'neverhide2026';
+let userInfo = JSON.parse(localStorage.getItem('nhps_user') || 'null');
+let installedIds = JSON.parse(localStorage.getItem('nhps_installed') || '[]');
+
+// ── VIEW ROUTER ──
+const VIEW_IDS = ['store-view','chat-view','admin-view','profile-view','app-detail-view'];
+const NAV_MAP  = {'store-view':'ni-store','chat-view':'ni-chat','admin-view':'ni-profile','profile-view':'ni-profile'};
+
+function showView(id) {
+  VIEW_IDS.forEach(v => {
+    const el = document.getElementById(v);
+    if (!el) return;
+    el.classList.remove('active');
+    el.style.display = '';
+  });
+  const target = document.getElementById(id);
+  if (!target) return;
+  if (id === 'chat-view') target.style.display = 'flex';
+  else if (id === 'app-detail-view') { target.style.display = 'block'; target.scrollTop = 0; }
+  else target.classList.add('active');
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  const navId = NAV_MAP[id];
+  if (navId) document.getElementById(navId)?.classList.add('on');
+  if (id === 'chat-view') setTimeout(() => { const cm = document.getElementById('chat-messages'); if(cm) cm.scrollTop = cm.scrollHeight; }, 80);
+  if (id === 'profile-view') {
+    document.getElementById('pf-stat-apps').textContent = APPS.length;
+    const u = userInfo;
+    document.getElementById('pf-disp-name').textContent  = u ? u.name  : '—';
+    document.getElementById('pf-disp-phone').textContent = u ? u.phone : '—';
+    if (u) document.getElementById('pf-name').textContent = u.name;
+  }
+}
+
+// ── TOAST ──
+function showToast(msg, type='ok', dur=3000) {
+  const w = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = `toast t-${type}`; el.textContent = msg;
+  w.appendChild(el);
+  setTimeout(() => { el.style.opacity='0'; el.style.transition='.3s'; setTimeout(()=>el.remove(),300); }, dur);
+}
+
+// ── STARS ──
+function buildStars() {
+  const sky = document.getElementById('hdr-sky');
+  for (let i=0; i<16; i++) {
+    const s = document.createElement('div');
+    s.className = 'hdr-star';
+    s.style.left = (Math.random()*85)+'%';
+    s.style.top  = (Math.random()*100)+'%';
+    s.style.animationDelay = (Math.random()*2.5)+'s';
+    s.style.width = s.style.height = (Math.random()*2+1.5)+'px';
+    sky.appendChild(s);
+  }
+}
+
+// ── STORE RENDER ──
+function renderApps() {
+  const grid = document.getElementById('apps-grid');
+  const q = currentSearch.toLowerCase();
+  let list = APPS.filter(a => {
+    const mc = currentCat === 'all' || a.cat === currentCat;
+    const ms = !q || a.name.toLowerCase().includes(q) || a.desc.toLowerCase().includes(q) || a.cat.toLowerCase().includes(q);
+    return mc && ms;
+  });
+  document.getElementById('apps-sec-label').textContent = q ? `🔎 Results for "${currentSearch}"` : (currentCat === 'all' ? '🔥 Featured Apps' : `📂 ${currentCat}`);
+  if (!list.length) { grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">🔍</div><p>No apps found.<br>Try a different search.</p></div>`; return; }
+  grid.innerHTML = list.map(a => {
+    const inst = installedIds.includes(a.id);
+    return `<div class="app-card" onclick="openDetail(${a.id})">
+      ${a.badge ? `<div class="ac-badge">${a.badge}</div>` : ''}
+      <div class="ac-icon-wrap">${a.emoji}</div>
+      <div class="ac-name">${a.name}</div>
+      <div class="ac-meta"><span>⭐ ${a.rating}</span><span>📥 ${a.downloads}</span></div>
+      <div class="ac-desc">${a.desc}</div>
+      <button class="ac-open-btn" style="${inst?'background:#22c55e':''}">${inst?'✅ Installed':'Open App'}</button>
+    </div>`;
+  }).join('');
+}
+function filterApps() { currentSearch = document.getElementById('store-search').value; renderApps(); }
+function setCat(cat, el) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('on'));
+  el?.classList.add('on');
+  renderApps();
+}
+
+// ── APP DETAIL ──
+function openDetail(id) {
+  const app = APPS.find(a => a.id === id); if (!app) return;
+  currentDetailApp = app;
+  const inst = installedIds.includes(id);
+  document.getElementById('detail-title-hd').textContent = app.name;
+  document.getElementById('detail-content').innerHTML = `
+    <div class="detail-hero">
+      <div class="dh-icon">${app.emoji}</div>
+      <div class="dh-name">${app.name}</div>
+      <div class="dh-dev">by Suleiman Alhassan · Never Hide Tech Empire</div>
+      <div class="dh-meta">
+        <div class="dhm"><div class="dhm-n">${app.rating}</div><div class="dhm-l">Rating</div></div>
+        <div class="dhm"><div class="dhm-n">${app.downloads}</div><div class="dhm-l">Downloads</div></div>
+        <div class="dhm"><div class="dhm-n">${app.reviews.length}</div><div class="dhm-l">Reviews</div></div>
+      </div>
+    </div>
+    <div class="install-wrap">
+      <button class="install-btn ${inst?'done':''}" id="install-btn-main" onclick="doInstall(${id})">
+        ${inst ? '✅ Open App' : '⬇️ Install'}
+      </button>
+      <div class="prog-bg" id="prog-bg"><div class="prog-fill" id="prog-fill"></div></div>
+      <div class="prog-lbl" id="prog-lbl">0%</div>
+    </div>
+    <div class="share-row">
+      <button class="share-btn" onclick="shareApp(${id})">↗️ Share</button>
+      <button class="like-btn" onclick="likeApp(${id})">❤️ Like · ${app.likes.toLocaleString()}</button>
+    </div>
+    <div class="detail-body">
+      <div class="det-sec">
+        <div class="det-sec-title">📋 About this app</div>
+        <div class="det-desc">${app.desc}</div>
+      </div>
+      <div class="det-sec">
+        <div class="det-sec-title">📸 Screenshots</div>
+        <div class="screenshots-row">${app.screenshots.map(s=>`<div class="ss-mock">${s}</div>`).join('')}</div>
+      </div>
+      <div class="det-sec">
+        <div class="det-sec-title">💬 Reviews & Comments (${app.reviews.length})</div>
+        <div class="comment-box">
+          <input class="comment-inp" id="comment-inp-${id}" placeholder="Write a comment…"/>
+          <button class="comment-send-btn" onclick="postComment(${id})">➤</button>
+        </div>
+        <div class="reviews-list" id="reviews-list-${id}" style="margin-top:12px">
+          ${app.reviews.map(r=>`
+            <div class="review-item">
+              <div class="rv-top">
+                <div class="rv-avatar">${r.name.charAt(0)}</div>
+                <div><div class="rv-name">${r.name}</div><div class="rv-stars">${'⭐'.repeat(r.stars)}</div></div>
+              </div>
+              <div class="rv-text">${r.text}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  VIEW_IDS.forEach(v => { const el=document.getElementById(v); if(el){el.classList.remove('active');el.style.display='';} });
+  document.getElementById('app-detail-view').style.display = 'block';
+  document.getElementById('app-detail-view').scrollTop = 0;
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+}
+function closeDetail() {
+  document.getElementById('app-detail-view').style.display = 'none';
+  document.getElementById('store-view').classList.add('active');
+  document.getElementById('ni-store').classList.add('on');
+}
+
+// ── INSTALL ──
+function doInstall(id) {
+  const app = APPS.find(a => a.id === id); if (!app) return;
+  if (installedIds.includes(id)) {
+    if (app.url && app.url !== '#') window.open(app.url, '_blank');
+    else showToast('🚀 Opening ' + app.name);
+    return;
+  }
+  const btn = document.getElementById('install-btn-main');
+  const progBg = document.getElementById('prog-bg');
+  const progFill = document.getElementById('prog-fill');
+  const progLbl = document.getElementById('prog-lbl');
+  btn.textContent = '⏳ Downloading…'; btn.disabled = true;
+  progBg.style.display = 'block'; progLbl.style.display = 'block';
+  let pct = 0;
+  const iv = setInterval(() => {
+    pct += Math.random() * 7 + 2;
+    if (pct >= 100) pct = 100;
+    progFill.style.width = pct + '%';
+    progLbl.textContent = Math.floor(pct) + '% — ' + (pct<40?'Downloading…':pct<80?'Installing…':'Almost done…');
+    if (pct >= 100) {
+      clearInterval(iv);
+      installedIds.push(id);
+      localStorage.setItem('nhps_installed', JSON.stringify(installedIds));
+      btn.textContent = '✅ Open App'; btn.className = 'install-btn done'; btn.disabled = false;
+      progLbl.textContent = '✅ Installation complete!';
+      showToast('✅ ' + app.name + ' installed!');
+      renderApps();
+    }
+  }, 110);
+}
+
+// ── COMMENTS ──
+function postComment(id) {
+  const app = APPS.find(a => a.id === id); if (!app) return;
+  const inp = document.getElementById(`comment-inp-${id}`);
+  const txt = inp.value.trim(); if (!txt) return;
+  const name = userInfo ? userInfo.name : 'Anonymous';
+  app.reviews.unshift({ name, stars:5, text:txt });
+  inp.value = '';
+  const list = document.getElementById(`reviews-list-${id}`);
+  list.innerHTML = app.reviews.map(r=>`
+    <div class="review-item">
+      <div class="rv-top">
+        <div class="rv-avatar">${r.name.charAt(0)}</div>
+        <div><div class="rv-name">${r.name}</div><div class="rv-stars">${'⭐'.repeat(r.stars)}</div></div>
+      </div>
+      <div class="rv-text">${r.text}</div>
+    </div>`).join('');
+  showToast('💬 Comment posted!');
+}
+
+// ── LIKE ──
+function likeApp(id) {
+  const app = APPS.find(a => a.id === id); if (!app) return;
+  app.likes++;
+  showToast('❤️ Liked! Thank you!');
+  const lb = document.querySelector('.like-btn');
+  if (lb) lb.textContent = `❤️ Like · ${app.likes.toLocaleString()}`;
+}
+
+// ── SHARE ──
+function shareApp(id) {
+  const app = APPS.find(a => a.id === id); if (!app) return;
+  const txt = `Check out "${app.name}" on Suleiman Play Store 🏪\n${window.location.href}`;
+  if (navigator.share) navigator.share({ title: app.name, text: txt, url: window.location.href });
+  else navigator.clipboard.writeText(txt).then(() => showToast('🔗 Link copied!'));
+}
+
+// ── CHAT ──
+const SEED = [
+  {sender:'Ahmad K',   mine:false, text:'Salamu Alaykum everyone! Has anyone tried the new Juz Amma app?', time:'9:14 AM'},
+  {sender:'Fatima M',  mine:false, text:'Wa Alaykum Salam! Yes it is amazing MashaAllah 🌟', time:'9:15 AM'},
+  {sender:'You',       mine:true,  text:'Alhamdulillah! We worked hard on it 💪', time:'9:16 AM'},
+  {sender:'Ibrahim O', mine:false, text:'The Prophet Stories feature is my favourite part!', time:'9:18 AM'},
+  {sender:'Noor H',    mine:false, text:'JazakAllah Khayr to the developer 🙏', time:'9:20 AM'},
+  {sender:'Khalid R',  mine:false, text:'When is the next app coming? We are excited!', time:'9:24 AM'},
+];
+let chatMsgs = [...SEED];
+
+function renderChat() {
+  const box = document.getElementById('chat-messages'); if (!box) return;
+  box.innerHTML = chatMsgs.map(m => `
+    <div class="cmsg ${m.mine?'mine':'other'}">
+      ${!m.mine ? `<div class="cmsg-sender">${m.sender}</div>` : ''}
+      <div class="cmsg-bubble">${m.text}</div>
+      <div class="cmsg-meta">${m.time}</div>
+    </div>`).join('');
+  setTimeout(() => { box.scrollTop = box.scrollHeight; }, 50);
+}
+
+function sendChat() {
+  const inp = document.getElementById('chat-input');
+  const txt = inp.value.trim(); if (!txt) return;
+  const now = new Date(); const t = now.getHours()+':'+(now.getMinutes()+'').padStart(2,'0');
+  chatMsgs.push({ sender:'You', mine:true, text:txt, time:t });
+  inp.value = '';
+  renderChat();
+  // community members reply sometimes (50% chance)
+  const communityReplies = [
+    'MashaAllah! 🌟','JazakAllah Khayr 🤲','SubhanAllah, very true!','Ameen to that! 🙏','That is so helpful, shukran!','Barakallah feek 💚'];
+  const names = ['Ahmad K','Fatima M','Ibrahim O','Noor H','Bilal O'];
+  if(Math.random() > 0.5) {
+    setTimeout(() => {
+      chatMsgs.push({ sender: names[Math.floor(Math.random()*names.length)], mine:false, text: communityReplies[Math.floor(Math.random()*communityReplies.length)], time:t });
+      renderChat();
+    }, 1500 + Math.random()*1500);
+  } else {
+    // AI steps in after a pause — like no one replied
+    setTimeout(() => {
+      const aiResponse = generateAIReply(txt);
+      chatMsgs.push({ sender:'NeverHide AI 🤖', mine:false, text: aiResponse, time:t, isAI:true });
+      renderChat();
+    }, 3000 + Math.random()*2000);
+  }
+}
+
+function generateAIReply(msg) {
+  const m = msg.toLowerCase();
+  // Islamic questions
+  if(m.includes('pray') || m.includes('salah') || m.includes('salat'))
+    return 'As-salamu alaykum! 🕌 Prayer (Salah) is the second pillar of Islam and the direct connection between you and Allah. The 5 daily prayers are Fajr, Dhuhr, Asr, Maghrib and Isha. May Allah make it easy for us all. 🤲';
+  if(m.includes('quran') || m.includes('qur') || m.includes('ayah') || m.includes('surah'))
+    return 'SubhanAllah! 📖 The Qur'an is the final word of Allah revealed to Prophet Muhammad ﷺ. Reading even one letter earns 10 rewards. You can explore any Surah in the Juz Amma Pro app on our store! 🌟';
+  if(m.includes('zakat') || m.includes('charity') || m.includes('sadaqah'))
+    return 'JazakAllah Khayr for asking! 💚 Zakat is 2.5% of your savings held for a full lunar year above the nisab threshold. Sadaqah (voluntary charity) can be given anytime — even a smile is sadaqah! 🤲';
+  if(m.includes('fast') || m.includes('ramadan') || m.includes('suhoor') || m.includes('iftar'))
+    return 'MashaAllah! 🌙 Ramadan is the blessed month of fasting, Qur'an and extra worship. Suhoor is before Fajr, Iftar is at Maghrib. "Whoever fasts Ramadan with faith and hoping for reward — his past sins are forgiven." (Bukhari) 🌟';
+  if(m.includes('hajj') || m.includes('umrah') || m.includes('mecca') || m.includes('kaaba'))
+    return 'MashaAllah! 🕋 Hajj is the 5th pillar of Islam — obligatory once in a lifetime for those who are able. Umrah is the lesser pilgrimage and can be done anytime. May Allah grant us all the opportunity. Ameen! 🤲';
+  if(m.includes('halal') || m.includes('haram') || m.includes('permiss'))
+    return 'Great question! 📚 In Islam, halal means permissible and haram means forbidden. When in doubt about any matter, it is best to consult a qualified Islamic scholar. The Islamic Finance Calc app in our store can help with halal finance! 💚';
+  // Greetings
+  if(m.includes('salam') || m.includes('hello') || m.includes('hi ') || m.includes('hey'))
+    return 'Wa alaykum as-salam wa rahmatullahi wa barakatuh! 😊 Welcome to the Never Hide Tech Community! Feel free to ask anything about our apps or Islamic topics. I am here to help 24/7! 🤖💚';
+  if(m.includes('good') || m.includes('alhamdulillah') || m.includes('great'))
+    return 'Alhamdulillah! 🌟 May Allah keep blessing you and your family. Is there anything I can help you with today? 😊';
+  // App questions  
+  if(m.includes('app') || m.includes('download') || m.includes('install'))
+    return '📱 You can browse all our apps in the Store tab! Tap any app to see details, screenshots and reviews. We have Islamic tools, AI assistants, business apps and more. Which type are you looking for? 🚀';
+  if(m.includes('ai') || m.includes('chatgpt') || m.includes('groq') || m.includes('artificial'))
+    return '🤖 We have 3 AI-powered apps in our store! Islamic AI Assistant (Qur'an & Hadith Q&A), Quran AI Tafsir (deep verse explanations) and Never Hide AI Chat (team productivity). Check the 🤖 AI category in the Store! ⚡';
+  if(m.includes('price') || m.includes('cost') || m.includes('free') || m.includes('pay'))
+    return '💰 Most apps in the Never Hide Tech Store are free to download! Some premium apps have optional upgrades. Check each app's page for pricing details. 🌟';
+  // General helpful response
+  const general = [
+    'JazakAllah Khayr for sharing that! 💚 Our community is here to help each other. Does anyone else have thoughts on this? 🤲',
+    'MashaAllah! That is a great point. 🌟 If you have any questions about our apps or need Islamic guidance, I am always here! 🤖',
+    'SubhanAllah! 🙏 Thank you for being part of the Never Hide Tech family. Is there anything specific I can help you find in our store? 📱',
+    'Alhamdulillah! 💚 Great to have you in the community. Feel free to explore our Store tab — we have amazing Islamic and productivity apps! 🚀',
+    'Barakallah feek! 🌟 I noticed your message — if no one replies, I am always here to help 24/7. Ask me anything! 🤖'
+  ];
+  return general[Math.floor(Math.random()*general.length)];
+}
+
+// ── ADMIN ──
+function adminLogin() {
+  const pass = document.getElementById('adm-pass').value;
+  if (pass === ADMIN_PASS) {
+    adminLoggedIn = true;
+    document.getElementById('admin-login-section').style.display = 'none';
+    document.getElementById('admin-dashboard').style.display = 'block';
+    renderAdminList();
+    showToast('✅ Welcome back, Suleiman!');
+  } else {
+    document.getElementById('adm-err').textContent = '❌ Wrong password.';
+    setTimeout(() => document.getElementById('adm-err').textContent = '', 3000);
+  }
+}
+function adminLogout() {
+  adminLoggedIn = false;
+  document.getElementById('adm-pass').value = '';
+  document.getElementById('admin-login-section').style.display = '';
+  document.getElementById('admin-dashboard').style.display = 'none';
+  showToast('Logged out','info');
+}
+function submitApp() {
+  const name  = document.getElementById('adm-name').value.trim();
+  const desc  = document.getElementById('adm-desc').value.trim();
+  const url   = document.getElementById('adm-url').value.trim();
+  const cat   = document.getElementById('adm-cat').value;
+  const emoji = document.getElementById('adm-emoji').value.trim() || '📱';
+  if (!name||!desc||!url) { showToast('Fill all required fields','err'); return; }
+  APPS.unshift({ id:Date.now(), name, emoji, cat, desc, url, rating:5.0, downloads:'0+', reviews:[], badge:'New', screenshots:['📱','🌐','✨'], likes:0, installed:false });
+  renderApps(); renderAdminList();
+  ['adm-name','adm-desc','adm-url','adm-emoji'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('pf-stat-apps').textContent = APPS.length;
+  showToast(`✅ "${name}" published instantly!`,'ok',4000);
+}
+function renderAdminList() {
+  document.getElementById('adm-apps-list').innerHTML = APPS.map(a=>`
+    <div class="adm-app-row">
+      <div class="adm-app-ico">${a.emoji}</div>
+      <div style="flex:1"><div class="adm-app-name">${a.name}</div><div style="font-size:.68rem;color:var(--txt2)">${a.cat}</div></div>
+      <span class="adm-app-status status-live">Live</span>
+      <button class="adm-del-btn" onclick="deleteApp(${a.id})">🗑</button>
+    </div>`).join('');
+}
+function deleteApp(id) {
+  if (!confirm('Remove this app from the store?')) return;
+  APPS = APPS.filter(a => a.id !== id);
+  renderApps(); renderAdminList();
+  showToast('App removed','info');
+}
+
+// ── THEME ──
+function setTheme(t, el) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.querySelectorAll('.theme-opt').forEach(b => b.classList.remove('on'));
+  el?.classList.add('on');
+  localStorage.setItem('nhps_theme', t);
+  const msgs = {light:'☀️ Light mode',dark:'🌙 Dark mode — moon is up!',islamic:'🕌 Islamic Green'};
+  showToast(msgs[t]||t);
+}
+
+// ── LOGIN ──
+function submitLogin() {
+  const name  = document.getElementById('login-name').value.trim();
+  const phone = document.getElementById('login-phone').value.trim();
+  if (!name||!phone) { showToast('Please enter name and phone','err'); return; }
+  userInfo = { name, phone };
+  localStorage.setItem('nhps_user', JSON.stringify(userInfo));
+  // Send to Vercel Customer.io backend (never exposes keys)
+  fetch('/api/register', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ name, phone })
+  }).catch(()=>{});
+  document.getElementById('login-overlay').classList.remove('open');
+  showToast('🎉 Welcome, ' + name + '!');
+}
+function skipLogin() { document.getElementById('login-overlay').classList.remove('open'); }
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  // restore theme
+  const saved = localStorage.getItem('nhps_theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector(`.theme-opt[data-t="${saved}"]`)?.classList.add('on');
+  } else {
+    // auto dark at night
+    // Auto-dark disabled — user controls theme from Profile tab
+  }
+  buildStars();
+  renderApps();
+  renderChat();
+  document.getElementById('pf-stat-apps').textContent = APPS.length;
+  if (!userInfo) setTimeout(() => document.getElementById('login-overlay').classList.add('open'), 1200);
+  // Secret admin access via URL hash
+  if (window.location.hash === '#admin2026') showView('admin-view');
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#admin2026') showView('admin-view');
+  });
+});
+
+// ══ THEME FAB ══
+function toggleFabMenu() {
+  const menu = document.getElementById('theme-fab-menu');
+  menu.classList.toggle('open');
+}
+function fabSetTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('nhps_theme', t);
+  const icons = {light:'☀️', dark:'🌙', islamic:'🕌'};
+  document.getElementById('theme-fab-btn').textContent = icons[t];
+  // highlight active
+  ['light','dark','islamic'].forEach(k => {
+    const el = document.getElementById('fab-'+k);
+    if(el) el.classList.toggle('active-theme', k===t);
+  });
+  document.getElementById('theme-fab-menu').classList.remove('open');
+  showToast(icons[t] + ' ' + {light:'Light mode',dark:'Dark mode — moon is up!',islamic:'Islamic Green'}[t]);
+  // sync profile theme opts too
+  document.querySelectorAll('.theme-opt').forEach(b => b.classList.remove('on'));
+  document.querySelector(`.theme-opt[data-t="${t}"]`)?.classList.add('on');
+}
+// Make FAB draggable
+(function(){
+  const fab = document.getElementById('theme-fab');
+  let dragging=false, startX=0, startY=0, origX=0, origY=0, moved=false;
+  fab.addEventListener('pointerdown', e => {
+    if(e.target.classList.contains('fab-opt')) return;
+    dragging=true; moved=false;
+    startX=e.clientX; startY=e.clientY;
+    const r=fab.getBoundingClientRect();
+    origX=r.right; origY=r.bottom;
+    fab.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  fab.addEventListener('pointermove', e => {
+    if(!dragging) return;
+    const dx=e.clientX-startX, dy=e.clientY-startY;
+    if(Math.abs(dx)>5||Math.abs(dy)>5) moved=true;
+    const newRight = Math.max(8, window.innerWidth-(origX+dx));
+    const newBottom = Math.max(80, window.innerHeight-(origY+dy));
+    fab.style.right = newRight+'px';
+    fab.style.bottom = newBottom+'px';
+    fab.style.left = 'auto';
+    fab.style.top = 'auto';
+  });
+  fab.addEventListener('pointerup', e => {
+    dragging=false;
+    if(moved) document.getElementById('theme-fab-menu').classList.remove('open');
+  });
+})();
+// Init FAB icon to match saved theme
+(function(){
+  const t = localStorage.getItem('nhps_theme') || 'light';
+  const icons = {light:'☀️', dark:'🌙', islamic:'🕌'};
+  const btn = document.getElementById('theme-fab-btn');
+  if(btn) btn.textContent = icons[t]||'🎨';
+  const el = document.getElementById('fab-'+t);
+  if(el) el.classList.add('active-theme');
+})();
+
+</script>
+
+<!-- DRAGGABLE THEME FAB -->
+<div id="theme-fab">
+  <div id="theme-fab-menu">
+    <div class="fab-opt" id="fab-islamic" onclick="fabSetTheme('islamic')" title="Islamic Green">🕌</div>
+    <div class="fab-opt" id="fab-dark"    onclick="fabSetTheme('dark')"    title="Dark Mode">🌙</div>
+    <div class="fab-opt" id="fab-light"   onclick="fabSetTheme('light')"   title="Light Mode">☀️</div>
+  </div>
+  <div id="theme-fab-btn" onclick="toggleFabMenu()">🎨</div>
+</div>
+
 </body>
 </html>
