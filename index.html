@@ -1,157 +1,106 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-<title>Suleiman Play Store — Never Hide Tech Empire</title>
-<meta name="theme-color" content="#0a6a4a"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Suleiman Play Store</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a6a4a">
 <style>
-/* ══ TOKENS & THEMES ══ */
-:root {
-  --p:#0a6a4a; --p2:#157850; --p3:#064;
-  --gold:#c9a84c; --gold2:#f0d080;
-  --bg:#f4f6f8; --card:#fff; --hdr:#fff;
-  --txt:#111; --txt2:#555; --bdr:#e0e0e0;
-  --nav-h:62px; --r:16px;
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --p:#0a6a4a;--p2:#157850;--p3:#064;
+  --gold:#c9a84c;--gold2:#f0d080;
+  --bg:#f4f6f8;--card:#fff;--hdr:#fff;
+  --txt:#111;--txt2:#555;--bdr:#e0e0e0;
+  --nav-h:62px;--r:16px;
   --sh:0 2px 12px rgba(0,0,0,.08);
   --sh2:0 6px 24px rgba(0,0,0,.13);
 }
-[data-theme="dark"] {
-  --bg:#0d1117; --card:#161b22; --hdr:#0d1117;
-  --txt:#e6edf3; --txt2:#8b949e; --bdr:#30363d;
+[data-theme="dark"]{
+  --bg:#0f0f0f;--card:#1a1a1a;--hdr:#1a1a1a;
+  --txt:#f0f0f0;--txt2:#aaa;--bdr:#2a2a2a;
   --sh:0 2px 12px rgba(0,0,0,.4);
-  --sh2:0 6px 24px rgba(0,0,0,.5);
-  --hdr-grad: linear-gradient(135deg,#0a0f1e 0%,#0d1f3c 50%,#091428 100%);
 }
-[data-theme="light"] {
-  --hdr-grad: linear-gradient(135deg,#0a6a4a,#157850);
-}
-[data-theme="islamic"] {
-  --hdr-grad: linear-gradient(135deg,#064 0%,#0a6a4a 50%,#157850 100%);
-}
-[data-theme="islamic"] {
-  --p:#0a6a4a; --p2:#157850;
-  --bg:#f0f9f5; --card:#fff; --hdr:#0a6a4a;
-  --txt:#0d2b1e; --txt2:#3a6a50; --bdr:#c8e6d8;
-}
-[data-theme="islamic"] .hdr-title,
-[data-theme="islamic"] .hdr-sub,
-[data-theme="islamic"] .sh-sub { color:#fff !important; }
-[data-theme="islamic"] .bnav { background:#0a6a4a; border-color:#064; }
-[data-theme="islamic"] .ni { color:rgba(255,255,255,.55); }
-[data-theme="islamic"] .ni.on { color:#fff; }
+[data-theme="forest"]{--p:#1a6b3c;--p2:#2d8a52;--bg:#f0f7f3;--card:#fff;}
+[data-theme="ocean"]{--p:#0a4a8a;--p2:#1565c0;--bg:#f0f4fb;--card:#fff;}
+[data-theme="sunset"]{--p:#c0392b;--p2:#e74c3c;--bg:#fdf5f5;--card:#fff;}
+[data-theme="gold"]{--p:#b8860b;--p2:#daa520;--bg:#fefdf0;--card:#fff;}
 
-/* ══ RESET ══ */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;overflow:hidden;min-height:100vh;font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);}
-img{display:block;max-width:100%;}
-button{font-family:inherit;cursor:pointer;}
-input,textarea,select{font-family:inherit;}
-::-webkit-scrollbar{width:4px;height:4px;}
-::-webkit-scrollbar-thumb{background:var(--p);border-radius:2px;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;}
 
-/* ══ VIEW SYSTEM ══ */
+/* ── VIEWS ── */
 .view{display:none;position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:var(--bg);}
 .view.active{display:block;}
-#chat-view{display:none;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);background:var(--bg);overflow:hidden;}
-#chat-view.active{display:flex;}
-#app-detail-view{display:none;position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);background:var(--bg);overflow-y:auto;}
-#app-detail-view.active{display:block;}
+#chat-view.active{display:flex;flex-direction:column;}
 
-/* ══ BOTTOM NAV ══ */
-.bnav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--hdr);border-top:1.5px solid var(--bdr);display:flex;z-index:500;box-shadow:0 -2px 12px rgba(0,0,0,.07);}
-.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:var(--txt2);font-size:.6rem;font-weight:600;transition:color .18s;user-select:none;padding:6px 0;}
-.ni .ico{font-size:1.3rem;line-height:1;transition:transform .18s;}
-.ni.on{color:var(--p);}
-.ni.on .ico{transform:scale(1.15);}
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--hdr);border-top:1px solid var(--bdr);display:flex;z-index:100;}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:var(--txt2);font-size:.62rem;font-weight:600;cursor:pointer;transition:color .15s;}
+.nav-btn.active{color:var(--p);}
+.nav-btn svg,.nav-icon{font-size:1.4rem;}
 
-/* ══ TOAST ══ */
-#toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:7px;pointer-events:none;width:88%;max-width:340px;}
-.toast{padding:11px 16px;border-radius:12px;font-size:.82rem;font-weight:600;text-align:center;box-shadow:0 4px 18px rgba(0,0,0,.22);animation:tin .28s ease;color:#fff;}
-@keyframes tin{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
-.t-ok{background:#0a6a4a;} .t-err{background:#c0392b;} .t-info{background:#1a6fa8;}
-
-/* ══ STORE HEADER ══ */
-.store-header{background:var(--hdr-grad,linear-gradient(135deg,var(--p),var(--p2)));padding:44px 18px 20px;position:relative;overflow:hidden;}
-.store-header::after{content:'';position:absolute;bottom:-30px;left:-20px;right:-20px;height:60px;background:var(--bg);border-radius:50% 50% 0 0;}
-/* stars + moon for dark mode */
+/* ── STORE HEADER ── */
+.store-header{background:linear-gradient(135deg,var(--p),var(--p2));padding:50px 18px 22px;position:relative;overflow:hidden;}
 .hdr-sky{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;}
-.hdr-moon{position:absolute;top:10px;right:16px;font-size:30px;opacity:0;transition:opacity .5s,transform .5s;animation:moonF 5s ease-in-out infinite;filter:drop-shadow(0 0 10px rgba(255,255,200,.7));}
-.hdr-sun{position:absolute;top:12px;right:18px;font-size:26px;opacity:1;transition:opacity .5s,transform .5s;animation:sunS 12s linear infinite;}
-[data-theme="dark"] .hdr-moon{opacity:1;}
-[data-theme="dark"] .hdr-sun{opacity:0;}
-[data-theme="islamic"] .hdr-moon{opacity:1;}
-[data-theme="islamic"] .hdr-sun{opacity:0;}
-/* dark header overlay — deep navy sky */
-[data-theme="dark"] .store-header::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,10,30,.7) 0%,rgba(9,20,50,.4) 100%);pointer-events:none;z-index:0;}
-[data-theme="dark"] .sh-brand,[data-theme="dark"] .hdr-sky{position:relative;z-index:1;}
-/* moon glow ring */
-[data-theme="dark"] .hdr-moon::after{content:'';display:none;}
-@keyframes moonF{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.05)}}
-@keyframes sunS{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-/* stars */
-.hdr-star{position:absolute;border-radius:50%;opacity:0;transition:opacity .6s;animation:twink 2.5s infinite;}
-[data-theme="dark"] .hdr-star{opacity:1;}
-[data-theme="islamic"] .hdr-star{opacity:.6;}
-@keyframes twink{0%{opacity:.9;transform:scale(1)}50%{opacity:.15;transform:scale(.7)}100%{opacity:.9;transform:scale(1)}}
-/* shooting star */
-.shooting-star{position:absolute;width:60px;height:2px;background:linear-gradient(90deg,rgba(255,255,255,0),#fff);border-radius:2px;opacity:0;animation:shoot 6s linear infinite;}
-[data-theme="dark"] .shooting-star{opacity:1;}
-@keyframes shoot{0%{transform:translate(0,0) rotate(-30deg);opacity:0}5%{opacity:.8}20%{transform:translate(150px,60px) rotate(-30deg);opacity:0}100%{opacity:0}}
+.hdr-sun{position:absolute;top:12px;right:16px;font-size:1.8rem;cursor:pointer;z-index:2;}
+.hdr-moon{position:absolute;top:12px;right:16px;font-size:1.8rem;display:none;z-index:2;}
+.shooting-star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:shoot 3s infinite;top:20%;left:10%;}
+@keyframes shoot{0%{transform:translate(0,0);opacity:1}100%{transform:translate(200px,100px);opacity:0}}
+.sh-brand{display:flex;align-items:center;gap:12px;position:relative;z-index:2;}
+.sh-logo{font-size:2.2rem;}
+.sh-title{font-size:1.15rem;font-weight:800;color:#fff;}
+.sh-sub{font-size:.72rem;color:rgba(255,255,255,.75);}
 
-.sh-brand{display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
-.sh-logo{width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
-.sh-title{font-size:1.35rem;font-weight:800;color:#fff;letter-spacing:-.3px;}
-.sh-sub{font-size:.74rem;color:rgba(255,255,255,.7);margin-top:1px;}
+/* ── SEARCH ── */
+.store-search-wrap{display:flex;align-items:center;gap:10px;margin:14px 14px 0;background:var(--card);border-radius:24px;padding:11px 16px;border:1.5px solid var(--bdr);box-shadow:var(--sh);}
+.search-ico{font-size:1rem;}
+.store-search{flex:1;border:none;outline:none;background:none;font-size:.9rem;color:var(--txt);}
 
-/* ══ SEARCH ══ */
-.store-search-wrap{padding:40px 16px 12px;position:relative;}
-.store-search{width:100%;padding:12px 16px 12px 42px;border:2px solid var(--bdr);border-radius:24px;background:var(--card);color:var(--txt);font-size:.9rem;outline:none;transition:border-color .2s;}
-.store-search:focus{border-color:var(--p);}
-.search-ico{position:absolute;left:28px;top:50%;transform:translateY(-50%);font-size:1rem;color:var(--txt2);pointer-events:none;}
-
-/* ══ CATEGORIES ══ */
-.cats-bar{display:flex;gap:8px;padding:0 16px 14px;overflow-x:auto;scrollbar-width:none;}
+/* ── CATEGORY PILLS ── */
+.cats-bar{display:flex;gap:8px;padding:12px 14px;overflow-x:auto;scrollbar-width:none;}
 .cats-bar::-webkit-scrollbar{display:none;}
-.cat-pill{padding:7px 16px;border-radius:20px;font-size:.76rem;font-weight:700;border:2px solid var(--bdr);background:transparent;color:var(--txt2);cursor:pointer;white-space:nowrap;transition:all .18s;}
-.cat-pill.on{background:var(--p);border-color:var(--p);color:#fff;}
-.sec-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--txt2);padding:0 16px 10px;}
+.cat-pill{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);color:var(--txt2);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .15s;}
+.cat-pill.on{background:var(--p);color:#fff;border-color:var(--p);}
 
-/* ══ APP CARDS — 2-column grid ══ */
-.apps-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px 90px;}
-#apps-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0 14px 16px;}
+/* ── SEC LABEL ── */
+.sec-label{font-size:.72rem;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;padding:0 14px 10px;}
+
+/* ── APP GRID ── */
+#apps-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  padding:0 12px 90px;
+}
 .app-card{background:var(--card);border-radius:var(--r);border:1.5px solid var(--bdr);padding:14px;box-shadow:var(--sh);cursor:pointer;transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden;}
 .app-card:active{transform:scale(.97);}
 .app-card:hover{box-shadow:var(--sh2);}
-.ac-icon-wrap{width:64px;height:64px;border-radius:16px;margin:0 auto 10px;overflow:hidden;background:linear-gradient(135deg,rgba(10,106,74,.1),rgba(21,120,80,.1));display:flex;align-items:center;justify-content:center;font-size:2rem;animation:logoSpin 5s ease-in-out infinite;}
-@keyframes logoSpin{0%{transform:perspective(200px) rotateY(0)}25%{transform:perspective(200px) rotateY(12deg)}75%{transform:perspective(200px) rotateY(-12deg)}100%{transform:perspective(200px) rotateY(0)}}
-.ac-icon-wrap img{width:100%;height:100%;object-fit:cover;border-radius:16px;}
-.ac-name{font-size:.85rem;font-weight:800;text-align:center;color:var(--txt);margin-bottom:4px;line-height:1.3;}
-.ac-meta{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.68rem;color:var(--txt2);margin-bottom:6px;}
-.ac-desc{font-size:.72rem;color:var(--txt2);text-align:center;line-height:1.55;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.ac-open-btn{display:block;width:100%;padding:8px;border-radius:10px;background:var(--p);border:none;color:#fff;font-size:.76rem;font-weight:700;transition:background .18s;}
-.ac-open-btn:hover{background:var(--p2);}
-.ac-badge{position:absolute;top:10px;right:10px;background:var(--gold);color:#fff;font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:8px;}
+.ac-icon-wrap{width:56px;height:56px;border-radius:14px;margin:0 auto 10px;background:linear-gradient(135deg,rgba(10,106,74,.12),rgba(21,120,80,.12));display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.ac-name{font-size:.82rem;font-weight:800;text-align:center;color:var(--txt);margin-bottom:4px;line-height:1.3;}
+.ac-meta{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.66rem;color:var(--txt2);margin-bottom:6px;}
+.ac-desc{font-size:.7rem;color:var(--txt2);text-align:center;line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.ac-open-btn{display:block;width:100%;padding:8px;border-radius:10px;background:var(--p);border:none;color:#fff;font-size:.76rem;font-weight:700;cursor:pointer;}
+.ac-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:#fff;font-size:.56rem;font-weight:800;padding:2px 6px;border-radius:8px;}
+.empty-state{grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--txt2);}
+.es-icon{font-size:2.5rem;margin-bottom:10px;}
 
-/* ══ APP DETAIL ══ */
+/* ── APP DETAIL ── */
+#app-detail-view{display:none;position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);overflow-y:auto;background:var(--bg);z-index:50;}
 .detail-back{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--hdr);border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:10;}
-.back-btn{background:var(--bg);border:1.5px solid var(--bdr);padding:7px 14px;border-radius:20px;font-size:.78rem;font-weight:700;color:var(--txt2);cursor:pointer;transition:all .15s;}
-.back-btn:active{background:var(--p);color:#fff;border-color:var(--p);}
+.back-btn{background:var(--bg);border:1.5px solid var(--bdr);padding:7px 14px;border-radius:20px;font-size:.78rem;font-weight:700;color:var(--txt2);cursor:pointer;}
 .detail-title-hd{font-weight:800;font-size:.92rem;color:var(--txt);flex:1;text-align:center;}
-.detail-hero{background:var(--hdr-grad,linear-gradient(135deg,var(--p),var(--p2)));padding:28px 20px 22px;text-align:center;}
-.dh-icon{width:86px;height:86px;border-radius:22px;margin:0 auto 12px;overflow:hidden;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:2.8rem;}
-.dh-icon img{width:100%;height:100%;object-fit:cover;border-radius:22px;}
+.detail-hero{background:linear-gradient(135deg,var(--p),var(--p2));padding:28px 20px 22px;text-align:center;}
+.dh-icon{width:86px;height:86px;border-radius:22px;margin:0 auto 12px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:2.8rem;}
 .dh-name{font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:4px;}
 .dh-dev{font-size:.76rem;color:rgba(255,255,255,.7);}
 .dh-meta{display:flex;justify-content:center;gap:18px;margin-top:12px;}
 .dhm{text-align:center;}
 .dhm-n{font-size:1rem;font-weight:800;color:#fff;}
 .dhm-l{font-size:.62rem;color:rgba(255,255,255,.6);}
-.dh-open-btn{display:inline-block;margin-top:14px;padding:11px 32px;border-radius:24px;background:#fff;color:var(--p);font-weight:800;font-size:.88rem;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.18);transition:all .18s;}
-.dh-open-btn:hover{transform:scale(1.04);}
-/* install progress */
+.dh-open-btn{display:inline-block;margin-top:14px;padding:11px 32px;border-radius:24px;background:#fff;color:var(--p);font-weight:800;font-size:.88rem;border:none;cursor:pointer;}
 .install-wrap{padding:14px 20px 0;}
-.install-btn{width:100%;padding:13px;border-radius:14px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;transition:.2s;}
+.install-btn{width:100%;padding:13px;border-radius:14px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;}
 .install-btn.done{background:#22c55e;}
 .prog-bg{background:var(--bdr);border-radius:10px;height:8px;margin-top:10px;overflow:hidden;display:none;}
 .prog-fill{height:100%;background:var(--p);border-radius:10px;width:0%;transition:width .1s linear;}
@@ -160,9 +109,8 @@ input,textarea,select{font-family:inherit;}
 .det-sec{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px;}
 .det-sec-title{font-size:.72rem;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
 .det-desc{font-size:.84rem;color:var(--txt2);line-height:1.75;}
-.screenshots-row{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
-.screenshots-row::-webkit-scrollbar{display:none;}
-.ss-mock{width:130px;height:220px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-weight:800;}
+.screenshots-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
+.ss-mock{width:130px;height:220px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;}
 .reviews-list{display:flex;flex-direction:column;gap:10px;}
 .review-item{background:var(--bg);border-radius:12px;padding:12px;}
 .rv-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
@@ -170,26 +118,16 @@ input,textarea,select{font-family:inherit;}
 .rv-name{font-size:.8rem;font-weight:700;color:var(--txt);}
 .rv-stars{font-size:.72rem;color:var(--gold);}
 .rv-text{font-size:.78rem;color:var(--txt2);line-height:1.6;}
-/* comment box in detail */
-.comment-box{display:flex;gap:8px;margin-top:10px;}
-.comment-inp{flex:1;background:var(--bg);border:1.5px solid var(--bdr);border-radius:20px;padding:9px 14px;font-size:.82rem;color:var(--txt);outline:none;}
-.comment-inp:focus{border-color:var(--p);}
-.comment-send-btn{width:38px;height:38px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-/* share row */
 .share-row{display:flex;gap:8px;padding:0 20px 12px;}
-.share-btn,.like-btn{flex:1;background:var(--bg);border:1.5px solid var(--bdr);border-radius:12px;padding:10px;font-size:.8rem;font-weight:700;color:var(--txt);cursor:pointer;transition:.15s;}
-.share-btn:active,.like-btn:active{background:var(--p);color:#fff;border-color:var(--p);}
+.share-btn,.like-btn{flex:1;background:var(--bg);border:1.5px solid var(--bdr);border-radius:12px;padding:10px;font-size:.8rem;font-weight:700;color:var(--txt);cursor:pointer;}
 
-/* ══ CHAT VIEW ══ */
-.chat-header{background:var(--hdr-grad,linear-gradient(135deg,var(--p),var(--p2)));padding:44px 14px 12px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+/* ── CHAT VIEW ── */
+.chat-header{background:linear-gradient(135deg,var(--p),var(--p2));padding:50px 14px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .chat-hdr-av{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
 .chat-hdr-name{font-size:.93rem;font-weight:800;color:#fff;flex:1;}
 .chat-hdr-sub{font-size:.67rem;color:rgba(255,255,255,.65);}
-.chat-hdr-actions{display:flex;gap:6px;}
-.chat-hdr-btn{background:rgba(255,255,255,.15);border:none;border-radius:8px;color:#fff;font-size:.9rem;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.online-bar{background:rgba(10,106,74,.07);border-bottom:1px solid var(--bdr);padding:7px 14px;display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--p);font-weight:600;flex-shrink:0;}
+.online-bar{background:rgba(10,106,74,.07);border-bottom:1px solid var(--bdr);padding:7px 14px;font-size:.72rem;color:var(--p);font-weight:600;flex-shrink:0;}
 .chat-messages{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:6px;}
-.chat-day-divider{text-align:center;font-size:.68rem;color:var(--txt2);margin:6px 0;background:var(--bg);}
 .cmsg{display:flex;flex-direction:column;max-width:78%;}
 .cmsg.mine{align-self:flex-end;align-items:flex-end;}
 .cmsg.other{align-self:flex-start;}
@@ -198,14 +136,32 @@ input,textarea,select{font-family:inherit;}
 .cmsg.other .cmsg-bubble{background:var(--card);color:var(--txt);border:1px solid var(--bdr);border-radius:16px 16px 16px 4px;}
 .cmsg-meta{font-size:.6rem;color:var(--txt2);margin-top:2px;padding:0 4px;}
 .cmsg-sender{font-size:.68rem;font-weight:700;color:var(--p);margin-bottom:3px;padding:0 2px;}
-.chat-system-msg{text-align:center;font-size:.7rem;color:var(--txt2);background:rgba(0,0,0,.05);padding:5px 14px;border-radius:12px;align-self:center;}
 .chat-input-bar{padding:10px 12px;display:flex;gap:8px;background:var(--hdr);border-top:1px solid var(--bdr);flex-shrink:0;}
-.chat-input{flex:1;padding:10px 14px;border:2px solid var(--bdr);border-radius:22px;background:var(--card);color:var(--txt);font-size:.88rem;outline:none;transition:border-color .2s;}
+.chat-input{flex:1;padding:10px 14px;border:2px solid var(--bdr);border-radius:22px;background:var(--card);color:var(--txt);font-size:.88rem;outline:none;}
 .chat-input:focus{border-color:var(--p);}
-.chat-send-btn{width:42px;height:42px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.chat-send-btn{width:42px;height:42px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 
-/* ══ ADMIN ══ */
-.admin-header{background:var(--hdr-grad,linear-gradient(135deg,var(--p),var(--p2)));padding:50px 18px 22px;color:#fff;}
+/* ── PROFILE VIEW ── */
+.profile-header{background:linear-gradient(135deg,var(--p),var(--p2));padding:50px 18px 30px;text-align:center;}
+.pf-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.2);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;}
+.pf-name{font-size:1.1rem;font-weight:800;color:#fff;}
+.pf-email{font-size:.76rem;color:rgba(255,255,255,.7);margin-top:4px;}
+.pf-stats{display:flex;justify-content:center;gap:24px;margin-top:16px;}
+.pf-stat{text-align:center;}
+.pf-stat-n{font-size:1.1rem;font-weight:800;color:#fff;}
+.pf-stat-l{font-size:.62rem;color:rgba(255,255,255,.65);}
+.profile-body{padding:14px 14px 90px;}
+.pf-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.pf-card-title{font-size:.72rem;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;}
+.theme-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.theme-opt{aspect-ratio:1;border-radius:12px;border:2px solid var(--bdr);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:all .15s;}
+.theme-opt.on{border-color:var(--p);box-shadow:0 0 0 2px var(--p);}
+.pf-field{width:100%;padding:10px 13px;border:1.5px solid var(--bdr);border-radius:10px;background:var(--bg);color:var(--txt);font-size:.86rem;outline:none;margin-bottom:10px;}
+.pf-btn{width:100%;padding:12px;border-radius:11px;background:var(--p);border:none;color:#fff;font-size:.88rem;font-weight:700;cursor:pointer;margin-top:6px;}
+.pf-logout-btn{width:100%;padding:12px;border-radius:11px;background:#ef4444;border:none;color:#fff;font-size:.88rem;font-weight:700;cursor:pointer;}
+
+/* ── ADMIN VIEW ── */
+.admin-header{background:linear-gradient(135deg,var(--p),var(--p2));padding:50px 18px 22px;color:#fff;}
 .admin-header h2{font-size:1.1rem;font-weight:800;margin-bottom:4px;}
 .admin-header p{font-size:.76rem;opacity:.75;}
 .admin-body{padding:14px 14px 90px;}
@@ -213,83 +169,42 @@ input,textarea,select{font-family:inherit;}
 .adm-card-title{font-size:.76rem;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;}
 .adm-field-label{font-size:.74rem;font-weight:600;color:var(--txt2);margin-bottom:5px;margin-top:10px;}
 .adm-field{width:100%;padding:10px 13px;border:1.5px solid var(--bdr);border-radius:10px;background:var(--bg);color:var(--txt);font-size:.86rem;outline:none;resize:vertical;}
-.adm-field:focus{border-color:var(--p);}
 .adm-btn{width:100%;padding:12px;border-radius:11px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;margin-top:14px;cursor:pointer;}
 .adm-app-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bdr);}
 .adm-app-row:last-child{border-bottom:none;}
-.adm-app-ico{width:38px;height:38px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;border:1px solid var(--bdr);}
-.adm-app-name{font-size:.82rem;font-weight:700;color:var(--txt);}
-.adm-app-status{font-size:.66rem;font-weight:700;padding:3px 9px;border-radius:8px;margin-left:auto;}
-.status-live{background:rgba(10,106,74,.12);color:#0a6a4a;border:1px solid rgba(10,106,74,.25);}
-.status-pending{background:rgba(201,168,76,.12);color:#a07820;border:1px solid rgba(201,168,76,.3);}
-.adm-del-btn{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.2);color:#c0392b;border-radius:8px;padding:5px 9px;font-size:.72rem;cursor:pointer;font-weight:700;}
-.adm-login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;padding:20px;}
-.adm-login-box{background:var(--card);border:1.5px solid var(--bdr);border-radius:20px;padding:30px 22px;width:100%;max-width:340px;text-align:center;}
-.alb-icon{font-size:3rem;margin-bottom:10px;}
-.alb-title{font-size:1.05rem;font-weight:800;color:var(--txt);margin-bottom:4px;}
-.alb-sub{font-size:.75rem;color:var(--txt2);margin-bottom:18px;}
-.alb-input{width:100%;padding:11px 14px;border:2px solid var(--bdr);border-radius:11px;background:var(--bg);color:var(--txt);font-size:.9rem;outline:none;margin-bottom:10px;text-align:center;transition:border-color .2s;}
-.alb-input:focus{border-color:var(--p);}
-.alb-btn{width:100%;padding:12px;border-radius:11px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;}
-.alb-err{font-size:.74rem;color:#c0392b;margin-top:6px;min-height:16px;}
+.adm-del-btn{background:#ef4444;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:.74rem;font-weight:700;cursor:pointer;margin-left:auto;}
 
-/* ══ PROFILE ══ */
-.profile-header{background:var(--hdr-grad,linear-gradient(135deg,var(--p),var(--p2)));padding:50px 18px 30px;text-align:center;}
-.pf-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.2);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;border:3px solid rgba(255,255,255,.4);}
-.pf-name{font-size:1.2rem;font-weight:800;color:#fff;}
-.pf-role{font-size:.76rem;color:rgba(255,255,255,.65);margin-top:3px;}
-.pf-stats{display:flex;justify-content:center;gap:24px;margin-top:16px;}
-.pfs{text-align:center;}
-.pfs-n{font-size:1.1rem;font-weight:800;color:#fff;}
-.pfs-l{font-size:.62rem;color:rgba(255,255,255,.55);}
-.profile-body{padding:14px 14px 90px;}
-.pf-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px;}
-.pf-card-title{font-size:.74rem;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;}
-.pf-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bdr);}
-.pf-row:last-child{border-bottom:none;}
-.pf-row-ico{width:36px;height:36px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;border:1px solid var(--bdr);}
-.pf-row-label{flex:1;font-size:.84rem;font-weight:600;color:var(--txt);}
-.pf-row-val{font-size:.78rem;color:var(--txt2);}
-.pf-row-arrow{font-size:.8rem;color:var(--txt2);}
-.theme-row{display:flex;gap:8px;flex-wrap:wrap;}
-.theme-opt{padding:8px 14px;border-radius:12px;border:2px solid var(--bdr);background:transparent;font-size:.76rem;font-weight:700;color:var(--txt2);cursor:pointer;transition:all .18s;}
-.theme-opt.on{border-color:var(--p);color:var(--p);background:rgba(10,106,74,.07);}
-
-/* ══ LOGIN POPUP ══ */
+/* ── LOGIN OVERLAY ── */
 .login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;display:none;align-items:center;justify-content:center;padding:20px;}
 .login-overlay.open{display:flex;}
-.login-card{background:var(--card);border-radius:24px;padding:28px 22px;width:100%;max-width:340px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.2);}
-.login-card h2{font-size:1.1rem;font-weight:800;margin-bottom:6px;}
-.login-card p{font-size:.76rem;color:var(--txt2);margin-bottom:18px;}
-.login-inp{width:100%;padding:11px 14px;border:2px solid var(--bdr);border-radius:11px;background:var(--bg);color:var(--txt);font-size:.9rem;outline:none;margin-bottom:10px;}
-.login-inp:focus{border-color:var(--p);}
-.login-btn{width:100%;padding:12px;border-radius:11px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;}
-.login-skip{display:block;font-size:.76rem;color:var(--txt2);margin-top:10px;cursor:pointer;}
+.login-box{background:var(--card);border-radius:20px;padding:28px 22px;width:100%;max-width:360px;}
+.login-logo{text-align:center;font-size:2.5rem;margin-bottom:6px;}
+.login-title{text-align:center;font-size:1rem;font-weight:800;color:var(--txt);margin-bottom:4px;}
+.login-sub{text-align:center;font-size:.76rem;color:var(--txt2);margin-bottom:20px;}
+.login-field{width:100%;padding:12px 14px;border:1.5px solid var(--bdr);border-radius:12px;background:var(--bg);color:var(--txt);font-size:.9rem;outline:none;margin-bottom:10px;}
+.login-field:focus{border-color:var(--p);}
+.login-btn{width:100%;padding:13px;border-radius:12px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;margin-top:4px;}
+.login-err{color:#ef4444;font-size:.78rem;text-align:center;margin-top:8px;display:none;}
+.login-skip{text-align:center;margin-top:12px;font-size:.78rem;color:var(--p);cursor:pointer;font-weight:600;}
 
-/* ══ EMPTY STATE ══ */
-.empty-state{text-align:center;padding:50px 20px;color:var(--txt2);}
-.empty-state .es-icon{font-size:3rem;margin-bottom:12px;}
-.empty-state p{font-size:.86rem;line-height:1.6;}
+/* ── TOAST ── */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#111;color:#fff;padding:10px 20px;border-radius:20px;font-size:.82rem;font-weight:600;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ══ DRAGGABLE THEME FAB ══ */
-#theme-fab{position:fixed;bottom:90px;right:16px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:6px;touch-action:none;user-select:none;}
-#theme-fab-btn{width:52px;height:52px;border-radius:50%;background:var(--hdr-grad,linear-gradient(135deg,#0a6a4a,#157850));border:2.5px solid rgba(255,255,255,.3);color:#fff;font-size:1.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.3);transition:transform .18s,box-shadow .18s;}
-#theme-fab-btn:active{transform:scale(.92);box-shadow:0 2px 8px rgba(0,0,0,.3);}
-#theme-fab-menu{display:none;flex-direction:column;align-items:center;gap:6px;animation:fabIn .2s ease;}
-#theme-fab-menu.open{display:flex;}
-@keyframes fabIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.fab-opt{width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,.25);background:var(--card);color:var(--txt);font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.2);transition:transform .15s,background .2s;}
-.fab-opt:active{transform:scale(.88);}
-.fab-opt.active-theme{background:var(--p);color:#fff;border-color:var(--p);}
-
+/* ── FAB THEME SWITCHER ── */
+.fab-theme{position:fixed;bottom:80px;right:14px;width:46px;height:46px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.3rem;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--sh2);z-index:200;transition:transform .15s;}
+.fab-theme:active{transform:scale(.9);}
+.theme-panel{position:fixed;bottom:140px;right:14px;background:var(--card);border:1.5px solid var(--bdr);border-radius:16px;padding:12px;display:none;flex-direction:column;gap:8px;z-index:201;box-shadow:var(--sh2);}
+.theme-panel.open{display:flex;}
+.tp-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;cursor:pointer;font-size:.82rem;font-weight:600;color:var(--txt);}
+.tp-opt:hover{background:var(--bg);}
+.tp-dot{width:18px;height:18px;border-radius:50%;}
 </style>
 </head>
 <body>
 
-<div id="toasts"></div>
-
 <!-- ════ STORE VIEW ════ -->
-<div id="store-view" class="view active" style="display:block">
+<div id="store-view" class="view active">
   <div class="store-header">
     <div class="hdr-sky" id="hdr-sky">
       <div class="hdr-sun">☀️</div>
@@ -299,14 +214,14 @@ input,textarea,select{font-family:inherit;}
     <div class="sh-brand">
       <div class="sh-logo">🏪</div>
       <div>
-        <div class="sh-title hdr-title">Suleiman Play Store</div>
+        <div class="sh-title">Suleiman Play Store</div>
         <div class="sh-sub">Never Hide Tech Empire · All apps one place</div>
       </div>
     </div>
   </div>
   <div class="store-search-wrap">
     <span class="search-ico">🔍</span>
-    <input class="store-search" id="store-search" placeholder="Search apps…" oninput="filterApps()"/>
+    <input class="store-search" id="store-search" placeholder="Search apps…" oninput="filterApps()">
   </div>
   <div class="cats-bar" id="cats-bar">
     <button class="cat-pill on" onclick="setCat('all',this)">All</button>
@@ -318,7 +233,7 @@ input,textarea,select{font-family:inherit;}
     <button class="cat-pill" onclick="setCat('AI',this)">🤖 AI</button>
   </div>
   <div class="sec-label" id="apps-sec-label">🔥 Featured Apps</div>
-  <div class="apps-grid" id="apps-grid"></div>
+  <div id="apps-grid"></div>
 </div>
 
 <!-- ════ APP DETAIL VIEW ════ -->
@@ -332,153 +247,146 @@ input,textarea,select{font-family:inherit;}
 </div>
 
 <!-- ════ CHAT VIEW ════ -->
-<div id="chat-view">
+<div id="chat-view" class="view">
   <div class="chat-header">
     <div class="chat-hdr-av">💬</div>
-    <div style="flex:1">
-      <div class="chat-hdr-name">Tech Empire Community</div>
-      <div class="chat-hdr-sub" id="chat-hdr-sub">127 members · 14 online</div>
-    </div>
-    <div class="chat-hdr-actions">
-      <button class="chat-hdr-btn" onclick="showToast('🔍 Search coming soon','info')">🔍</button>
-      <button class="chat-hdr-btn" onclick="showToast('📌 Pinned messages coming soon','info')">📌</button>
+    <div>
+      <div class="chat-hdr-name">Community Chat</div>
+      <div class="chat-hdr-sub">Never Hide Tech Empire</div>
     </div>
   </div>
-  <div class="online-bar">🟢 <span id="chat-online-bar">127 members · 14 online right now</span></div>
+  <div class="online-bar">🟢 Community is online — ask anything!</div>
   <div class="chat-messages" id="chat-messages"></div>
   <div class="chat-input-bar">
-    <input class="chat-input" id="chat-input" placeholder="Message the community…" onkeydown="if(event.key==='Enter')sendChat()"/>
-    <button class="chat-send-btn" onclick="sendChat()">➤</button>
-  </div>
-</div>
-
-<!-- ════ ADMIN VIEW ════ -->
-<div id="admin-view" class="view">
-  <div id="admin-login-section">
-    <div class="adm-login-wrap">
-      <div class="adm-login-box">
-        <div class="alb-icon">🔐</div>
-        <div class="alb-title">Admin Panel</div>
-        <div class="alb-sub">Enter your admin password to continue</div>
-        <input class="alb-input" type="password" id="adm-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"/>
-        <button class="alb-btn" onclick="adminLogin()">Login</button>
-        <div class="alb-err" id="adm-err"></div>
-      </div>
-    </div>
-  </div>
-  <div id="admin-dashboard" style="display:none">
-    <div class="admin-header">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div><h2>⚙️ Admin Dashboard</h2><p>Manage your apps — publish instantly to the store</p></div>
-        <button onclick="adminLogout()" style="background:rgba(255,255,255,.15);border:none;color:#fff;padding:7px 13px;border-radius:10px;font-size:.75rem;font-weight:700;cursor:pointer;">Logout</button>
-      </div>
-    </div>
-    <div class="admin-body">
-      <div class="adm-card">
-        <div class="adm-card-title">➕ Submit New App</div>
-        <div class="adm-field-label">App Name *</div>
-        <input class="adm-field" id="adm-name" placeholder="e.g. Islamic Google"/>
-        <div class="adm-field-label">Short Description *</div>
-        <textarea class="adm-field" id="adm-desc" rows="3" placeholder="What does this app do?"></textarea>
-        <div class="adm-field-label">App URL *</div>
-        <input class="adm-field" id="adm-url" type="url" placeholder="https://yourapp.vercel.app"/>
-        <div class="adm-field-label">Category</div>
-        <select class="adm-field" id="adm-cat">
-          <option value="Islamic">🕌 Islamic</option>
-          <option value="Business">💼 Business</option>
-          <option value="Chat">💬 Chat</option>
-          <option value="Tools">🔧 Tools</option>
-          <option value="Education">📚 Education</option>
-        </select>
-        <div class="adm-field-label">Icon Emoji</div>
-        <input class="adm-field" id="adm-emoji" placeholder="e.g. 📖" maxlength="4" style="font-size:1.3rem;text-align:center"/>
-        <button class="adm-btn" onclick="submitApp()">🚀 Publish App to Store</button>
-      </div>
-      <div class="adm-card">
-        <div class="adm-card-title">📦 All Apps in Store</div>
-        <div id="adm-apps-list"></div>
-      </div>
-    </div>
+    <input class="chat-input" id="chat-input" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendMsg()">
+    <button class="chat-send-btn" onclick="sendMsg()">➤</button>
   </div>
 </div>
 
 <!-- ════ PROFILE VIEW ════ -->
 <div id="profile-view" class="view">
   <div class="profile-header">
-    <div class="pf-avatar">👤</div>
-    <div class="pf-name" id="pf-name">Suleiman Alhassan</div>
-    <div class="pf-role">Never Hide Tech Empire · Developer</div>
+    <div class="pf-avatar" id="pf-avatar">👤</div>
+    <div class="pf-name" id="pf-name">Guest User</div>
+    <div class="pf-email" id="pf-email">Sign in to save your data</div>
     <div class="pf-stats">
-      <div class="pfs"><div class="pfs-n" id="pf-stat-apps">0</div><div class="pfs-l">Apps</div></div>
-      <div class="pfs"><div class="pfs-n">127</div><div class="pfs-l">Community</div></div>
-      <div class="pfs"><div class="pfs-n">2026</div><div class="pfs-l">Since</div></div>
+      <div class="pf-stat"><div class="pf-stat-n" id="pf-stat-apps">11</div><div class="pf-stat-l">Apps</div></div>
+      <div class="pf-stat"><div class="pf-stat-n" id="pf-stat-installed">0</div><div class="pf-stat-l">Installed</div></div>
+      <div class="pf-stat"><div class="pf-stat-n">5★</div><div class="pf-stat-l">Rating</div></div>
     </div>
   </div>
   <div class="profile-body">
     <div class="pf-card">
       <div class="pf-card-title">🎨 Theme</div>
-      <div class="theme-row">
-        <button class="theme-opt on" data-t="light" onclick="setTheme('light',this)">☀️ Light</button>
-        <button class="theme-opt" data-t="dark" onclick="setTheme('dark',this)">🌙 Dark</button>
-        <button class="theme-opt" data-t="islamic" onclick="setTheme('islamic',this)">🕌 Islamic</button>
+      <div class="theme-grid">
+        <div class="theme-opt on" data-t="default" onclick="setTheme('default',this)" title="Default">🌿</div>
+        <div class="theme-opt" data-t="dark" onclick="setTheme('dark',this)" title="Dark">🌙</div>
+        <div class="theme-opt" data-t="forest" onclick="setTheme('forest',this)" title="Forest">🌲</div>
+        <div class="theme-opt" data-t="ocean" onclick="setTheme('ocean',this)" title="Ocean">🌊</div>
+        <div class="theme-opt" data-t="sunset" onclick="setTheme('sunset',this)" title="Sunset">🌅</div>
       </div>
     </div>
     <div class="pf-card">
-      <div class="pf-card-title">👤 My Account</div>
-      <div class="pf-row">
-        <div class="pf-row-ico">📛</div>
-        <div class="pf-row-label">Name</div>
-        <div class="pf-row-val" id="pf-disp-name">—</div>
-      </div>
-      <div class="pf-row">
-        <div class="pf-row-ico">📱</div>
-        <div class="pf-row-label">Phone</div>
-        <div class="pf-row-val" id="pf-disp-phone">—</div>
-      </div>
+      <div class="pf-card-title">👤 Account</div>
+      <input class="pf-field" id="pf-name-inp" placeholder="Display Name">
+      <input class="pf-field" id="pf-email-inp" placeholder="Email" type="email">
+      <button class="pf-btn" onclick="saveProfile()">Save Profile</button>
+    </div>
+    <div class="pf-card">
+      <div class="pf-card-title">📞 Help & Support</div>
+      <p style="font-size:.82rem;color:var(--txt2);margin-bottom:8px;">Contact us anytime for help:</p>
+      <p style="font-size:.85rem;font-weight:700;color:var(--p);">📱 0599931348</p>
+      <p style="font-size:.85rem;font-weight:700;color:var(--p);margin-top:4px;">📱 0248503631</p>
+    </div>
+    <div class="pf-card" id="logout-card" style="display:none">
+      <button class="pf-logout-btn" onclick="logout()">🚪 Sign Out</button>
+    </div>
+  </div>
+</div>
 
+<!-- ════ ADMIN VIEW ════ -->
+<div id="admin-view" class="view">
+  <div class="admin-header">
+    <h2>🛡️ Admin Dashboard</h2>
+    <p>Never Hide Tech Empire — Store Manager</p>
+  </div>
+  <div class="admin-body">
+    <div class="adm-card">
+      <div class="adm-card-title">➕ Add New App</div>
+      <div class="adm-field-label">App Name</div>
+      <input class="adm-field" id="adm-name" placeholder="e.g. My Cool App">
+      <div class="adm-field-label">Emoji Icon</div>
+      <input class="adm-field" id="adm-emoji" placeholder="e.g. 🚀">
+      <div class="adm-field-label">Category</div>
+      <select class="adm-field" id="adm-cat">
+        <option value="Islamic">Islamic</option>
+        <option value="Business">Business</option>
+        <option value="Chat">Chat</option>
+        <option value="Tools">Tools</option>
+        <option value="Education">Education</option>
+        <option value="AI">AI</option>
+      </select>
+      <div class="adm-field-label">Description</div>
+      <textarea class="adm-field" id="adm-desc" rows="3" placeholder="Short description..."></textarea>
+      <div class="adm-field-label">URL</div>
+      <input class="adm-field" id="adm-url" placeholder="https://...">
+      <div class="adm-field-label">Rating (e.g. 4.8)</div>
+      <input class="adm-field" id="adm-rating" placeholder="4.8" type="number" step="0.1" min="1" max="5">
+      <button class="adm-btn" onclick="adminAddApp()">➕ Add App</button>
     </div>
-    <div class="pf-card">
-      <div class="pf-card-title">📞 Contact</div>
-      <div class="pf-row">
-        <div class="pf-row-ico">📞</div>
-        <div class="pf-row-label">0599931348</div>
-        <div class="pf-row-arrow">›</div>
-      </div>
-      <div class="pf-row">
-        <div class="pf-row-ico">📞</div>
-        <div class="pf-row-label">0248503631</div>
-        <div class="pf-row-arrow">›</div>
-      </div>
+    <div class="adm-card">
+      <div class="adm-card-title">📋 Manage Apps</div>
+      <div id="adm-app-list"></div>
     </div>
   </div>
 </div>
 
 <!-- ════ BOTTOM NAV ════ -->
-<nav class="bnav">
-  <div class="ni on" id="ni-store" onclick="showView('store-view')"><div class="ico">🏪</div><div>Store</div></div>
-  <div class="ni" id="ni-chat" onclick="showView('chat-view')"><div class="ico">💬</div><div>Community</div></div>
-  <div class="ni" id="ni-profile" onclick="showView('profile-view')"><div class="ico">👤</div><div>Profile</div></div>
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-store" onclick="showView('store-view',this)">
+    <span class="nav-icon">🏪</span>Store
+  </button>
+  <button class="nav-btn" id="nav-chat" onclick="showView('chat-view',this)">
+    <span class="nav-icon">💬</span>Community
+  </button>
+  <button class="nav-btn" id="nav-profile" onclick="showView('profile-view',this)">
+    <span class="nav-icon">👤</span>Profile
+  </button>
 </nav>
 
-<!-- ════ LOGIN POPUP ════ -->
+<!-- ════ LOGIN OVERLAY ════ -->
 <div class="login-overlay" id="login-overlay">
-  <div class="login-card">
-    <div style="font-size:3rem;margin-bottom:8px">👋</div>
-    <h2>Welcome!</h2>
-    <p>Enter your name and phone to join.<br>We'll send you a welcome message!</p>
-    <input class="login-inp" id="login-name" type="text" placeholder="Your full name"/>
-    <input class="login-inp" id="login-phone" type="tel" placeholder="Phone (e.g. 0599931348)"/>
-    <button class="login-btn" onclick="submitLogin()">🚀 Join the Community</button>
-    <span class="login-skip" onclick="skipLogin()">Skip for now</span>
+  <div class="login-box">
+    <div class="login-logo">🏪</div>
+    <div class="login-title">Welcome to Suleiman Store</div>
+    <div class="login-sub">Sign in to access all features</div>
+    <input class="login-field" id="login-name" placeholder="Your Name">
+    <input class="login-field" id="login-email" placeholder="Email Address" type="email">
+    <input class="login-field" id="login-pass" placeholder="Password" type="password">
+    <button class="login-btn" onclick="doLogin()">Sign In / Register</button>
+    <div class="login-err" id="login-err">Please fill in all fields</div>
+    <div class="login-skip" onclick="skipLogin()">Continue as Guest →</div>
   </div>
 </div>
 
-<script>
-// ════════════════════════════════
-//  NEVER HIDE PLAY STORE
-// ════════════════════════════════
+<!-- ════ FAB THEME ════ -->
+<button class="fab-theme" id="fab-theme" onclick="toggleThemePanel()">🎨</button>
+<div class="theme-panel" id="theme-panel">
+  <div class="tp-opt" onclick="setTheme('default',null);toggleThemePanel()"><div class="tp-dot" style="background:#0a6a4a"></div>Default</div>
+  <div class="tp-opt" onclick="setTheme('dark',null);toggleThemePanel()"><div class="tp-dot" style="background:#222"></div>Dark</div>
+  <div class="tp-opt" onclick="setTheme('forest',null);toggleThemePanel()"><div class="tp-dot" style="background:#1a6b3c"></div>Forest</div>
+  <div class="tp-opt" onclick="setTheme('ocean',null);toggleThemePanel()"><div class="tp-dot" style="background:#0a4a8a"></div>Ocean</div>
+  <div class="tp-opt" onclick="setTheme('sunset',null);toggleThemePanel()"><div class="tp-dot" style="background:#c0392b"></div>Sunset</div>
+  <div class="tp-opt" onclick="setTheme('gold',null);toggleThemePanel()"><div class="tp-dot" style="background:#b8860b"></div>Gold</div>
+</div>
 
-// ── APPS DATA ──
+<!-- ════ TOAST ════ -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════
 let APPS = [
   { id:1, name:'Islamic Google', emoji:'🔍', cat:'Islamic',
     desc:'The ultimate Islamic knowledge search engine. Search Qur\'an, Hadith, Scholars and Lectures instantly.',
@@ -539,488 +447,369 @@ let APPS = [
     badge:'', screenshots:['💰','📊','✅'], likes:1200, installed:false },
 ];
 
-let currentCat = 'all', currentSearch = '';
-let currentDetailApp = null;
-let adminLoggedIn = false;
-const ADMIN_PASS = 'neverhide2026';
+let installedIds = JSON.parse(localStorage.getItem('nhps_ins') || '[]');
+let currentCat = 'all';
+let currentSearch = '';
 let userInfo = JSON.parse(localStorage.getItem('nhps_user') || 'null');
-let installedIds = JSON.parse(localStorage.getItem('nhps_installed') || '[]');
+const VIEW_IDS = ['store-view','chat-view','profile-view','admin-view'];
 
-// ── VIEW ROUTER ──
-const VIEW_IDS = ['store-view','chat-view','admin-view','profile-view','app-detail-view'];
-const NAV_MAP  = {'store-view':'ni-store','chat-view':'ni-chat','admin-view':'ni-profile','profile-view':'ni-profile'};
-
-function showView(id) {
+// ═══════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════
+function showView(id, btn) {
   VIEW_IDS.forEach(v => {
     const el = document.getElementById(v);
-    if (!el) return;
-    el.classList.remove('active');
-    el.style.display = '';
+    if (el) { el.classList.remove('active'); el.style.display = 'none'; }
   });
   const target = document.getElementById(id);
   if (!target) return;
-  if (id === 'chat-view') target.style.display = 'flex';
-  else if (id === 'app-detail-view') { target.style.display = 'block'; target.scrollTop = 0; }
-  else target.classList.add('active');
-  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
-  const navId = NAV_MAP[id];
-  if (navId) document.getElementById(navId)?.classList.add('on');
-  if (id === 'chat-view') setTimeout(() => { const cm = document.getElementById('chat-messages'); if(cm) cm.scrollTop = cm.scrollHeight; }, 80);
-  if (id === 'profile-view') {
-    document.getElementById('pf-stat-apps').textContent = APPS.length;
-    const u = userInfo;
-    document.getElementById('pf-disp-name').textContent  = u ? u.name  : '—';
-    document.getElementById('pf-disp-phone').textContent = u ? u.phone : '—';
-    if (u) document.getElementById('pf-name').textContent = u.name;
-  }
+  target.classList.add('active');
+  target.style.display = (id === 'chat-view') ? 'flex' : 'block';
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (id === 'admin-view') renderAdminList();
 }
 
-// ── TOAST ──
-function showToast(msg, type='ok', dur=3000) {
-  const w = document.getElementById('toasts');
-  const el = document.createElement('div');
-  el.className = `toast t-${type}`; el.textContent = msg;
-  w.appendChild(el);
-  setTimeout(() => { el.style.opacity='0'; el.style.transition='.3s'; setTimeout(()=>el.remove(),300); }, dur);
-}
-
-// ── STARS ──
-function buildStars() {
-  const sky = document.getElementById('hdr-sky');
-  for (let i=0; i<16; i++) {
-    const s = document.createElement('div');
-    s.className = 'hdr-star';
-    s.style.left = (Math.random()*85)+'%';
-    s.style.top  = (Math.random()*100)+'%';
-    s.style.animationDelay = (Math.random()*2.5)+'s';
-    s.style.width = s.style.height = (Math.random()*2+1.5)+'px';
-    sky.appendChild(s);
-  }
-}
-
-// ── STORE RENDER ──
+// ═══════════════════════════════════════
+//  STORE — RENDER APPS
+// ═══════════════════════════════════════
 function renderApps() {
   const grid = document.getElementById('apps-grid');
+  if (!grid) return;
   const q = currentSearch.toLowerCase();
   let list = APPS.filter(a => {
     const mc = currentCat === 'all' || a.cat === currentCat;
     const ms = !q || a.name.toLowerCase().includes(q) || a.desc.toLowerCase().includes(q) || a.cat.toLowerCase().includes(q);
     return mc && ms;
   });
-  document.getElementById('apps-sec-label').textContent = q ? `🔎 Results for "${currentSearch}"` : (currentCat === 'all' ? '🔥 Featured Apps' : `📂 ${currentCat}`);
-  if (!list.length) { grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="es-icon">🔍</div><p>No apps found.<br>Try a different search.</p></div>`; return; }
-  grid.innerHTML = list.map(a => {
+  const label = document.getElementById('apps-sec-label');
+  if (label) label.textContent = q ? ('🔎 Results for "' + currentSearch + '"') : (currentCat === 'all' ? '🔥 Featured Apps' : '📂 ' + currentCat);
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="es-icon">🔍</div><p>No apps found.</p></div>';
+    return;
+  }
+  grid.innerHTML = list.map(function(a) {
     const inst = installedIds.includes(a.id);
-    return `<div class="app-card" onclick="openDetail(${a.id})">
-      ${a.badge ? `<div class="ac-badge">${a.badge}</div>` : ''}
-      <div class="ac-icon-wrap">${a.emoji}</div>
-      <div class="ac-name">${a.name}</div>
-      <div class="ac-meta"><span>⭐ ${a.rating}</span><span>📥 ${a.downloads}</span></div>
-      <div class="ac-desc">${a.desc}</div>
-      <button class="ac-open-btn" style="${inst?'background:#22c55e':''}">${inst?'✅ Installed':'Open App'}</button>
-    </div>`;
+    return '<div class="app-card" onclick="openDetail(' + a.id + ')">' +
+      (a.badge ? '<div class="ac-badge">' + a.badge + '</div>' : '') +
+      '<div class="ac-icon-wrap">' + a.emoji + '</div>' +
+      '<div class="ac-name">' + a.name + '</div>' +
+      '<div class="ac-meta"><span>⭐ ' + a.rating + '</span><span>📥 ' + a.downloads + '</span></div>' +
+      '<div class="ac-desc">' + a.desc + '</div>' +
+      '<button class="ac-open-btn" style="' + (inst ? 'background:#22c55e' : '') + '">' + (inst ? '✅ Installed' : 'Open App') + '</button>' +
+      '</div>';
   }).join('');
 }
-function filterApps() { currentSearch = document.getElementById('store-search').value; renderApps(); }
+
+function filterApps() {
+  currentSearch = document.getElementById('store-search').value;
+  renderApps();
+}
+
 function setCat(cat, el) {
   currentCat = cat;
   document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('on'));
-  el?.classList.add('on');
+  if (el) el.classList.add('on');
   renderApps();
 }
 
-// ── APP DETAIL ──
+// ═══════════════════════════════════════
+//  APP DETAIL
+// ═══════════════════════════════════════
 function openDetail(id) {
-  const app = APPS.find(a => a.id === id); if (!app) return;
-  currentDetailApp = app;
-  const inst = installedIds.includes(id);
-  document.getElementById('detail-title-hd').textContent = app.name;
-  document.getElementById('detail-content').innerHTML = `
-    <div class="detail-hero">
-      <div class="dh-icon">${app.emoji}</div>
-      <div class="dh-name">${app.name}</div>
-      <div class="dh-dev">by Suleiman Alhassan · Never Hide Tech Empire</div>
-      <div class="dh-meta">
-        <div class="dhm"><div class="dhm-n">${app.rating}</div><div class="dhm-l">Rating</div></div>
-        <div class="dhm"><div class="dhm-n">${app.downloads}</div><div class="dhm-l">Downloads</div></div>
-        <div class="dhm"><div class="dhm-n">${app.reviews.length}</div><div class="dhm-l">Reviews</div></div>
-      </div>
-    </div>
-    <div class="install-wrap">
-      <button class="install-btn ${inst?'done':''}" id="install-btn-main" onclick="doInstall(${id})">
-        ${inst ? '✅ Open App' : '⬇️ Install'}
-      </button>
-      <div class="prog-bg" id="prog-bg"><div class="prog-fill" id="prog-fill"></div></div>
-      <div class="prog-lbl" id="prog-lbl">0%</div>
-    </div>
-    <div class="share-row">
-      <button class="share-btn" onclick="shareApp(${id})">↗️ Share</button>
-      <button class="like-btn" onclick="likeApp(${id})">❤️ Like · ${app.likes.toLocaleString()}</button>
-    </div>
-    <div class="detail-body">
-      <div class="det-sec">
-        <div class="det-sec-title">📋 About this app</div>
-        <div class="det-desc">${app.desc}</div>
-      </div>
-      <div class="det-sec">
-        <div class="det-sec-title">📸 Screenshots</div>
-        <div class="screenshots-row">${app.screenshots.map(s=>`<div class="ss-mock">${s}</div>`).join('')}</div>
-      </div>
-      <div class="det-sec">
-        <div class="det-sec-title">💬 Reviews & Comments (${app.reviews.length})</div>
-        <div class="comment-box">
-          <input class="comment-inp" id="comment-inp-${id}" placeholder="Write a comment…"/>
-          <button class="comment-send-btn" onclick="postComment(${id})">➤</button>
-        </div>
-        <div class="reviews-list" id="reviews-list-${id}" style="margin-top:12px">
-          ${app.reviews.map(r=>`
-            <div class="review-item">
-              <div class="rv-top">
-                <div class="rv-avatar">${r.name.charAt(0)}</div>
-                <div><div class="rv-name">${r.name}</div><div class="rv-stars">${'⭐'.repeat(r.stars)}</div></div>
-              </div>
-              <div class="rv-text">${r.text}</div>
-            </div>`).join('')}
-        </div>
-      </div>
-    </div>`;
-  VIEW_IDS.forEach(v => { const el=document.getElementById(v); if(el){el.classList.remove('active');el.style.display='';} });
-  document.getElementById('app-detail-view').style.display = 'block';
-  document.getElementById('app-detail-view').scrollTop = 0;
-  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
-}
-function closeDetail() {
-  document.getElementById('app-detail-view').style.display = 'none';
-  document.getElementById('store-view').classList.add('active');
-  document.getElementById('ni-store').classList.add('on');
+  const a = APPS.find(function(x){ return x.id === id; });
+  if (!a) return;
+  const inst = installedIds.includes(a.id);
+  document.getElementById('detail-title-hd').textContent = a.name;
+  document.getElementById('detail-content').innerHTML =
+    '<div class="detail-hero">' +
+      '<div class="dh-icon">' + a.emoji + '</div>' +
+      '<div class="dh-name">' + a.name + '</div>' +
+      '<div class="dh-dev">Never Hide Tech Empire</div>' +
+      '<div class="dh-meta">' +
+        '<div class="dhm"><div class="dhm-n">⭐ ' + a.rating + '</div><div class="dhm-l">Rating</div></div>' +
+        '<div class="dhm"><div class="dhm-n">' + a.downloads + '</div><div class="dhm-l">Downloads</div></div>' +
+        '<div class="dhm"><div class="dhm-n">' + (a.likes || 0) + '</div><div class="dhm-l">Likes</div></div>' +
+      '</div>' +
+      '<button class="dh-open-btn" onclick="window.open('' + a.url + '','_blank')">🚀 Open App</button>' +
+    '</div>' +
+    '<div class="install-wrap">' +
+      '<button class="install-btn' + (inst ? ' done' : '') + '" id="install-btn-' + a.id + '" onclick="installApp(' + a.id + ')">' +
+        (inst ? '✅ Installed' : '⬇️ Install') +
+      '</button>' +
+      '<div class="prog-bg" id="prog-bg-' + a.id + '"><div class="prog-fill" id="prog-fill-' + a.id + '"></div></div>' +
+      '<div class="prog-lbl" id="prog-lbl-' + a.id + '">Installing…</div>' +
+    '</div>' +
+    '<div class="share-row">' +
+      '<button class="like-btn" onclick="likeApp(' + a.id + ')">❤️ Like</button>' +
+      '<button class="share-btn" onclick="shareApp('' + encodeURIComponent(a.name) + '','' + a.url + '')">🔗 Share</button>' +
+    '</div>' +
+    '<div class="detail-body">' +
+      '<div class="det-sec"><div class="det-sec-title">About</div><div class="det-desc">' + a.desc + '</div></div>' +
+      '<div class="det-sec"><div class="det-sec-title">Screenshots</div>' +
+        '<div class="screenshots-row">' +
+          (a.screenshots || ['📱','🌐','✨']).map(function(s){ return '<div class="ss-mock">' + s + '</div>'; }).join('') +
+        '</div>' +
+      '</div>' +
+      '<div class="det-sec"><div class="det-sec-title">Reviews</div>' +
+        '<div class="reviews-list">' +
+          (a.reviews || []).map(function(r){ return '<div class="review-item"><div class="rv-top"><div class="rv-avatar">' + r.name[0] + '</div><div><div class="rv-name">' + r.name + '</div><div class="rv-stars">★★★★★</div></div></div><div class="rv-text">' + r.text + '</div></div>'; }).join('') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  const dv = document.getElementById('app-detail-view');
+  dv.style.display = 'block';
+  dv.scrollTop = 0;
 }
 
-// ── INSTALL ──
-function doInstall(id) {
-  const app = APPS.find(a => a.id === id); if (!app) return;
-  if (installedIds.includes(id)) {
-    if (app.url && app.url !== '#') window.open(app.url, '_blank');
-    else showToast('🚀 Opening ' + app.name);
-    return;
-  }
-  const btn = document.getElementById('install-btn-main');
-  const progBg = document.getElementById('prog-bg');
-  const progFill = document.getElementById('prog-fill');
-  const progLbl = document.getElementById('prog-lbl');
-  btn.textContent = '⏳ Downloading…'; btn.disabled = true;
-  progBg.style.display = 'block'; progLbl.style.display = 'block';
+function closeDetail() {
+  document.getElementById('app-detail-view').style.display = 'none';
+}
+
+function installApp(id) {
+  if (installedIds.includes(id)) return;
+  const btn = document.getElementById('install-btn-' + id);
+  const bg = document.getElementById('prog-bg-' + id);
+  const fill = document.getElementById('prog-fill-' + id);
+  const lbl = document.getElementById('prog-lbl-' + id);
+  if (btn) btn.disabled = true;
+  if (bg) bg.style.display = 'block';
+  if (lbl) lbl.style.display = 'block';
   let pct = 0;
-  const iv = setInterval(() => {
-    pct += Math.random() * 7 + 2;
-    if (pct >= 100) pct = 100;
-    progFill.style.width = pct + '%';
-    progLbl.textContent = Math.floor(pct) + '% — ' + (pct<40?'Downloading…':pct<80?'Installing…':'Almost done…');
+  const iv = setInterval(function() {
+    pct += 4;
+    if (fill) fill.style.width = pct + '%';
     if (pct >= 100) {
       clearInterval(iv);
       installedIds.push(id);
-      localStorage.setItem('nhps_installed', JSON.stringify(installedIds));
-      btn.textContent = '✅ Open App'; btn.className = 'install-btn done'; btn.disabled = false;
-      progLbl.textContent = '✅ Installation complete!';
-      showToast('✅ ' + app.name + ' installed!');
+      localStorage.setItem('nhps_ins', JSON.stringify(installedIds));
+      if (btn) { btn.textContent = '✅ Installed'; btn.classList.add('done'); btn.disabled = false; }
+      if (lbl) lbl.textContent = '✅ Installation complete!';
+      showToast('✅ App installed!');
       renderApps();
     }
-  }, 110);
+  }, 60);
 }
 
-// ── COMMENTS ──
-function postComment(id) {
-  const app = APPS.find(a => a.id === id); if (!app) return;
-  const inp = document.getElementById(`comment-inp-${id}`);
-  const txt = inp.value.trim(); if (!txt) return;
-  const name = userInfo ? userInfo.name : 'Anonymous';
-  app.reviews.unshift({ name, stars:5, text:txt });
-  inp.value = '';
-  const list = document.getElementById(`reviews-list-${id}`);
-  list.innerHTML = app.reviews.map(r=>`
-    <div class="review-item">
-      <div class="rv-top">
-        <div class="rv-avatar">${r.name.charAt(0)}</div>
-        <div><div class="rv-name">${r.name}</div><div class="rv-stars">${'⭐'.repeat(r.stars)}</div></div>
-      </div>
-      <div class="rv-text">${r.text}</div>
-    </div>`).join('');
-  showToast('💬 Comment posted!');
+function likeApp(id) { showToast('❤️ Liked!'); }
+
+function shareApp(name, url) {
+  if (navigator.share) {
+    navigator.share({ title: decodeURIComponent(name), url: url });
+  } else {
+    navigator.clipboard.writeText(url).then(function(){ showToast('🔗 Link copied!'); });
+  }
 }
 
-// ── LIKE ──
-function likeApp(id) {
-  const app = APPS.find(a => a.id === id); if (!app) return;
-  app.likes++;
-  showToast('❤️ Liked! Thank you!');
-  const lb = document.querySelector('.like-btn');
-  if (lb) lb.textContent = `❤️ Like · ${app.likes.toLocaleString()}`;
-}
-
-// ── SHARE ──
-function shareApp(id) {
-  const app = APPS.find(a => a.id === id); if (!app) return;
-  const txt = `Check out "${app.name}" on Suleiman Play Store 🏪\n${window.location.href}`;
-  if (navigator.share) navigator.share({ title: app.name, text: txt, url: window.location.href });
-  else navigator.clipboard.writeText(txt).then(() => showToast('🔗 Link copied!'));
-}
-
-// ── CHAT ──
-const SEED = [
-  {sender:'Ahmad K',   mine:false, text:'Salamu Alaykum everyone! Has anyone tried the new Juz Amma app?', time:'9:14 AM'},
-  {sender:'Fatima M',  mine:false, text:'Wa Alaykum Salam! Yes it is amazing MashaAllah 🌟', time:'9:15 AM'},
-  {sender:'You',       mine:true,  text:'Alhamdulillah! We worked hard on it 💪', time:'9:16 AM'},
-  {sender:'Ibrahim O', mine:false, text:'The Prophet Stories feature is my favourite part!', time:'9:18 AM'},
-  {sender:'Noor H',    mine:false, text:'JazakAllah Khayr to the developer 🙏', time:'9:20 AM'},
-  {sender:'Khalid R',  mine:false, text:'When is the next app coming? We are excited!', time:'9:24 AM'},
+// ═══════════════════════════════════════
+//  CHAT
+// ═══════════════════════════════════════
+var chatMsgs = [
+  { sender:'Ahmad K', text:'Assalamu Alaikum everyone! 👋', time:'09:00', mine:false },
+  { sender:'Fatima M', text:'Wa Alaikum Assalam! Great store MashaAllah!', time:'09:02', mine:false },
+  { sender:'Ibrahim O', text:'JazakAllah for the Islamic apps 📖', time:'09:05', mine:false },
+  { sender:'You', text:'Welcome to Suleiman Play Store! 🏪', time:'09:10', mine:true }
 ];
-let chatMsgs = [...SEED];
+
+var AI_REPLIES = [
+  'MashaAllah! That is a great question. 🤲',
+  'JazakAllah Khayr for sharing! May Allah bless you.',
+  'SubhanAllah — I agree completely! 🌟',
+  'Alhamdulillah! You are absolutely right.',
+  'That is a wonderful idea! Keep it up 💪',
+  'May Allah reward you for your efforts. 🙏',
+  'Bismillah — let us all benefit from this! 📖',
+  'This is really helpful, thank you for posting!',
+  'I agree! Never Hide Tech Empire is the best 🏆',
+  'Excellent point! JazakAllah Khayr 🌿'
+];
+
+var AI_NAMES = ['Ahmad K','Fatima M','Ibrahim O','Musa T','Aisha B','Yusuf A','Maryam S','Bilal O'];
 
 function renderChat() {
-  const box = document.getElementById('chat-messages'); if (!box) return;
-  box.innerHTML = chatMsgs.map(m => `
-    <div class="cmsg ${m.mine?'mine':'other'}">
-      ${!m.mine ? `<div class="cmsg-sender">${m.sender}</div>` : ''}
-      <div class="cmsg-bubble">${m.text}</div>
-      <div class="cmsg-meta">${m.time}</div>
-    </div>`).join('');
-  setTimeout(() => { box.scrollTop = box.scrollHeight; }, 50);
+  const box = document.getElementById('chat-messages');
+  if (!box) return;
+  box.innerHTML = chatMsgs.map(function(m){
+    return '<div class="cmsg ' + (m.mine ? 'mine' : 'other') + '">' +
+      (!m.mine ? '<div class="cmsg-sender">' + m.sender + '</div>' : '') +
+      '<div class="cmsg-bubble">' + m.text + '</div>' +
+      '<div class="cmsg-meta">' + m.time + '</div>' +
+    '</div>';
+  }).join('');
+  box.scrollTop = box.scrollHeight;
 }
 
-function sendChat() {
+function sendMsg() {
   const inp = document.getElementById('chat-input');
-  const txt = inp.value.trim(); if (!txt) return;
-  const now = new Date(); const t = now.getHours()+':'+(now.getMinutes()+'').padStart(2,'0');
-  chatMsgs.push({ sender:'You', mine:true, text:txt, time:t });
+  const txt = inp.value.trim();
+  if (!txt) return;
+  const now = new Date();
+  const t = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+  chatMsgs.push({ sender:'You', text: txt, time: t, mine: true });
   inp.value = '';
   renderChat();
-  // community members reply sometimes (50% chance)
-  const communityReplies = [
-    'MashaAllah! 🌟','JazakAllah Khayr 🤲','SubhanAllah, very true!','Ameen to that! 🙏','That is so helpful, shukran!','Barakallah feek 💚'];
-  const names = ['Ahmad K','Fatima M','Ibrahim O','Noor H','Bilal O'];
-  if(Math.random() > 0.5) {
-    setTimeout(() => {
-      chatMsgs.push({ sender: names[Math.floor(Math.random()*names.length)], mine:false, text: communityReplies[Math.floor(Math.random()*communityReplies.length)], time:t });
+  if (Math.random() < 0.6) {
+    setTimeout(function(){
+      const name = AI_NAMES[Math.floor(Math.random()*AI_NAMES.length)];
+      const reply = AI_REPLIES[Math.floor(Math.random()*AI_REPLIES.length)];
+      const t2 = new Date();
+      const tt = t2.getHours().toString().padStart(2,'0') + ':' + t2.getMinutes().toString().padStart(2,'0');
+      chatMsgs.push({ sender: name, text: reply, time: tt, mine: false });
       renderChat();
-    }, 1500 + Math.random()*1500);
-  } else {
-    // AI steps in after a pause — like no one replied
-    setTimeout(() => {
-      const aiResponse = generateAIReply(txt);
-      chatMsgs.push({ sender:'NeverHide AI 🤖', mine:false, text: aiResponse, time:t, isAI:true });
-      renderChat();
-    }, 3000 + Math.random()*2000);
+    }, 1200 + Math.random()*1800);
   }
 }
 
-function generateAIReply(msg) {
-  const m = msg.toLowerCase();
-  // Islamic questions
-  if(m.includes('pray') || m.includes('salah') || m.includes('salat'))
-    return 'As-salamu alaykum! 🕌 Prayer (Salah) is the second pillar of Islam and the direct connection between you and Allah. The 5 daily prayers are Fajr, Dhuhr, Asr, Maghrib and Isha. May Allah make it easy for us all. 🤲';
-  if(m.includes('quran') || m.includes('qur') || m.includes('ayah') || m.includes('surah'))
-    return 'SubhanAllah! 📖 The Qur'an is the final word of Allah revealed to Prophet Muhammad ﷺ. Reading even one letter earns 10 rewards. You can explore any Surah in the Juz Amma Pro app on our store! 🌟';
-  if(m.includes('zakat') || m.includes('charity') || m.includes('sadaqah'))
-    return 'JazakAllah Khayr for asking! 💚 Zakat is 2.5% of your savings held for a full lunar year above the nisab threshold. Sadaqah (voluntary charity) can be given anytime — even a smile is sadaqah! 🤲';
-  if(m.includes('fast') || m.includes('ramadan') || m.includes('suhoor') || m.includes('iftar'))
-    return 'MashaAllah! 🌙 Ramadan is the blessed month of fasting, Qur'an and extra worship. Suhoor is before Fajr, Iftar is at Maghrib. "Whoever fasts Ramadan with faith and hoping for reward — his past sins are forgiven." (Bukhari) 🌟';
-  if(m.includes('hajj') || m.includes('umrah') || m.includes('mecca') || m.includes('kaaba'))
-    return 'MashaAllah! 🕋 Hajj is the 5th pillar of Islam — obligatory once in a lifetime for those who are able. Umrah is the lesser pilgrimage and can be done anytime. May Allah grant us all the opportunity. Ameen! 🤲';
-  if(m.includes('halal') || m.includes('haram') || m.includes('permiss'))
-    return 'Great question! 📚 In Islam, halal means permissible and haram means forbidden. When in doubt about any matter, it is best to consult a qualified Islamic scholar. The Islamic Finance Calc app in our store can help with halal finance! 💚';
-  // Greetings
-  if(m.includes('salam') || m.includes('hello') || m.includes('hi ') || m.includes('hey'))
-    return 'Wa alaykum as-salam wa rahmatullahi wa barakatuh! 😊 Welcome to the Never Hide Tech Community! Feel free to ask anything about our apps or Islamic topics. I am here to help 24/7! 🤖💚';
-  if(m.includes('good') || m.includes('alhamdulillah') || m.includes('great'))
-    return 'Alhamdulillah! 🌟 May Allah keep blessing you and your family. Is there anything I can help you with today? 😊';
-  // App questions  
-  if(m.includes('app') || m.includes('download') || m.includes('install'))
-    return '📱 You can browse all our apps in the Store tab! Tap any app to see details, screenshots and reviews. We have Islamic tools, AI assistants, business apps and more. Which type are you looking for? 🚀';
-  if(m.includes('ai') || m.includes('chatgpt') || m.includes('groq') || m.includes('artificial'))
-    return '🤖 We have 3 AI-powered apps in our store! Islamic AI Assistant (Qur'an & Hadith Q&A), Quran AI Tafsir (deep verse explanations) and Never Hide AI Chat (team productivity). Check the 🤖 AI category in the Store! ⚡';
-  if(m.includes('price') || m.includes('cost') || m.includes('free') || m.includes('pay'))
-    return '💰 Most apps in the Never Hide Tech Store are free to download! Some premium apps have optional upgrades. Check each app's page for pricing details. 🌟';
-  // General helpful response
-  const general = [
-    'JazakAllah Khayr for sharing that! 💚 Our community is here to help each other. Does anyone else have thoughts on this? 🤲',
-    'MashaAllah! That is a great point. 🌟 If you have any questions about our apps or need Islamic guidance, I am always here! 🤖',
-    'SubhanAllah! 🙏 Thank you for being part of the Never Hide Tech family. Is there anything specific I can help you find in our store? 📱',
-    'Alhamdulillah! 💚 Great to have you in the community. Feel free to explore our Store tab — we have amazing Islamic and productivity apps! 🚀',
-    'Barakallah feek! 🌟 I noticed your message — if no one replies, I am always here to help 24/7. Ask me anything! 🤖'
-  ];
-  return general[Math.floor(Math.random()*general.length)];
-}
-
-// ── ADMIN ──
-function adminLogin() {
-  const pass = document.getElementById('adm-pass').value;
-  if (pass === ADMIN_PASS) {
-    adminLoggedIn = true;
-    document.getElementById('admin-login-section').style.display = 'none';
-    document.getElementById('admin-dashboard').style.display = 'block';
-    renderAdminList();
-    showToast('✅ Welcome back, Suleiman!');
-  } else {
-    document.getElementById('adm-err').textContent = '❌ Wrong password.';
-    setTimeout(() => document.getElementById('adm-err').textContent = '', 3000);
-  }
-}
-function adminLogout() {
-  adminLoggedIn = false;
-  document.getElementById('adm-pass').value = '';
-  document.getElementById('admin-login-section').style.display = '';
-  document.getElementById('admin-dashboard').style.display = 'none';
-  showToast('Logged out','info');
-}
-function submitApp() {
-  const name  = document.getElementById('adm-name').value.trim();
-  const desc  = document.getElementById('adm-desc').value.trim();
-  const url   = document.getElementById('adm-url').value.trim();
-  const cat   = document.getElementById('adm-cat').value;
-  const emoji = document.getElementById('adm-emoji').value.trim() || '📱';
-  if (!name||!desc||!url) { showToast('Fill all required fields','err'); return; }
-  APPS.unshift({ id:Date.now(), name, emoji, cat, desc, url, rating:5.0, downloads:'0+', reviews:[], badge:'New', screenshots:['📱','🌐','✨'], likes:0, installed:false });
-  renderApps(); renderAdminList();
-  ['adm-name','adm-desc','adm-url','adm-emoji'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('pf-stat-apps').textContent = APPS.length;
-  showToast(`✅ "${name}" published instantly!`,'ok',4000);
-}
-function renderAdminList() {
-  document.getElementById('adm-apps-list').innerHTML = APPS.map(a=>`
-    <div class="adm-app-row">
-      <div class="adm-app-ico">${a.emoji}</div>
-      <div style="flex:1"><div class="adm-app-name">${a.name}</div><div style="font-size:.68rem;color:var(--txt2)">${a.cat}</div></div>
-      <span class="adm-app-status status-live">Live</span>
-      <button class="adm-del-btn" onclick="deleteApp(${a.id})">🗑</button>
-    </div>`).join('');
-}
-function deleteApp(id) {
-  if (!confirm('Remove this app from the store?')) return;
-  APPS = APPS.filter(a => a.id !== id);
-  renderApps(); renderAdminList();
-  showToast('App removed','info');
-}
-
-// ── THEME ──
+// ═══════════════════════════════════════
+//  THEME
+// ═══════════════════════════════════════
 function setTheme(t, el) {
   document.documentElement.setAttribute('data-theme', t);
-  document.querySelectorAll('.theme-opt').forEach(b => b.classList.remove('on'));
-  el?.classList.add('on');
   localStorage.setItem('nhps_theme', t);
-  const msgs = {light:'☀️ Light mode',dark:'🌙 Dark mode — moon is up!',islamic:'🕌 Islamic Green'};
-  showToast(msgs[t]||t);
+  document.querySelectorAll('.theme-opt').forEach(function(b){ b.classList.remove('on'); });
+  if (el) el.classList.add('on');
+  const saved = document.querySelector('.theme-opt[data-t="' + t + '"]');
+  if (saved) saved.classList.add('on');
 }
 
-// ── LOGIN ──
-function submitLogin() {
-  const name  = document.getElementById('login-name').value.trim();
-  const phone = document.getElementById('login-phone').value.trim();
-  if (!name||!phone) { showToast('Please enter name and phone','err'); return; }
-  userInfo = { name, phone };
+function toggleThemePanel() {
+  document.getElementById('theme-panel').classList.toggle('open');
+}
+
+// ═══════════════════════════════════════
+//  LOGIN
+// ═══════════════════════════════════════
+function doLogin() {
+  const n = document.getElementById('login-name').value.trim();
+  const e = document.getElementById('login-email').value.trim();
+  const p = document.getElementById('login-pass').value.trim();
+  if (!n || !e || !p) { document.getElementById('login-err').style.display = 'block'; return; }
+  userInfo = { name: n, email: e };
   localStorage.setItem('nhps_user', JSON.stringify(userInfo));
-  // Send to Vercel Customer.io backend (never exposes keys)
-  fetch('/api/register', {
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ name, phone })
-  }).catch(()=>{});
   document.getElementById('login-overlay').classList.remove('open');
-  showToast('🎉 Welcome, ' + name + '!');
+  updateProfileUI();
+  showToast('✅ Welcome, ' + n + '!');
 }
-function skipLogin() { document.getElementById('login-overlay').classList.remove('open'); }
 
-// ── INIT ──
-document.addEventListener('DOMContentLoaded', () => {
-  // restore theme
-  const saved = localStorage.getItem('nhps_theme');
-  if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
-    document.querySelector(`.theme-opt[data-t="${saved}"]`)?.classList.add('on');
+function skipLogin() {
+  document.getElementById('login-overlay').classList.remove('open');
+  showToast('👋 Browsing as Guest');
+}
+
+function logout() {
+  userInfo = null;
+  localStorage.removeItem('nhps_user');
+  updateProfileUI();
+  showToast('👋 Signed out');
+}
+
+function updateProfileUI() {
+  if (userInfo) {
+    document.getElementById('pf-name').textContent = userInfo.name;
+    document.getElementById('pf-email').textContent = userInfo.email;
+    document.getElementById('pf-avatar').textContent = userInfo.name[0].toUpperCase();
+    document.getElementById('logout-card').style.display = 'block';
   } else {
-    // auto dark at night
-    // Auto-dark disabled — user controls theme from Profile tab
+    document.getElementById('pf-name').textContent = 'Guest User';
+    document.getElementById('pf-email').textContent = 'Sign in to save your data';
+    document.getElementById('pf-avatar').textContent = '👤';
+    document.getElementById('logout-card').style.display = 'none';
   }
-  buildStars();
+  document.getElementById('pf-stat-installed').textContent = installedIds.length;
+}
+
+function saveProfile() {
+  const n = document.getElementById('pf-name-inp').value.trim();
+  const e = document.getElementById('pf-email-inp').value.trim();
+  if (n) { userInfo = userInfo || {}; userInfo.name = n; userInfo.email = e || (userInfo ? userInfo.email : ''); localStorage.setItem('nhps_user', JSON.stringify(userInfo)); updateProfileUI(); }
+  showToast('✅ Profile saved!');
+}
+
+// ═══════════════════════════════════════
+//  ADMIN
+// ═══════════════════════════════════════
+function renderAdminList() {
+  const list = document.getElementById('adm-app-list');
+  if (!list) return;
+  list.innerHTML = APPS.map(function(a){
+    return '<div class="adm-app-row">' + a.emoji + ' <strong>' + a.name + '</strong>' +
+      '<button class="adm-del-btn" onclick="adminDelApp(' + a.id + ')">Delete</button></div>';
+  }).join('');
+}
+
+function adminAddApp() {
+  const n = document.getElementById('adm-name').value.trim();
+  const em = document.getElementById('adm-emoji').value.trim();
+  const cat = document.getElementById('adm-cat').value;
+  const desc = document.getElementById('adm-desc').value.trim();
+  const url = document.getElementById('adm-url').value.trim();
+  const rating = parseFloat(document.getElementById('adm-rating').value) || 4.5;
+  if (!n || !em || !desc) { showToast('⚠️ Fill all required fields'); return; }
+  const newId = Math.max.apply(null, APPS.map(function(a){ return a.id; })) + 1;
+  APPS.push({ id: newId, name: n, emoji: em, cat: cat, desc: desc, url: url || '#', rating: rating, downloads: '0+', reviews: [], badge: 'New', screenshots: ['📱','🌐','✨'], likes: 0, installed: false });
+  renderApps();
+  renderAdminList();
+  document.getElementById('pf-stat-apps').textContent = APPS.length;
+  showToast('✅ ' + n + ' added!');
+}
+
+function adminDelApp(id) {
+  if (!confirm('Remove this app?')) return;
+  APPS = APPS.filter(function(a){ return a.id !== id; });
+  renderApps();
+  renderAdminList();
+  showToast('🗑️ App removed');
+}
+
+// ═══════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2500);
+}
+
+// ═══════════════════════════════════════
+//  INIT — runs immediately, no waiting
+// ═══════════════════════════════════════
+(function init() {
+  // Restore theme
+  const savedTheme = localStorage.getItem('nhps_theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    const opt = document.querySelector('.theme-opt[data-t="' + savedTheme + '"]');
+    if (opt) { document.querySelectorAll('.theme-opt').forEach(function(b){ b.classList.remove('on'); }); opt.classList.add('on'); }
+  }
+
+  // Render apps immediately
   renderApps();
   renderChat();
-  document.getElementById('pf-stat-apps').textContent = APPS.length;
-  if (!userInfo) setTimeout(() => document.getElementById('login-overlay').classList.add('open'), 1200);
-  // Secret admin access via URL hash
-  if (window.location.hash === '#admin2026') showView('admin-view');
-  window.addEventListener('hashchange', () => {
-    if (window.location.hash === '#admin2026') showView('admin-view');
-  });
-});
+  updateProfileUI();
 
-// ══ THEME FAB ══
-function toggleFabMenu() {
-  const menu = document.getElementById('theme-fab-menu');
-  menu.classList.toggle('open');
-}
-function fabSetTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('nhps_theme', t);
-  const icons = {light:'☀️', dark:'🌙', islamic:'🕌'};
-  document.getElementById('theme-fab-btn').textContent = icons[t];
-  // highlight active
-  ['light','dark','islamic'].forEach(k => {
-    const el = document.getElementById('fab-'+k);
-    if(el) el.classList.toggle('active-theme', k===t);
+  // Show login after delay if not logged in
+  if (!userInfo) {
+    setTimeout(function() {
+      document.getElementById('login-overlay').classList.add('open');
+    }, 2000);
+  }
+
+  // Admin access via URL hash
+  if (window.location.hash === '#admin2026') showView('admin-view', null);
+  window.addEventListener('hashchange', function() {
+    if (window.location.hash === '#admin2026') showView('admin-view', null);
   });
-  document.getElementById('theme-fab-menu').classList.remove('open');
-  showToast(icons[t] + ' ' + {light:'Light mode',dark:'Dark mode — moon is up!',islamic:'Islamic Green'}[t]);
-  // sync profile theme opts too
-  document.querySelectorAll('.theme-opt').forEach(b => b.classList.remove('on'));
-  document.querySelector(`.theme-opt[data-t="${t}"]`)?.classList.add('on');
-}
-// Make FAB draggable
-(function(){
-  const fab = document.getElementById('theme-fab');
-  let dragging=false, startX=0, startY=0, origX=0, origY=0, moved=false;
-  fab.addEventListener('pointerdown', e => {
-    if(e.target.classList.contains('fab-opt')) return;
-    dragging=true; moved=false;
-    startX=e.clientX; startY=e.clientY;
-    const r=fab.getBoundingClientRect();
-    origX=r.right; origY=r.bottom;
-    fab.setPointerCapture(e.pointerId);
-    e.preventDefault();
-  });
-  fab.addEventListener('pointermove', e => {
-    if(!dragging) return;
-    const dx=e.clientX-startX, dy=e.clientY-startY;
-    if(Math.abs(dx)>5||Math.abs(dy)>5) moved=true;
-    const newRight = Math.max(8, window.innerWidth-(origX+dx));
-    const newBottom = Math.max(80, window.innerHeight-(origY+dy));
-    fab.style.right = newRight+'px';
-    fab.style.bottom = newBottom+'px';
-    fab.style.left = 'auto';
-    fab.style.top = 'auto';
-  });
-  fab.addEventListener('pointerup', e => {
-    dragging=false;
-    if(moved) document.getElementById('theme-fab-menu').classList.remove('open');
+
+  // Close theme panel on outside click
+  document.addEventListener('click', function(e) {
+    const fab = document.getElementById('fab-theme');
+    const panel = document.getElementById('theme-panel');
+    if (fab && panel && !fab.contains(e.target) && !panel.contains(e.target)) {
+      panel.classList.remove('open');
+    }
   });
 })();
-// Init FAB icon to match saved theme
-(function(){
-  const t = localStorage.getItem('nhps_theme') || 'light';
-  const icons = {light:'☀️', dark:'🌙', islamic:'🕌'};
-  const btn = document.getElementById('theme-fab-btn');
-  if(btn) btn.textContent = icons[t]||'🎨';
-  const el = document.getElementById('fab-'+t);
-  if(el) el.classList.add('active-theme');
-})();
-
 </script>
-
-<!-- DRAGGABLE THEME FAB -->
-<div id="theme-fab">
-  <div id="theme-fab-menu">
-    <div class="fab-opt" id="fab-islamic" onclick="fabSetTheme('islamic')" title="Islamic Green">🕌</div>
-    <div class="fab-opt" id="fab-dark"    onclick="fabSetTheme('dark')"    title="Dark Mode">🌙</div>
-    <div class="fab-opt" id="fab-light"   onclick="fabSetTheme('light')"   title="Light Mode">☀️</div>
-  </div>
-  <div id="theme-fab-btn" onclick="toggleFabMenu()">🎨</div>
-</div>
-
 </body>
 </html>
