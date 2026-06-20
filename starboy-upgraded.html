@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Suleiman Play Store</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a6a4a">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--p:#0a6a4a;--p2:#157850;--gold:#c9a84c;--bg:#f4f6f8;--card:#fff;--hdr:#fff;--txt:#111;--txt2:#555;--bdr:#e0e0e0;--nav-h:62px;--r:16px;--sh:0 2px 12px rgba(0,0,0,.08);--sh2:0 6px 24px rgba(0,0,0,.13);}
+[data-theme="dark"]{--bg:#0f0f0f;--card:#1a1a1a;--hdr:#1a1a1a;--txt:#f0f0f0;--txt2:#aaa;--bdr:#2a2a2a;}
+[data-theme="forest"]{--p:#1a6b3c;--p2:#2d8a52;--bg:#f0f7f3;}
+[data-theme="ocean"]{--p:#0a4a8a;--p2:#1565c0;--bg:#f0f4fb;}
+[data-theme="sunset"]{--p:#c0392b;--p2:#e74c3c;--bg:#fdf5f5;}
+[data-theme="gold"]{--p:#b8860b;--p2:#daa520;--bg:#fefdf0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--txt);}
+.view{display:none;position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);overflow-y:auto;overflow-x:hidden;background:var(--bg);}
+.view.active{display:block;}
+#chat-view.active{display:flex;flex-direction:column;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--hdr);border-top:1px solid var(--bdr);display:flex;z-index:100;}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:var(--txt2);font-size:.62rem;font-weight:600;cursor:pointer;}
+.nav-btn.active{color:var(--p);}
+.nav-icon{font-size:1.4rem;}
+.store-header{background:linear-gradient(135deg,var(--p),var(--p2));padding:50px 18px 22px;position:relative;}
+.sh-brand{display:flex;align-items:center;gap:12px;}
+.sh-logo{font-size:2.2rem;}
+.sh-title{font-size:1.15rem;font-weight:800;color:#fff;}
+.sh-sub{font-size:.72rem;color:rgba(255,255,255,.75);}
+.store-search-wrap{display:flex;align-items:center;gap:10px;margin:14px 14px 0;background:var(--card);border-radius:24px;padding:11px 16px;border:1.5px solid var(--bdr);box-shadow:var(--sh);}
+.store-search{flex:1;border:none;outline:none;background:none;font-size:.9rem;color:var(--txt);}
+.cats-bar{display:flex;gap:8px;padding:12px 14px;overflow-x:auto;scrollbar-width:none;}
+.cats-bar::-webkit-scrollbar{display:none;}
+.cat-pill{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);color:var(--txt2);font-size:.78rem;font-weight:600;cursor:pointer;}
+.cat-pill.on{background:var(--p);color:#fff;border-color:var(--p);}
+.sec-label{font-size:.72rem;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;padding:0 14px 10px;}
+#apps-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px 90px;}
+.app-card{background:var(--card);border-radius:var(--r);border:1.5px solid var(--bdr);padding:14px;box-shadow:var(--sh);cursor:pointer;position:relative;}
+.ac-icon-wrap{width:56px;height:56px;border-radius:14px;margin:0 auto 10px;background:linear-gradient(135deg,rgba(10,106,74,.12),rgba(21,120,80,.12));display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.ac-name{font-size:.82rem;font-weight:800;text-align:center;color:var(--txt);margin-bottom:4px;}
+.ac-meta{display:flex;justify-content:center;gap:6px;font-size:.66rem;color:var(--txt2);margin-bottom:6px;}
+.ac-desc{font-size:.7rem;color:var(--txt2);text-align:center;line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.ac-open-btn{display:block;width:100%;padding:8px;border-radius:10px;background:var(--p);border:none;color:#fff;font-size:.76rem;font-weight:700;cursor:pointer;}
+.ac-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:#fff;font-size:.56rem;font-weight:800;padding:2px 6px;border-radius:8px;}
+.empty-state{grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--txt2);}
+#app-detail-view{display:none;position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);overflow-y:auto;background:var(--bg);z-index:50;}
+.detail-back{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--hdr);border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:10;}
+.back-btn{background:var(--bg);border:1.5px solid var(--bdr);padding:7px 14px;border-radius:20px;font-size:.78rem;font-weight:700;color:var(--txt2);cursor:pointer;}
+.detail-title-hd{font-weight:800;font-size:.92rem;color:var(--txt);flex:1;text-align:center;}
+.detail-hero{background:linear-gradient(135deg,var(--p),var(--p2));padding:28px 20px 22px;text-align:center;}
+.dh-icon{width:86px;height:86px;border-radius:22px;margin:0 auto 12px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:2.8rem;}
+.dh-name{font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:4px;}
+.dh-meta{display:flex;justify-content:center;gap:18px;margin-top:12px;}
+.dhm{text-align:center;}
+.dhm-n{font-size:1rem;font-weight:800;color:#fff;}
+.dhm-l{font-size:.62rem;color:rgba(255,255,255,.6);}
+.dh-open-btn{display:inline-block;margin-top:14px;padding:11px 32px;border-radius:24px;background:#fff;color:var(--p);font-weight:800;font-size:.88rem;border:none;cursor:pointer;}
+.install-wrap{padding:14px 20px 0;}
+.install-btn{width:100%;padding:13px;border-radius:14px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;}
+.install-btn.done{background:#22c55e;}
+.prog-bg{background:var(--bdr);border-radius:10px;height:8px;margin-top:10px;overflow:hidden;display:none;}
+.prog-fill{height:100%;background:var(--p);border-radius:10px;width:0%;transition:width .1s linear;}
+.prog-lbl{font-size:.7rem;color:var(--txt2);text-align:center;margin-top:4px;display:none;}
+.detail-body{padding:16px;}
+.det-sec{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.det-sec-title{font-size:.72rem;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
+.det-desc{font-size:.84rem;color:var(--txt2);line-height:1.75;}
+.ss-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;}
+.ss-mock{width:130px;height:220px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;}
+.share-row{display:flex;gap:8px;padding:0 20px 12px;}
+.share-btn,.like-btn{flex:1;background:var(--bg);border:1.5px solid var(--bdr);border-radius:12px;padding:10px;font-size:.8rem;font-weight:700;color:var(--txt);cursor:pointer;}
+#chat-view{background:var(--bg);}
+.chat-header{background:linear-gradient(135deg,var(--p),var(--p2));padding:50px 14px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.chat-hdr-av{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.chat-hdr-name{font-size:.93rem;font-weight:800;color:#fff;flex:1;}
+.chat-hdr-sub{font-size:.67rem;color:rgba(255,255,255,.65);}
+.online-bar{background:rgba(10,106,74,.07);border-bottom:1px solid var(--bdr);padding:7px 14px;font-size:.72rem;color:var(--p);font-weight:600;flex-shrink:0;}
+.chat-messages{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:6px;}
+.cmsg{display:flex;flex-direction:column;max-width:78%;}
+.cmsg.mine{align-self:flex-end;align-items:flex-end;}
+.cmsg.other{align-self:flex-start;}
+.cmsg-bubble{padding:9px 13px;font-size:.84rem;line-height:1.5;word-break:break-word;}
+.cmsg.mine .cmsg-bubble{background:var(--p);color:#fff;border-radius:16px 16px 4px 16px;}
+.cmsg.other .cmsg-bubble{background:var(--card);color:var(--txt);border:1px solid var(--bdr);border-radius:16px 16px 16px 4px;}
+.cmsg-meta{font-size:.6rem;color:var(--txt2);margin-top:2px;padding:0 4px;}
+.cmsg-sender{font-size:.68rem;font-weight:700;color:var(--p);margin-bottom:3px;padding:0 2px;}
+.chat-input-bar{padding:10px 12px;display:flex;gap:8px;background:var(--hdr);border-top:1px solid var(--bdr);flex-shrink:0;}
+.chat-input{flex:1;padding:10px 14px;border:2px solid var(--bdr);border-radius:22px;background:var(--card);color:var(--txt);font-size:.88rem;outline:none;}
+.chat-send-btn{width:42px;height:42px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.profile-header{background:linear-gradient(135deg,var(--p),var(--p2));padding:50px 18px 30px;text-align:center;}
+.pf-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.2);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;}
+.pf-name{font-size:1.1rem;font-weight:800;color:#fff;}
+.pf-email{font-size:.76rem;color:rgba(255,255,255,.7);margin-top:4px;}
+.pf-stats{display:flex;justify-content:center;gap:24px;margin-top:16px;}
+.pf-stat{text-align:center;}
+.pf-stat-n{font-size:1.1rem;font-weight:800;color:#fff;}
+.pf-stat-l{font-size:.62rem;color:rgba(255,255,255,.65);}
+.profile-body{padding:14px 14px 90px;}
+.pf-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.pf-card-title{font-size:.72rem;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;}
+.pf-field{width:100%;padding:10px 13px;border:1.5px solid var(--bdr);border-radius:10px;background:var(--bg);color:var(--txt);font-size:.86rem;outline:none;margin-bottom:10px;}
+.pf-btn{width:100%;padding:12px;border-radius:11px;background:var(--p);border:none;color:#fff;font-size:.88rem;font-weight:700;cursor:pointer;margin-top:6px;}
+.pf-logout-btn{width:100%;padding:12px;border-radius:11px;background:#ef4444;border:none;color:#fff;font-size:.88rem;font-weight:700;cursor:pointer;}
+.login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;display:none;align-items:center;justify-content:center;padding:20px;}
+.login-overlay.open{display:flex;}
+.login-box{background:var(--card);border-radius:20px;padding:28px 22px;width:100%;max-width:360px;}
+.login-logo{text-align:center;font-size:2.5rem;margin-bottom:6px;}
+.login-title{text-align:center;font-size:1rem;font-weight:800;color:var(--txt);margin-bottom:4px;}
+.login-sub{text-align:center;font-size:.76rem;color:var(--txt2);margin-bottom:20px;}
+.login-field{width:100%;padding:12px 14px;border:1.5px solid var(--bdr);border-radius:12px;background:var(--bg);color:var(--txt);font-size:.9rem;outline:none;margin-bottom:10px;}
+.login-btn{width:100%;padding:13px;border-radius:12px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;}
+.login-err{color:#ef4444;font-size:.78rem;text-align:center;margin-top:8px;display:none;}
+.login-skip{text-align:center;margin-top:12px;font-size:.78rem;color:var(--p);cursor:pointer;font-weight:600;}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#111;color:#fff;padding:10px 20px;border-radius:20px;font-size:.82rem;font-weight:600;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.fab-theme{position:fixed;bottom:80px;right:14px;width:46px;height:46px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.3rem;display:flex;align-items:center;justify-content:center;cursor:grab;box-shadow:var(--sh2);z-index:200;touch-action:none;user-select:none;-webkit-user-select:none;}
+.fab-theme:active{cursor:grabbing;transform:scale(1.1);}
+
+/* ===== UPGRADE BANNER + SUBMENU ===== */
+.upgrade-banner {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  background: linear-gradient(90deg, #1a5c3a, #0a6a4a, #c9a84c);
+  background-size: 200% 100%;
+  animation: banner-shimmer 3s ease-in-out infinite;
+  padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+@keyframes banner-shimmer {
+  0%,100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.upgrade-banner-text {
+  display: flex; align-items: center; gap: 8px; flex: 1;
+}
+.upgrade-banner-icon { font-size: 1.4rem; animation: bounce-icon 1.5s ease-in-out infinite; }
+@keyframes bounce-icon { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.upgrade-banner-title { color: #fff; font-size: .82rem; font-weight: 800; line-height: 1.2; }
+.upgrade-banner-sub { color: rgba(255,255,255,.8); font-size: .65rem; }
+.upgrade-banner-arrow {
+  background: rgba(255,255,255,0.25); border: none; border-radius: 20px;
+  color: #fff; font-size: .72rem; font-weight: 800; padding: 5px 12px;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+}
+.upgrade-banner-close {
+  background: none; border: none; color: rgba(255,255,255,0.7);
+  font-size: 1rem; cursor: pointer; padding: 0 4px; flex-shrink: 0;
+}
+
+/* Submenu drawer */
+.upgrade-submenu {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 998;
+  background: var(--card); border-bottom: 2px solid var(--bdr);
+  transform: translateY(-100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18); padding: 0;
+}
+.upgrade-submenu.open { transform: translateY(44px); }
+.submenu-header {
+  background: linear-gradient(135deg, #1a5c3a, #0a6a4a);
+  padding: 16px 16px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.submenu-title { color: #fff; font-size: .95rem; font-weight: 800; }
+.submenu-badge { background: #c9a84c; color: #fff; font-size: .6rem; font-weight: 800; border-radius: 10px; padding: 2px 8px; }
+.submenu-close { background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 28px; height: 28px; color: #fff; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.submenu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px; }
+.submenu-item {
+  background: var(--bg); border: 1.5px solid var(--bdr); border-radius: 14px;
+  padding: 14px 12px; display: flex; flex-direction: column; align-items: center;
+  gap: 6px; cursor: pointer; text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative; overflow: hidden;
+}
+.submenu-item:active { transform: scale(0.96); }
+.submenu-item-new {
+  position: absolute; top: 6px; right: 6px; background: #e74c3c;
+  color: #fff; font-size: .5rem; font-weight: 800; border-radius: 6px; padding: 1px 5px;
+}
+.submenu-item-icon { font-size: 1.8rem; }
+.submenu-item-name { font-size: .75rem; font-weight: 800; color: var(--txt); text-align: center; }
+.submenu-item-desc { font-size: .62rem; color: var(--txt2); text-align: center; line-height: 1.4; }
+.submenu-main-btn {
+  margin: 0 14px 14px; width: calc(100% - 28px);
+  background: linear-gradient(135deg, #1a5c3a, #0a6a4a);
+  color: #fff; border: none; border-radius: 14px; padding: 14px;
+  font-size: .88rem; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 4px 16px rgba(26,92,58,0.35);
+}
+.submenu-overlay {
+  position: fixed; inset: 0; z-index: 997; background: rgba(0,0,0,0.4);
+  display: none;
+}
+.submenu-overlay.open { display: block; }
+
+/* Push page content down when banner shows */
+body.banner-visible .view { top: 44px !important; bottom: var(--nav-h) !important; }
+body.banner-visible #app-detail-view { top: 44px !important; }
+
+</style>
+</head>
+<body>
+
+<!-- UPGRADE OVERLAY (closes submenu when tapping outside) -->
+<div class="submenu-overlay" id="submenu-overlay" onclick="closeSubmenu()"></div>
+
+<!-- UPGRADE BANNER -->
+<div class="upgrade-banner" id="upgrade-banner" onclick="toggleSubmenu()">
+  <div class="upgrade-banner-text">
+    <span class="upgrade-banner-icon">🚀</span>
+    <div>
+      <div class="upgrade-banner-title">✨ Suleiman Store V2 is LIVE!</div>
+      <div class="upgrade-banner-sub">3D cards · Sky themes · Clock AI · Admin panel</div>
+    </div>
+  </div>
+  <button class="upgrade-banner-arrow" onclick="event.stopPropagation(); window.open('https://suleiman-store-ten.vercel.app','_blank')">Visit →</button>
+  <button class="upgrade-banner-close" onclick="event.stopPropagation(); closeBanner()">✕</button>
+</div>
+
+<!-- UPGRADE SUBMENU DRAWER -->
+<div class="upgrade-submenu" id="upgrade-submenu">
+  <div class="submenu-header">
+    <div>
+      <div class="submenu-title">🏪 Never Hide Tech Empire</div>
+      <div style="color:rgba(255,255,255,.7);font-size:.68rem;margin-top:2px;">Choose your experience</div>
+    </div>
+    <span class="submenu-badge">NEW</span>
+    <button class="submenu-close" onclick="closeSubmenu()">✕</button>
+  </div>
+  <div class="submenu-grid">
+    <a class="submenu-item" href="https://suleiman-store-ten.vercel.app" target="_blank">
+      <span class="submenu-item-new">NEW</span>
+      <span class="submenu-item-icon">🏪</span>
+      <div class="submenu-item-name">Store V2</div>
+      <div class="submenu-item-desc">3D cards, sky themes, install animation</div>
+    </a>
+    <a class="submenu-item" href="https://suleiman-store-ten.vercel.app/community" target="_blank">
+      <span class="submenu-item-icon">💬</span>
+      <div class="submenu-item-name">Community</div>
+      <div class="submenu-item-desc">Ask questions · Clock AI answers</div>
+    </a>
+    <a class="submenu-item" href="https://suleiman-store-ten.vercel.app/admin" target="_blank">
+      <span class="submenu-item-icon">👑</span>
+      <div class="submenu-item-name">Admin Panel</div>
+      <div class="submenu-item-desc">Manage apps, users, announcements</div>
+    </a>
+    <a class="submenu-item" href="https://suleiman-store-ten.vercel.app/auth" target="_blank">
+      <span class="submenu-item-icon">🔐</span>
+      <div class="submenu-item-name">Sign In / Register</div>
+      <div class="submenu-item-desc">Create your account on V2</div>
+    </a>
+  </div>
+  <button class="submenu-main-btn" onclick="window.open('https://suleiman-store-ten.vercel.app','_blank')">
+    🚀 Open Suleiman Store V2 — Full Experience
+  </button>
+</div>
+
+
+<div id="store-view" class="view active">
+  <div class="store-header">
+    <div class="sh-brand">
+      <div class="sh-logo">&#127978;</div>
+      <div>
+        <div class="sh-title">Suleiman Play Store</div>
+        <div class="sh-sub">Never Hide Tech Empire &middot; All apps one place</div>
+      </div>
+    </div>
+  </div>
+  <div class="store-search-wrap">
+    <span>&#128269;</span>
+    <input class="store-search" id="store-search" placeholder="Search apps&hellip;" oninput="filterApps()">
+  </div>
+  <div class="cats-bar" id="cats-bar">
+    <button class="cat-pill on" onclick="setCat('all',this)">All</button>
+    <button class="cat-pill" onclick="setCat('Islamic',this)">&#128332; Islamic</button>
+    <button class="cat-pill" onclick="setCat('Business',this)">&#128188; Business</button>
+    <button class="cat-pill" onclick="setCat('Chat',this)">&#128172; Chat</button>
+    <button class="cat-pill" onclick="setCat('Tools',this)">&#128295; Tools</button>
+    <button class="cat-pill" onclick="setCat('Education',this)">&#128218; Education</button>
+    <button class="cat-pill" onclick="setCat('AI',this)">&#129302; AI</button>
+  </div>
+  <div class="sec-label" id="apps-sec-label">&#128293; Featured Apps</div>
+  <div id="apps-grid"></div>
+</div>
+
+<div id="app-detail-view">
+  <div class="detail-back">
+    <button class="back-btn" onclick="closeDetail()">&#8592; Back</button>
+    <div class="detail-title-hd" id="detail-title-hd">App</div>
+    <div style="width:60px"></div>
+  </div>
+  <div id="detail-content"></div>
+</div>
+
+<div id="chat-view" class="view">
+  <div class="chat-header">
+    <div class="chat-hdr-av">&#128172;</div>
+    <div>
+      <div class="chat-hdr-name">Community Chat</div>
+      <div class="chat-hdr-sub">Never Hide Tech Empire</div>
+    </div>
+  </div>
+  <div class="online-bar">&#127802; Community is online</div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-input-bar">
+    <input class="chat-input" id="chat-input" placeholder="Type a message&hellip;" onkeydown="if(event.key==='Enter')sendMsg()">
+    <button class="chat-send-btn" onclick="sendMsg()">&#10148;</button>
+  </div>
+</div>
+
+<div id="profile-view" class="view">
+  <div class="profile-header">
+    <div class="pf-avatar" id="pf-avatar">&#128100;</div>
+    <div class="pf-name" id="pf-name">Guest User</div>
+    <div class="pf-email" id="pf-email">Sign in to save your data</div>
+    <div class="pf-stats">
+      <div class="pf-stat"><div class="pf-stat-n" id="pf-stat-apps">11</div><div class="pf-stat-l">Apps</div></div>
+      <div class="pf-stat"><div class="pf-stat-n" id="pf-stat-installed">0</div><div class="pf-stat-l">Installed</div></div>
+      <div class="pf-stat"><div class="pf-stat-n">5&#9733;</div><div class="pf-stat-l">Rating</div></div>
+    </div>
+  </div>
+  <div class="profile-body">
+    <div class="pf-card">
+      <div class="pf-card-title">&#127912; Theme</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onclick="setTheme('default')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);cursor:pointer;font-size:.8rem;">&#127807; Default</button>
+        <button onclick="setTheme('dark')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);cursor:pointer;font-size:.8rem;">&#127761; Dark</button>
+        <button onclick="setTheme('forest')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);cursor:pointer;font-size:.8rem;">&#127794; Forest</button>
+        <button onclick="setTheme('ocean')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);cursor:pointer;font-size:.8rem;">&#127754; Ocean</button>
+        <button onclick="setTheme('sunset')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);cursor:pointer;font-size:.8rem;">&#127749; Sunset</button>
+      </div>
+    </div>
+    <div class="pf-card">
+      <div class="pf-card-title">&#128100; Account</div>
+      <input class="pf-field" id="pf-name-inp" placeholder="Display Name">
+      <input class="pf-field" id="pf-email-inp" placeholder="Email" type="email">
+      <button class="pf-btn" onclick="saveProfile()">Save Profile</button>
+    </div>
+    <div class="pf-card">
+      <div class="pf-card-title">&#128222; Help</div>
+      <p style="font-size:.82rem;color:var(--txt2);margin-bottom:8px;">Contact us anytime:</p>
+      <p style="font-size:.85rem;font-weight:700;color:var(--p);">&#128241; 0599931348</p>
+      <p style="font-size:.85rem;font-weight:700;color:var(--p);margin-top:4px;">&#128241; 0248503631</p>
+    </div>
+    <div class="pf-card" id="logout-card" style="display:none">
+      <button class="pf-logout-btn" onclick="logout()">&#128682; Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-store" onclick="showView('store-view','nav-store')">
+    <span class="nav-icon">&#127978;</span>Store
+  </button>
+  <button class="nav-btn" id="nav-chat" onclick="showView('chat-view','nav-chat')">
+    <span class="nav-icon">&#128172;</span>Community
+  </button>
+  <button class="nav-btn" id="nav-profile" onclick="showView('profile-view','nav-profile')">
+    <span class="nav-icon">&#128100;</span>Profile
+  </button>
+</nav>
+
+<div class="login-overlay" id="login-overlay">
+  <div class="login-box">
+    <div class="login-logo">&#127978;</div>
+    <div class="login-title">Welcome to Suleiman Store</div>
+    <div class="login-sub">Sign in to access all features</div>
+    <input class="login-field" id="login-name" placeholder="Your Name">
+    <input class="login-field" id="login-email" placeholder="Email Address" type="email">
+    <input class="login-field" id="login-pass" placeholder="Password" type="password">
+    <button class="login-btn" onclick="doLogin()">Sign In / Register</button>
+    <div class="login-err" id="login-err">Please fill in all fields</div>
+    <div class="login-skip" onclick="skipLogin()">Continue as Guest &#8594;</div>
+  </div>
+</div>
+
+<button class="fab-theme" id="fab-theme" title="Drag me anywhere! Tap to switch theme">&#127912;</button>
+<div class="toast" id="toast"></div>
+
+<script>
+var APPS = [
+  { id:1, name:"Islamic Google", emoji:"🔍", cat:"Islamic", desc:"The ultimate Islamic knowledge search engine. Search Qur'an, Hadith, Scholars and Lectures instantly.", url:"https://sulimanalhassan123as-code.github.io/ISLAMIC-GOOGEL/", rating:4.9, downloads:"1.2M+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
+  { id:2, name:"Dhikr Counter PRO", emoji:"📿", cat:"Islamic", desc:"A luxury digital tasbih. SubhanAllah, Alhamdulillah, Allahu Akbar with beautiful animations and progress tracking.", url:"https://juz-amma-pro-max.vercel.app", rating:4.8, downloads:"500K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
+  { id:3, name:"Business Chat", emoji:"💼", cat:"Chat", desc:"Secure communication hub for the Never Hide Tech Empire. Real-time messaging for your team.", url:"#", rating:5.0, downloads:"10K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
+  { id:4, name:"Never Hide App Store", emoji:"🏪", cat:"Business", desc:"The official app store for all Never Hide Tech Empire projects. Discover, install and review apps.", url:"https://starboy-pi.vercel.app", rating:4.7, downloads:"50K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
+  { id:5, name:"Juz Amma Pro Max", emoji:"📖", cat:"Islamic", desc:"Complete Juz 30 Qur'an app — Read, Listen, Memorize with 4 reciters, Stories of 25 Prophets and Night Radio.", url:"https://juz-amma-pro-max.vercel.app", rating:4.9, downloads:"200K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
+  { id:6, name:"SecureCheck", emoji:"🔒", cat:"Tools", desc:"Professional web security scanner. Detect payment API leaks, exposed keys and vulnerabilities.", url:"#", rating:4.6, downloads:"8K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
+  { id:7, name:"Islamic AI Assistant", emoji:"🤖", cat:"AI", desc:"Ask any Islamic question — Qur'an, Hadith, Fiqh, Fatwa. Powered by Groq AI for instant, scholar-verified answers.", url:"#", rating:4.9, downloads:"75K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
+  { id:8, name:"Never Hide AI Chat", emoji:"💬", cat:"AI", desc:"Smart AI-powered team assistant for the Tech Empire. Ask questions, summarise documents, generate content — all in one place.", url:"#", rating:4.8, downloads:"20K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
+  { id:9, name:"Quran AI Tafsir", emoji:"📖", cat:"AI", desc:"Deep Qur'an understanding powered by AI. Get verse-by-verse Tafsir, word meanings, context and life applications instantly.", url:"#", rating:5.0, downloads:"30K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
+  { id:10, name:"Prayer Times Pro", emoji:"🕌", cat:"Islamic", desc:"Accurate prayer times for any city worldwide. Qibla direction, Hijri calendar, Azan notifications and Ramadan countdown.", url:"#", rating:4.9, downloads:"150K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
+  { id:11, name:"Islamic Finance Calc", emoji:"💰", cat:"Business", desc:"Halal finance calculator. Zakat computation, Islamic mortgage comparison, profit-sharing (Musharakah) and Riba-free savings planner.", url:"#", rating:4.7, downloads:"25K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false }
+];
+
+var installedIds = JSON.parse(localStorage.getItem("nhps_ins") || "[]");
+var currentCat = "all";
+var currentSearch = "";
+var userInfo = JSON.parse(localStorage.getItem("nhps_user") || "null");
+
+function showView(id, btnId) {
+  var ids = ["store-view","chat-view","profile-view","admin-view"];
+  for (var i=0; i<ids.length; i++) {
+    var el = document.getElementById(ids[i]);
+    if (el) { el.classList.remove("active"); el.style.display = "none"; }
+  }
+  var t = document.getElementById(id);
+  if (!t) return;
+  t.classList.add("active");
+  t.style.display = (id === "chat-view") ? "flex" : "block";
+  var btns = document.querySelectorAll(".nav-btn");
+  for (var j=0; j<btns.length; j++) btns[j].classList.remove("active");
+  if (btnId) { var b = document.getElementById(btnId); if(b) b.classList.add("active"); }
+}
+
+function renderApps() {
+  var grid = document.getElementById("apps-grid");
+  if (!grid) { return; }
+  var q = currentSearch.toLowerCase();
+  var list = [];
+  for (var i=0; i<APPS.length; i++) {
+    var a = APPS[i];
+    var mc = (currentCat === "all" || a.cat === currentCat);
+    var ms = (!q || a.name.toLowerCase().indexOf(q)>=0 || a.desc.toLowerCase().indexOf(q)>=0);
+    if (mc && ms) list.push(a);
+  }
+  var lbl = document.getElementById("apps-sec-label");
+  if (lbl) lbl.textContent = q ? ("Results: " + currentSearch) : (currentCat === "all" ? "Featured Apps" : currentCat);
+  if (!list.length) { grid.innerHTML = "<div class=\"empty-state\"><p>No apps found.</p></div>"; return; }
+  var html = "";
+  for (var k=0; k<list.length; k++) {
+    var a = list[k];
+    var inst = installedIds.indexOf(a.id) >= 0;
+    html += "<div class=\"app-card\" onclick=\"openDetail(" + a.id + ")\">";
+    if (a.badge) html += "<div class=\"ac-badge\">" + a.badge + "</div>";
+    html += "<div class=\"ac-icon-wrap\">" + a.emoji + "</div>";
+    html += "<div class=\"ac-name\">" + a.name + "</div>";
+    html += "<div class=\"ac-meta\"><span>&#9733; " + a.rating + "</span><span>" + a.downloads + "</span></div>";
+    html += "<div class=\"ac-desc\">" + a.desc + "</div>";
+    html += "<button class=\"ac-open-btn\" style=\"" + (inst?"background:#22c55e":"") + "\">" + (inst?"Installed":"Open App") + "</button>";
+    html += "</div>";
+  }
+  grid.innerHTML = html;
+}
+
+function filterApps() {
+  var inp = document.getElementById("store-search");
+  currentSearch = inp ? inp.value : "";
+  renderApps();
+}
+
+function setCat(cat, el) {
+  currentCat = cat;
+  var pills = document.querySelectorAll(".cat-pill");
+  for (var i=0; i<pills.length; i++) pills[i].classList.remove("on");
+  if (el) el.classList.add("on");
+  renderApps();
+}
+
+function openDetail(id) {
+  var a = null;
+  for (var i=0; i<APPS.length; i++) { if (APPS[i].id === id) { a = APPS[i]; break; } }
+  if (!a) return;
+  var inst = installedIds.indexOf(a.id) >= 0;
+  var el = document.getElementById("detail-title-hd");
+  if (el) el.textContent = a.name;
+  var dc = document.getElementById("detail-content");
+  if (dc) dc.innerHTML =
+    "<div class=\"detail-hero\"><div class=\"dh-icon\">" + a.emoji + "</div>" +
+    "<div class=\"dh-name\">" + a.name + "</div>" +
+    "<div class=\"dh-meta\"><div class=\"dhm\"><div class=\"dhm-n\">&#9733; " + a.rating + "</div><div class=\"dhm-l\">Rating</div></div>" +
+    "<div class=\"dhm\"><div class=\"dhm-n\">" + a.downloads + "</div><div class=\"dhm-l\">Downloads</div></div></div>" +
+    "<button class=\"dh-open-btn\" onclick=\"window.open('" + a.url + "','_blank')\">Open App</button></div>" +
+    "<div class=\"install-wrap\"><button class=\"install-btn" + (inst?" done":"") + "\" id=\"ib-" + a.id + "\" onclick=\"installApp(" + a.id + ")\">" + (inst?"Installed":"Install") + "</button>" +
+    "<div class=\"prog-bg\" id=\"pb-" + a.id + "\"><div class=\"prog-fill\" id=\"pf-" + a.id + "\"></div></div>" +
+    "<div class=\"prog-lbl\" id=\"pl-" + a.id + "\">Installing...</div></div>" +
+    "<div class=\"share-row\"><button class=\"like-btn\" onclick=\"showToast('Liked!')\">Like</button>" +
+    "<button class=\"share-btn\" onclick=\"shareApp('" + encodeURIComponent(a.name) + "','" + a.url + "')\">Share</button></div>" +
+    "<div class=\"detail-body\"><div class=\"det-sec\"><div class=\"det-sec-title\">About</div><div class=\"det-desc\">" + a.desc + "</div></div>" +
+    "<div class=\"det-sec\"><div class=\"det-sec-title\">Screenshots</div><div class=\"ss-row\">" +
+    (a.screenshots||["&#128241;","&#127758;","&#10024;"]).map(function(s){return "<div class=\"ss-mock\">"+s+"</div>";}).join("") +
+    "</div></div></div>";
+  var dv = document.getElementById("app-detail-view");
+  if (dv) { dv.style.display = "block"; dv.scrollTop = 0; }
+}
+
+function closeDetail() {
+  var dv = document.getElementById("app-detail-view");
+  if (dv) dv.style.display = "none";
+}
+
+function installApp(id) {
+  if (installedIds.indexOf(id) >= 0) return;
+  var btn = document.getElementById("ib-"+id);
+  var bg = document.getElementById("pb-"+id);
+  var fill = document.getElementById("pf-"+id);
+  var lbl = document.getElementById("pl-"+id);
+  if (btn) btn.disabled = true;
+  if (bg) bg.style.display = "block";
+  if (lbl) lbl.style.display = "block";
+  var pct = 0;
+  var iv = setInterval(function() {
+    pct += 5;
+    if (fill) fill.style.width = pct + "%";
+    if (pct >= 100) {
+      clearInterval(iv);
+      installedIds.push(id);
+      localStorage.setItem("nhps_ins", JSON.stringify(installedIds));
+      if (btn) { btn.textContent = "Installed"; btn.classList.add("done"); btn.disabled = false; }
+      if (lbl) lbl.textContent = "Done!";
+      showToast("App installed!");
+      renderApps();
+    }
+  }, 50);
+}
+
+function shareApp(name, url) {
+  if (navigator.share) { navigator.share({title: decodeURIComponent(name), url: url}); }
+  else { navigator.clipboard.writeText(url).then(function(){ showToast("Link copied!"); }); }
+}
+
+var chatMsgs = [
+  {sender:"Ahmad K", text:"Assalamu Alaikum everyone!", time:"09:00", mine:false},
+  {sender:"Fatima M", text:"Wa Alaikum Assalam! Great store MashaAllah!", time:"09:02", mine:false},
+  {sender:"You", text:"Welcome to Suleiman Play Store!", time:"09:10", mine:true}
+];
+var AI_REPLIES = ["MashaAllah! Great point.","JazakAllah Khayr!","SubhanAllah — I agree!","Alhamdulillah!","May Allah bless you.","Excellent point!"];
+var AI_NAMES = ["Ahmad K","Fatima M","Ibrahim O","Musa T","Aisha B","Yusuf A"];
+
+function renderChat() {
+  var box = document.getElementById("chat-messages");
+  if (!box) return;
+  var html = "";
+  for (var i=0; i<chatMsgs.length; i++) {
+    var m = chatMsgs[i];
+    html += "<div class=\"cmsg " + (m.mine?"mine":"other") + "\">";
+    if (!m.mine) html += "<div class=\"cmsg-sender\">" + m.sender + "</div>";
+    html += "<div class=\"cmsg-bubble\">" + m.text + "</div>";
+    html += "<div class=\"cmsg-meta\">" + m.time + "</div></div>";
+  }
+  box.innerHTML = html;
+  box.scrollTop = box.scrollHeight;
+}
+
+function sendMsg() {
+  var inp = document.getElementById("chat-input");
+  var txt = inp.value.trim();
+  if (!txt) return;
+  var now = new Date();
+  var t = now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0");
+  chatMsgs.push({sender:"You", text:txt, time:t, mine:true});
+  inp.value = "";
+  renderChat();
+  if (Math.random() < 0.6) {
+    setTimeout(function(){
+      var name = AI_NAMES[Math.floor(Math.random()*AI_NAMES.length)];
+      var reply = AI_REPLIES[Math.floor(Math.random()*AI_REPLIES.length)];
+      var t2 = new Date();
+      var tt = t2.getHours().toString().padStart(2,"0")+":"+t2.getMinutes().toString().padStart(2,"0");
+      chatMsgs.push({sender:name, text:reply, time:tt, mine:false});
+      renderChat();
+    }, 1500);
+  }
+}
+
+function setTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  localStorage.setItem("nhps_theme", t);
+}
+
+function doLogin() {
+  var n = document.getElementById("login-name").value.trim();
+  var e = document.getElementById("login-email").value.trim();
+  var p = document.getElementById("login-pass").value.trim();
+  if (!n||!e||!p) { document.getElementById("login-err").style.display="block"; return; }
+  userInfo = {name:n, email:e};
+  localStorage.setItem("nhps_user", JSON.stringify(userInfo));
+  document.getElementById("login-overlay").classList.remove("open");
+  updateProfileUI();
+  showToast("Welcome, " + n + "!");
+}
+
+function skipLogin() {
+  document.getElementById("login-overlay").classList.remove("open");
+}
+
+function logout() {
+  userInfo = null;
+  localStorage.removeItem("nhps_user");
+  updateProfileUI();
+  showToast("Signed out");
+}
+
+function saveProfile() {
+  var n = document.getElementById("pf-name-inp").value.trim();
+  var e = document.getElementById("pf-email-inp").value.trim();
+  if (n) { userInfo = userInfo||{}; userInfo.name=n; userInfo.email=e; localStorage.setItem("nhps_user",JSON.stringify(userInfo)); updateProfileUI(); }
+  showToast("Profile saved!");
+}
+
+function updateProfileUI() {
+  var pn = document.getElementById("pf-name");
+  var pe = document.getElementById("pf-email");
+  var pa = document.getElementById("pf-avatar");
+  var lc = document.getElementById("logout-card");
+  if (userInfo) {
+    if(pn) pn.textContent = userInfo.name;
+    if(pe) pe.textContent = userInfo.email;
+    if(pa) pa.textContent = userInfo.name[0].toUpperCase();
+    if(lc) lc.style.display = "block";
+  } else {
+    if(pn) pn.textContent = "Guest User";
+    if(pe) pe.textContent = "Sign in to save your data";
+    if(pa) pa.textContent = String.fromCodePoint(128100);
+    if(lc) lc.style.display = "none";
+  }
+  var si = document.getElementById("pf-stat-installed");
+  if(si) si.textContent = installedIds.length;
+}
+
+function showToast(msg) {
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 2500);
+}
+
+// INIT
+(function() {
+  var savedTheme = localStorage.getItem("nhps_theme");
+  if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+  renderApps();
+  renderChat();
+  updateProfileUI();
+  if (!userInfo) {
+    setTimeout(function() {
+      var ol = document.getElementById("login-overlay");
+      if (ol) ol.classList.add("open");
+    }, 2000);
+  }
+  if (window.location.hash === "#admin2026") showView("admin-view", null);
+  window.addEventListener("hashchange", function() {
+    if (window.location.hash === "#admin2026") showView("admin-view", null);
+  });
+})();
+
+// ═══════════════════════════════════════
+//  DRAGGABLE FAB
+// ═══════════════════════════════════════
+(function() {
+  var fab = document.getElementById("fab-theme");
+  if (!fab) return;
+  var dragging = false, startX, startY, startLeft, startTop, moved;
+
+  // Tap = toggle theme
+  fab.addEventListener("click", function() {
+    if (moved) { moved = false; return; }
+    var cur = document.documentElement.getAttribute("data-theme") || "default";
+    var themes = ["default","dark","forest","ocean","sunset","gold"];
+    var next = themes[(themes.indexOf(cur) + 1) % themes.length];
+    setTheme(next);
+    showToast("Theme: " + next.charAt(0).toUpperCase() + next.slice(1));
+  });
+
+  // Mouse drag
+  fab.addEventListener("mousedown", function(e) {
+    e.preventDefault();
+    dragging = true; moved = false;
+    var rect = fab.getBoundingClientRect();
+    startX = e.clientX; startY = e.clientY;
+    startLeft = rect.left; startTop = rect.top;
+    fab.style.cursor = "grabbing";
+  });
+  document.addEventListener("mousemove", function(e) {
+    if (!dragging) return;
+    var dx = e.clientX - startX, dy = e.clientY - startY;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+    var newLeft = Math.max(0, Math.min(window.innerWidth - 50, startLeft + dx));
+    var newTop  = Math.max(0, Math.min(window.innerHeight - 50, startTop + dy));
+    fab.style.left   = newLeft + "px";
+    fab.style.top    = newTop  + "px";
+    fab.style.right  = "auto";
+    fab.style.bottom = "auto";
+  });
+  document.addEventListener("mouseup", function() {
+    if (!dragging) return;
+    dragging = false;
+    fab.style.cursor = "grab";
+    saveFabPos();
+  });
+
+  // Touch drag
+  fab.addEventListener("touchstart", function(e) {
+    e.preventDefault();
+    var t = e.touches[0];
+    dragging = true; moved = false;
+    var rect = fab.getBoundingClientRect();
+    startX = t.clientX; startY = t.clientY;
+    startLeft = rect.left; startTop = rect.top;
+  }, {passive:false});
+  fab.addEventListener("touchmove", function(e) {
+    if (!dragging) return;
+    e.preventDefault();
+    var t = e.touches[0];
+    var dx = t.clientX - startX, dy = t.clientY - startY;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+    var newLeft = Math.max(0, Math.min(window.innerWidth - 50, startLeft + dx));
+    var newTop  = Math.max(0, Math.min(window.innerHeight - 50, startTop + dy));
+    fab.style.left   = newLeft + "px";
+    fab.style.top    = newTop  + "px";
+    fab.style.right  = "auto";
+    fab.style.bottom = "auto";
+  }, {passive:false});
+  fab.addEventListener("touchend", function() {
+    dragging = false;
+    saveFabPos();
+  });
+
+  // Save/restore position
+  function saveFabPos() {
+    localStorage.setItem("fab_pos", JSON.stringify({left: fab.style.left, top: fab.style.top}));
+  }
+  var savedPos = JSON.parse(localStorage.getItem("fab_pos") || "null");
+  if (savedPos && savedPos.left) {
+    fab.style.left   = savedPos.left;
+    fab.style.top    = savedPos.top;
+    fab.style.right  = "auto";
+    fab.style.bottom = "auto";
+  }
+})();
+
+</script>
+
+<script>
+function toggleSubmenu() {
+  var menu = document.getElementById('upgrade-submenu');
+  var overlay = document.getElementById('submenu-overlay');
+  var isOpen = menu.classList.contains('open');
+  if (isOpen) { closeSubmenu(); } else { openSubmenu(); }
+}
+function openSubmenu() {
+  document.getElementById('upgrade-submenu').classList.add('open');
+  document.getElementById('submenu-overlay').classList.add('open');
+}
+function closeSubmenu() {
+  document.getElementById('upgrade-submenu').classList.remove('open');
+  document.getElementById('submenu-overlay').classList.remove('open');
+}
+function closeBanner() {
+  document.getElementById('upgrade-banner').style.display = 'none';
+  document.getElementById('upgrade-submenu').classList.remove('open');
+  document.getElementById('submenu-overlay').classList.remove('open');
+  document.body.classList.remove('banner-visible');
+}
+// Show banner and push content down
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('banner-visible');
+});
+</script>
+
+</body>
+</html>
