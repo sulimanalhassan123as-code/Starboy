@@ -1,5 +1,3 @@
 {
-  "redirects": [
-    { "source": "/(.*)", "destination": "https://starboy-pi-orcin.vercel.app/$1", "permanent": false }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
