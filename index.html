@@ -116,146 +116,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .fab-theme{position:fixed;bottom:80px;right:14px;width:46px;height:46px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.3rem;display:flex;align-items:center;justify-content:center;cursor:grab;box-shadow:var(--sh2);z-index:200;touch-action:none;user-select:none;-webkit-user-select:none;}
 .fab-theme:active{cursor:grabbing;transform:scale(1.1);}
 
-/* ===== UPGRADE BANNER + SUBMENU ===== */
-.upgrade-banner {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
-  background: linear-gradient(90deg, #1a5c3a, #0a6a4a, #c9a84c);
-  background-size: 200% 100%;
-  animation: banner-shimmer 3s ease-in-out infinite;
-  padding: 10px 16px;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 10px; cursor: pointer;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
-}
-@keyframes banner-shimmer {
-  0%,100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-.upgrade-banner-text {
-  display: flex; align-items: center; gap: 8px; flex: 1;
-}
-.upgrade-banner-icon { font-size: 1.4rem; animation: bounce-icon 1.5s ease-in-out infinite; }
-@keyframes bounce-icon { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-.upgrade-banner-title { color: #fff; font-size: .82rem; font-weight: 800; line-height: 1.2; }
-.upgrade-banner-sub { color: rgba(255,255,255,.8); font-size: .65rem; }
-.upgrade-banner-arrow {
-  background: rgba(255,255,255,0.25); border: none; border-radius: 20px;
-  color: #fff; font-size: .72rem; font-weight: 800; padding: 5px 12px;
-  cursor: pointer; white-space: nowrap; flex-shrink: 0;
-}
-.upgrade-banner-close {
-  background: none; border: none; color: rgba(255,255,255,0.7);
-  font-size: 1rem; cursor: pointer; padding: 0 4px; flex-shrink: 0;
-}
-
-/* Submenu drawer */
-.upgrade-submenu {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 998;
-  background: var(--card); border-bottom: 2px solid var(--bdr);
-  transform: translateY(-100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18); padding: 0;
-}
-.upgrade-submenu.open { transform: translateY(44px); }
-.submenu-header {
-  background: linear-gradient(135deg, #1a5c3a, #0a6a4a);
-  padding: 16px 16px 12px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.submenu-title { color: #fff; font-size: .95rem; font-weight: 800; }
-.submenu-badge { background: #c9a84c; color: #fff; font-size: .6rem; font-weight: 800; border-radius: 10px; padding: 2px 8px; }
-.submenu-close { background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 28px; height: 28px; color: #fff; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.submenu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px; }
-.submenu-item {
-  background: var(--bg); border: 1.5px solid var(--bdr); border-radius: 14px;
-  padding: 14px 12px; display: flex; flex-direction: column; align-items: center;
-  gap: 6px; cursor: pointer; text-decoration: none;
-  transition: transform 0.15s, box-shadow 0.15s;
-  position: relative; overflow: hidden;
-}
-.submenu-item:active { transform: scale(0.96); }
-.submenu-item-new {
-  position: absolute; top: 6px; right: 6px; background: #e74c3c;
-  color: #fff; font-size: .5rem; font-weight: 800; border-radius: 6px; padding: 1px 5px;
-}
-.submenu-item-icon { font-size: 1.8rem; }
-.submenu-item-name { font-size: .75rem; font-weight: 800; color: var(--txt); text-align: center; }
-.submenu-item-desc { font-size: .62rem; color: var(--txt2); text-align: center; line-height: 1.4; }
-.submenu-main-btn {
-  margin: 0 14px 14px; width: calc(100% - 28px);
-  background: linear-gradient(135deg, #1a5c3a, #0a6a4a);
-  color: #fff; border: none; border-radius: 14px; padding: 14px;
-  font-size: .88rem; font-weight: 800; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  box-shadow: 0 4px 16px rgba(26,92,58,0.35);
-}
-.submenu-overlay {
-  position: fixed; inset: 0; z-index: 997; background: rgba(0,0,0,0.4);
-  display: none;
-}
-.submenu-overlay.open { display: block; }
-
-/* Push page content down when banner shows */
-body.banner-visible .view { top: 44px !important; bottom: var(--nav-h) !important; }
-body.banner-visible #app-detail-view { top: 44px !important; }
-
+.typing-indicator{display:none;align-self:flex-start;padding:10px 14px;background:var(--card);border:1px solid var(--bdr);border-radius:16px 16px 16px 4px;margin-bottom:4px;}
+.typing-indicator span{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--p);margin:0 2px;animation:bounce .9s infinite;}
+.typing-indicator span:nth-child(2){animation-delay:.2s;}
+.typing-indicator span:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-6px);}}
+.cmsg.isAI .cmsg-bubble{background:linear-gradient(135deg,rgba(10,106,74,.12),rgba(21,120,80,.18));border:1.5px solid var(--p);color:var(--txt);}
+.cmsg.isAI .cmsg-sender{color:#b8860b;font-weight:800;}
 </style>
 </head>
 <body>
-
-<!-- UPGRADE OVERLAY (closes submenu when tapping outside) -->
-<div class="submenu-overlay" id="submenu-overlay" onclick="closeSubmenu()"></div>
-
-<!-- UPGRADE BANNER -->
-<div class="upgrade-banner" id="upgrade-banner" onclick="toggleSubmenu()">
-  <div class="upgrade-banner-text">
-    <span class="upgrade-banner-icon">🚀</span>
-    <div>
-      <div class="upgrade-banner-title">✨ Suleiman Store V2 is LIVE!</div>
-      <div class="upgrade-banner-sub">3D cards · Sky themes · Clock AI · Admin panel</div>
-    </div>
-  </div>
-  <button class="upgrade-banner-arrow" onclick="event.stopPropagation(); window.open('https://suleiman-store-ten.vercel.app','_blank')">Visit →</button>
-  <button class="upgrade-banner-close" onclick="event.stopPropagation(); closeBanner()">✕</button>
-</div>
-
-<!-- UPGRADE SUBMENU DRAWER -->
-<div class="upgrade-submenu" id="upgrade-submenu">
-  <div class="submenu-header">
-    <div>
-      <div class="submenu-title">🏪 Never Hide Tech Empire</div>
-      <div style="color:rgba(255,255,255,.7);font-size:.68rem;margin-top:2px;">Choose your experience</div>
-    </div>
-    <span class="submenu-badge">NEW</span>
-    <button class="submenu-close" onclick="closeSubmenu()">✕</button>
-  </div>
-  <div class="submenu-grid">
-    <a class="submenu-item" href="https://suleiman-store-ten.vercel.app" target="_blank">
-      <span class="submenu-item-new">NEW</span>
-      <span class="submenu-item-icon">🏪</span>
-      <div class="submenu-item-name">Store V2</div>
-      <div class="submenu-item-desc">3D cards, sky themes, install animation</div>
-    </a>
-    <a class="submenu-item" href="https://suleiman-store-ten.vercel.app/community" target="_blank">
-      <span class="submenu-item-icon">💬</span>
-      <div class="submenu-item-name">Community</div>
-      <div class="submenu-item-desc">Ask questions · Clock AI answers</div>
-    </a>
-    <a class="submenu-item" href="https://suleiman-store-ten.vercel.app/admin" target="_blank">
-      <span class="submenu-item-icon">👑</span>
-      <div class="submenu-item-name">Admin Panel</div>
-      <div class="submenu-item-desc">Manage apps, users, announcements</div>
-    </a>
-    <a class="submenu-item" href="https://suleiman-store-ten.vercel.app/auth" target="_blank">
-      <span class="submenu-item-icon">🔐</span>
-      <div class="submenu-item-name">Sign In / Register</div>
-      <div class="submenu-item-desc">Create your account on V2</div>
-    </a>
-  </div>
-  <button class="submenu-main-btn" onclick="window.open('https://suleiman-store-ten.vercel.app','_blank')">
-    🚀 Open Suleiman Store V2 — Full Experience
-  </button>
-</div>
-
 
 <div id="store-view" class="view active">
   <div class="store-header">
@@ -302,7 +172,7 @@ body.banner-visible #app-detail-view { top: 44px !important; }
     </div>
   </div>
   <div class="online-bar">&#127802; Community is online</div>
-  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-messages" id="chat-messages"><div class="typing-indicator" id="typing-indicator"><span></span><span></span><span></span></div></div>
   <div class="chat-input-bar">
     <input class="chat-input" id="chat-input" placeholder="Type a message&hellip;" onkeydown="if(event.key==='Enter')sendMsg()">
     <button class="chat-send-btn" onclick="sendMsg()">&#10148;</button>
@@ -524,22 +394,36 @@ var chatMsgs = [
   {sender:"Fatima M", text:"Wa Alaikum Assalam! Great store MashaAllah!", time:"09:02", mine:false},
   {sender:"You", text:"Welcome to Suleiman Play Store!", time:"09:10", mine:true}
 ];
-var AI_REPLIES = ["MashaAllah! Great point.","JazakAllah Khayr!","SubhanAllah — I agree!","Alhamdulillah!","May Allah bless you.","Excellent point!"];
-var AI_NAMES = ["Ahmad K","Fatima M","Ibrahim O","Musa T","Aisha B","Yusuf A"];
-
 function renderChat() {
   var box = document.getElementById("chat-messages");
   if (!box) return;
   var html = "";
   for (var i=0; i<chatMsgs.length; i++) {
     var m = chatMsgs[i];
-    html += "<div class=\"cmsg " + (m.mine?"mine":"other") + "\">";
+    var cls = m.mine ? "mine" : (m.isAI ? "other isAI" : "other");
+    html += "<div class=\"cmsg " + cls + "\">";
     if (!m.mine) html += "<div class=\"cmsg-sender\">" + m.sender + "</div>";
     html += "<div class=\"cmsg-bubble\">" + m.text + "</div>";
     html += "<div class=\"cmsg-meta\">" + m.time + "</div></div>";
   }
+  var ti = document.getElementById("typing-indicator");
   box.innerHTML = html;
+  if (ti) box.appendChild(ti);
   box.scrollTop = box.scrollHeight;
+}
+
+
+var aiTypingTimeout = null;
+
+function showTypingIndicator() {
+  var ti = document.getElementById("typing-indicator");
+  if (ti) { ti.style.display = "flex"; }
+  var box = document.getElementById("chat-messages");
+  if (box) box.scrollTop = box.scrollHeight;
+}
+function hideTypingIndicator() {
+  var ti = document.getElementById("typing-indicator");
+  if (ti) { ti.style.display = "none"; }
 }
 
 function sendMsg() {
@@ -548,19 +432,35 @@ function sendMsg() {
   if (!txt) return;
   var now = new Date();
   var t = now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0");
-  chatMsgs.push({sender:"You", text:txt, time:t, mine:true});
+  var userName = (userInfo && userInfo.name) ? userInfo.name : "You";
+  chatMsgs.push({sender: userName, text: txt, time: t, mine: true});
   inp.value = "";
   renderChat();
-  if (Math.random() < 0.6) {
-    setTimeout(function(){
-      var name = AI_NAMES[Math.floor(Math.random()*AI_NAMES.length)];
-      var reply = AI_REPLIES[Math.floor(Math.random()*AI_REPLIES.length)];
+
+  // Real Groq AI — fires after 5s if no human reply came
+  var msgCountBefore = chatMsgs.length;
+  aiTypingTimeout = setTimeout(function() {
+    if (chatMsgs.length !== msgCountBefore) return; // a human replied
+    showTypingIndicator();
+    fetch("/api/chat", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ message: txt, history: chatMsgs.slice(-8) })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      hideTypingIndicator();
+      if (!data.reply) return;
       var t2 = new Date();
       var tt = t2.getHours().toString().padStart(2,"0")+":"+t2.getMinutes().toString().padStart(2,"0");
-      chatMsgs.push({sender:name, text:reply, time:tt, mine:false});
+      chatMsgs.push({sender:"Suleiman AI 🤖", text: data.reply, time: tt, mine: false, isAI: true});
       renderChat();
-    }, 1500);
-  }
+    })
+    .catch(function(e) {
+      hideTypingIndicator();
+      console.error("Groq fetch error:", e);
+    });
+  }, 5000);
 }
 
 function setTheme(t) {
@@ -730,33 +630,5 @@ function showToast(msg) {
 })();
 
 </script>
-
-<script>
-function toggleSubmenu() {
-  var menu = document.getElementById('upgrade-submenu');
-  var overlay = document.getElementById('submenu-overlay');
-  var isOpen = menu.classList.contains('open');
-  if (isOpen) { closeSubmenu(); } else { openSubmenu(); }
-}
-function openSubmenu() {
-  document.getElementById('upgrade-submenu').classList.add('open');
-  document.getElementById('submenu-overlay').classList.add('open');
-}
-function closeSubmenu() {
-  document.getElementById('upgrade-submenu').classList.remove('open');
-  document.getElementById('submenu-overlay').classList.remove('open');
-}
-function closeBanner() {
-  document.getElementById('upgrade-banner').style.display = 'none';
-  document.getElementById('upgrade-submenu').classList.remove('open');
-  document.getElementById('submenu-overlay').classList.remove('open');
-  document.body.classList.remove('banner-visible');
-}
-// Show banner and push content down
-document.addEventListener('DOMContentLoaded', function() {
-  document.body.classList.add('banner-visible');
-});
-</script>
-
 </body>
 </html>
