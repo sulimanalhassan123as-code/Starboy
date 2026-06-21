@@ -1,634 +1,1141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
 <title>Suleiman Play Store</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a6a4a">
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#01875f"/>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-:root{--p:#0a6a4a;--p2:#157850;--gold:#c9a84c;--bg:#f4f6f8;--card:#fff;--hdr:#fff;--txt:#111;--txt2:#555;--bdr:#e0e0e0;--nav-h:62px;--r:16px;--sh:0 2px 12px rgba(0,0,0,.08);--sh2:0 6px 24px rgba(0,0,0,.13);}
-[data-theme="dark"]{--bg:#0f0f0f;--card:#1a1a1a;--hdr:#1a1a1a;--txt:#f0f0f0;--txt2:#aaa;--bdr:#2a2a2a;}
-[data-theme="forest"]{--p:#1a6b3c;--p2:#2d8a52;--bg:#f0f7f3;}
-[data-theme="ocean"]{--p:#0a4a8a;--p2:#1565c0;--bg:#f0f4fb;}
-[data-theme="sunset"]{--p:#c0392b;--p2:#e74c3c;--bg:#fdf5f5;}
-[data-theme="gold"]{--p:#b8860b;--p2:#daa520;--bg:#fefdf0;}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--txt);}
-.view{display:none;position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);overflow-y:auto;overflow-x:hidden;background:var(--bg);}
-.view.active{display:block;}
-#chat-view.active{display:flex;flex-direction:column;}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--hdr);border-top:1px solid var(--bdr);display:flex;z-index:100;}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;color:var(--txt2);font-size:.62rem;font-weight:600;cursor:pointer;}
-.nav-btn.active{color:var(--p);}
-.nav-icon{font-size:1.4rem;}
-.store-header{background:linear-gradient(135deg,var(--p),var(--p2));padding:50px 18px 22px;position:relative;}
-.sh-brand{display:flex;align-items:center;gap:12px;}
-.sh-logo{font-size:2.2rem;}
-.sh-title{font-size:1.15rem;font-weight:800;color:#fff;}
-.sh-sub{font-size:.72rem;color:rgba(255,255,255,.75);}
-.store-search-wrap{display:flex;align-items:center;gap:10px;margin:14px 14px 0;background:var(--card);border-radius:24px;padding:11px 16px;border:1.5px solid var(--bdr);box-shadow:var(--sh);}
-.store-search{flex:1;border:none;outline:none;background:none;font-size:.9rem;color:var(--txt);}
-.cats-bar{display:flex;gap:8px;padding:12px 14px;overflow-x:auto;scrollbar-width:none;}
-.cats-bar::-webkit-scrollbar{display:none;}
-.cat-pill{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);color:var(--txt2);font-size:.78rem;font-weight:600;cursor:pointer;}
-.cat-pill.on{background:var(--p);color:#fff;border-color:var(--p);}
-.sec-label{font-size:.72rem;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;padding:0 14px 10px;}
-#apps-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px 90px;}
-.app-card{background:var(--card);border-radius:var(--r);border:1.5px solid var(--bdr);padding:14px;box-shadow:var(--sh);cursor:pointer;position:relative;}
-.ac-icon-wrap{width:56px;height:56px;border-radius:14px;margin:0 auto 10px;background:linear-gradient(135deg,rgba(10,106,74,.12),rgba(21,120,80,.12));display:flex;align-items:center;justify-content:center;font-size:2rem;}
-.ac-name{font-size:.82rem;font-weight:800;text-align:center;color:var(--txt);margin-bottom:4px;}
-.ac-meta{display:flex;justify-content:center;gap:6px;font-size:.66rem;color:var(--txt2);margin-bottom:6px;}
-.ac-desc{font-size:.7rem;color:var(--txt2);text-align:center;line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.ac-open-btn{display:block;width:100%;padding:8px;border-radius:10px;background:var(--p);border:none;color:#fff;font-size:.76rem;font-weight:700;cursor:pointer;}
-.ac-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:#fff;font-size:.56rem;font-weight:800;padding:2px 6px;border-radius:8px;}
-.empty-state{grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--txt2);}
-#app-detail-view{display:none;position:fixed;top:0;left:0;right:0;bottom:var(--nav-h);overflow-y:auto;background:var(--bg);z-index:50;}
-.detail-back{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--hdr);border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:10;}
-.back-btn{background:var(--bg);border:1.5px solid var(--bdr);padding:7px 14px;border-radius:20px;font-size:.78rem;font-weight:700;color:var(--txt2);cursor:pointer;}
-.detail-title-hd{font-weight:800;font-size:.92rem;color:var(--txt);flex:1;text-align:center;}
-.detail-hero{background:linear-gradient(135deg,var(--p),var(--p2));padding:28px 20px 22px;text-align:center;}
-.dh-icon{width:86px;height:86px;border-radius:22px;margin:0 auto 12px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:2.8rem;}
-.dh-name{font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:4px;}
-.dh-meta{display:flex;justify-content:center;gap:18px;margin-top:12px;}
-.dhm{text-align:center;}
-.dhm-n{font-size:1rem;font-weight:800;color:#fff;}
-.dhm-l{font-size:.62rem;color:rgba(255,255,255,.6);}
-.dh-open-btn{display:inline-block;margin-top:14px;padding:11px 32px;border-radius:24px;background:#fff;color:var(--p);font-weight:800;font-size:.88rem;border:none;cursor:pointer;}
-.install-wrap{padding:14px 20px 0;}
-.install-btn{width:100%;padding:13px;border-radius:14px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;}
-.install-btn.done{background:#22c55e;}
-.prog-bg{background:var(--bdr);border-radius:10px;height:8px;margin-top:10px;overflow:hidden;display:none;}
-.prog-fill{height:100%;background:var(--p);border-radius:10px;width:0%;transition:width .1s linear;}
-.prog-lbl{font-size:.7rem;color:var(--txt2);text-align:center;margin-top:4px;display:none;}
-.detail-body{padding:16px;}
-.det-sec{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px;}
-.det-sec-title{font-size:.72rem;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;}
-.det-desc{font-size:.84rem;color:var(--txt2);line-height:1.75;}
-.ss-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;}
-.ss-mock{width:130px;height:220px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;}
-.share-row{display:flex;gap:8px;padding:0 20px 12px;}
-.share-btn,.like-btn{flex:1;background:var(--bg);border:1.5px solid var(--bdr);border-radius:12px;padding:10px;font-size:.8rem;font-weight:700;color:var(--txt);cursor:pointer;}
-#chat-view{background:var(--bg);}
-.chat-header{background:linear-gradient(135deg,var(--p),var(--p2));padding:50px 14px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.chat-hdr-av{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
-.chat-hdr-name{font-size:.93rem;font-weight:800;color:#fff;flex:1;}
-.chat-hdr-sub{font-size:.67rem;color:rgba(255,255,255,.65);}
-.online-bar{background:rgba(10,106,74,.07);border-bottom:1px solid var(--bdr);padding:7px 14px;font-size:.72rem;color:var(--p);font-weight:600;flex-shrink:0;}
-.chat-messages{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:6px;}
-.cmsg{display:flex;flex-direction:column;max-width:78%;}
-.cmsg.mine{align-self:flex-end;align-items:flex-end;}
-.cmsg.other{align-self:flex-start;}
-.cmsg-bubble{padding:9px 13px;font-size:.84rem;line-height:1.5;word-break:break-word;}
-.cmsg.mine .cmsg-bubble{background:var(--p);color:#fff;border-radius:16px 16px 4px 16px;}
-.cmsg.other .cmsg-bubble{background:var(--card);color:var(--txt);border:1px solid var(--bdr);border-radius:16px 16px 16px 4px;}
-.cmsg-meta{font-size:.6rem;color:var(--txt2);margin-top:2px;padding:0 4px;}
-.cmsg-sender{font-size:.68rem;font-weight:700;color:var(--p);margin-bottom:3px;padding:0 2px;}
-.chat-input-bar{padding:10px 12px;display:flex;gap:8px;background:var(--hdr);border-top:1px solid var(--bdr);flex-shrink:0;}
-.chat-input{flex:1;padding:10px 14px;border:2px solid var(--bdr);border-radius:22px;background:var(--card);color:var(--txt);font-size:.88rem;outline:none;}
-.chat-send-btn{width:42px;height:42px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.profile-header{background:linear-gradient(135deg,var(--p),var(--p2));padding:50px 18px 30px;text-align:center;}
-.pf-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.2);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;}
-.pf-name{font-size:1.1rem;font-weight:800;color:#fff;}
-.pf-email{font-size:.76rem;color:rgba(255,255,255,.7);margin-top:4px;}
-.pf-stats{display:flex;justify-content:center;gap:24px;margin-top:16px;}
-.pf-stat{text-align:center;}
-.pf-stat-n{font-size:1.1rem;font-weight:800;color:#fff;}
-.pf-stat-l{font-size:.62rem;color:rgba(255,255,255,.65);}
-.profile-body{padding:14px 14px 90px;}
-.pf-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:12px;}
-.pf-card-title{font-size:.72rem;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;}
-.pf-field{width:100%;padding:10px 13px;border:1.5px solid var(--bdr);border-radius:10px;background:var(--bg);color:var(--txt);font-size:.86rem;outline:none;margin-bottom:10px;}
-.pf-btn{width:100%;padding:12px;border-radius:11px;background:var(--p);border:none;color:#fff;font-size:.88rem;font-weight:700;cursor:pointer;margin-top:6px;}
-.pf-logout-btn{width:100%;padding:12px;border-radius:11px;background:#ef4444;border:none;color:#fff;font-size:.88rem;font-weight:700;cursor:pointer;}
-.login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;display:none;align-items:center;justify-content:center;padding:20px;}
-.login-overlay.open{display:flex;}
-.login-box{background:var(--card);border-radius:20px;padding:28px 22px;width:100%;max-width:360px;}
-.login-logo{text-align:center;font-size:2.5rem;margin-bottom:6px;}
-.login-title{text-align:center;font-size:1rem;font-weight:800;color:var(--txt);margin-bottom:4px;}
-.login-sub{text-align:center;font-size:.76rem;color:var(--txt2);margin-bottom:20px;}
-.login-field{width:100%;padding:12px 14px;border:1.5px solid var(--bdr);border-radius:12px;background:var(--bg);color:var(--txt);font-size:.9rem;outline:none;margin-bottom:10px;}
-.login-btn{width:100%;padding:13px;border-radius:12px;background:var(--p);border:none;color:#fff;font-size:.9rem;font-weight:800;cursor:pointer;}
-.login-err{color:#ef4444;font-size:.78rem;text-align:center;margin-top:8px;display:none;}
-.login-skip{text-align:center;margin-top:12px;font-size:.78rem;color:var(--p);cursor:pointer;font-weight:600;}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#111;color:#fff;padding:10px 20px;border-radius:20px;font-size:.82rem;font-weight:600;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.fab-theme{position:fixed;bottom:80px;right:14px;width:46px;height:46px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.3rem;display:flex;align-items:center;justify-content:center;cursor:grab;box-shadow:var(--sh2);z-index:200;touch-action:none;user-select:none;-webkit-user-select:none;}
-.fab-theme:active{cursor:grabbing;transform:scale(1.1);}
+:root{
+  --p:#01875f;--p2:#00574a;--acc:#00c853;
+  --bg:#f8f9fa;--card:#fff;--txt:#202124;--txt2:#5f6368;
+  --bdr:#dadce0;--sh:0 1px 3px rgba(0,0,0,.12);--sh2:0 4px 16px rgba(0,0,0,.15);
+  --radius:12px;--nav:#fff;--inp:#f1f3f4;
+  --featured-bg:linear-gradient(135deg,#01875f,#00574a);
+}
+[data-theme=dark]{
+  --bg:#121212;--card:#1e1e1e;--txt:#e8eaed;--txt2:#9aa0a6;
+  --bdr:#3c4043;--nav:#1e1e1e;--inp:#2d2e30;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Google Sans',Roboto,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;}
 
-.typing-indicator{display:none;align-self:flex-start;padding:10px 14px;background:var(--card);border:1px solid var(--bdr);border-radius:16px 16px 16px 4px;margin-bottom:4px;}
-.typing-indicator span{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--p);margin:0 2px;animation:bounce .9s infinite;}
+/* HEADER */
+.header{position:sticky;top:0;z-index:100;background:var(--nav);border-bottom:1px solid var(--bdr);padding:0 16px;}
+.header-inner{display:flex;align-items:center;height:56px;gap:12px;max-width:1200px;margin:0 auto;}
+.logo-wrap{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0;}
+.logo-svg{width:36px;height:36px;}
+.logo-text{font-size:1.1rem;font-weight:700;color:var(--p);white-space:nowrap;}
+.search-bar{flex:1;display:flex;align-items:center;background:var(--inp);border-radius:24px;padding:0 16px;height:40px;gap:8px;max-width:600px;}
+.search-bar input{flex:1;border:none;background:none;outline:none;font-size:.95rem;color:var(--txt);}
+.search-bar input::placeholder{color:var(--txt2);}
+.header-actions{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.avatar-btn{width:36px;height:36px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.theme-btn{width:36px;height:36px;border-radius:50%;background:var(--inp);border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}
+
+/* CATEGORIES CHIPS */
+.cats-bar{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--bdr);background:var(--nav);position:sticky;top:56px;z-index:99;}
+.cats-bar::-webkit-scrollbar{display:none;}
+.chip{padding:6px 16px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);color:var(--txt);font-size:.85rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:.2s;}
+.chip.active{background:var(--p);color:#fff;border-color:var(--p);}
+
+/* MAIN */
+.main{max-width:1200px;margin:0 auto;padding:16px;}
+
+/* FEATURED BANNER */
+.featured-banner{border-radius:var(--radius);overflow:hidden;margin-bottom:24px;}
+.featured-slide{background:var(--featured-bg);padding:28px 24px;color:#fff;position:relative;min-height:140px;display:flex;flex-direction:column;justify-content:flex-end;}
+.featured-slide .feat-icon{font-size:3rem;margin-bottom:8px;}
+.featured-slide .feat-name{font-size:1.3rem;font-weight:700;margin-bottom:4px;}
+.featured-slide .feat-desc{font-size:.85rem;opacity:.85;margin-bottom:12px;max-width:260px;}
+.feat-install-btn{display:inline-block;background:rgba(255,255,255,.2);color:#fff;border:1.5px solid rgba(255,255,255,.6);padding:8px 20px;border-radius:20px;font-size:.9rem;font-weight:600;cursor:pointer;backdrop-filter:blur(4px);}
+.featured-dots{display:flex;gap:6px;position:absolute;bottom:12px;right:16px;}
+.featured-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);}
+.featured-dots span.active{background:#fff;width:18px;border-radius:3px;}
+
+/* SECTION */
+.section{margin-bottom:28px;}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.section-title{font-size:1rem;font-weight:700;color:var(--txt);}
+.see-all{font-size:.85rem;color:var(--p);text-decoration:none;font-weight:600;}
+
+/* APP CARDS HORIZONTAL SCROLL */
+.apps-scroll{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
+.apps-scroll::-webkit-scrollbar{display:none;}
+.app-card-sm{width:120px;flex-shrink:0;cursor:pointer;}
+.app-card-sm .app-icon{width:72px;height:72px;border-radius:16px;background:var(--inp);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 6px;border:1px solid var(--bdr);}
+.app-card-sm .app-name{font-size:.8rem;font-weight:600;text-align:center;color:var(--txt);line-height:1.2;margin-bottom:2px;}
+.app-card-sm .app-cat{font-size:.72rem;color:var(--txt2);text-align:center;}
+.app-card-sm .app-rating-sm{font-size:.72rem;color:var(--txt2);text-align:center;}
+
+/* APP GRID (all apps) */
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+.app-card{background:var(--card);border-radius:var(--radius);padding:14px;cursor:pointer;border:1px solid var(--bdr);transition:.2s;box-shadow:var(--sh);}
+.app-card:hover{box-shadow:var(--sh2);transform:translateY(-2px);}
+.app-card .app-icon{width:60px;height:60px;border-radius:14px;background:var(--inp);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:8px;border:1px solid var(--bdr);}
+.app-card .app-name{font-size:.9rem;font-weight:600;color:var(--txt);margin-bottom:2px;line-height:1.3;}
+.app-card .app-cat-badge{font-size:.72rem;color:var(--txt2);margin-bottom:4px;}
+.app-card .stars{color:#fbbc04;font-size:.75rem;}
+.app-card .dl-count{font-size:.72rem;color:var(--txt2);}
+
+/* APP DETAIL SHEET */
+.sheet-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;}
+.sheet-overlay.open{display:flex;}
+.sheet{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-height:90vh;overflow-y:auto;padding:20px;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sheet-handle{width:40px;height:4px;background:var(--bdr);border-radius:2px;margin:0 auto 16px;}
+.sheet-icon{width:80px;height:80px;border-radius:20px;background:var(--inp);display:flex;align-items:center;justify-content:center;font-size:2.5rem;border:1px solid var(--bdr);margin-bottom:12px;}
+.sheet-name{font-size:1.3rem;font-weight:700;margin-bottom:2px;}
+.sheet-dev{font-size:.85rem;color:var(--p);font-weight:600;margin-bottom:8px;}
+.sheet-stats{display:flex;gap:16px;margin-bottom:16px;padding:12px 0;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);}
+.stat-item{text-align:center;flex:1;}
+.stat-val{font-size:1rem;font-weight:700;color:var(--txt);}
+.stat-lbl{font-size:.72rem;color:var(--txt2);}
+.install-btn{width:100%;padding:14px;background:var(--p);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:12px;transition:.2s;}
+.install-btn:hover{background:var(--p2);}
+.install-btn.installed{background:#e8f5e9;color:var(--p);border:2px solid var(--p);}
+.open-btn{width:100%;padding:13px;background:transparent;color:var(--p);border:2px solid var(--p);border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:16px;transition:.2s;}
+.sheet-desc{font-size:.9rem;color:var(--txt2);line-height:1.6;margin-bottom:16px;}
+.sheet-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--inp);border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}
+.sheet{position:relative;}
+
+/* REVIEWS */
+.reviews-section{margin-top:8px;}
+.review-title{font-size:.95rem;font-weight:700;margin-bottom:10px;}
+.review-card{background:var(--inp);border-radius:10px;padding:12px;margin-bottom:8px;}
+.review-meta{display:flex;justify-content:space-between;margin-bottom:4px;}
+.reviewer{font-size:.82rem;font-weight:600;}
+.review-stars{font-size:.8rem;color:#fbbc04;}
+.review-text{font-size:.82rem;color:var(--txt2);}
+.add-review{margin-top:10px;}
+.review-input{width:100%;padding:10px;border:1.5px solid var(--bdr);border-radius:10px;background:var(--inp);color:var(--txt);font-size:.9rem;resize:none;outline:none;margin-bottom:6px;}
+.star-select{display:flex;gap:6px;margin-bottom:8px;}
+.star-select span{font-size:1.4rem;cursor:pointer;opacity:.4;transition:.15s;}
+.star-select span.sel{opacity:1;}
+.submit-review{padding:8px 20px;background:var(--p);color:#fff;border:none;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;}
+
+/* COMMUNITY */
+.community-view{display:none;flex-direction:column;height:calc(100vh - 112px);}
+.community-view.active{display:flex;}
+.chat-header{padding:12px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px;}
+.chat-online{width:8px;height:8px;border-radius:50%;background:#00c853;flex-shrink:0;}
+.chat-title{font-size:1rem;font-weight:700;}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px;}
+.cmsg{display:flex;flex-direction:column;max-width:75%;}
+.cmsg.mine{align-self:flex-end;align-items:flex-end;}
+.cmsg.other{align-self:flex-start;align-items:flex-start;}
+.cmsg-sender{font-size:.72rem;color:var(--txt2);margin-bottom:2px;font-weight:600;}
+.cmsg.mine .cmsg-sender{color:var(--p);}
+.cmsg-bubble{padding:10px 14px;border-radius:18px;font-size:.9rem;line-height:1.4;}
+.cmsg.mine .cmsg-bubble{background:var(--p);color:#fff;border-radius:18px 18px 4px 18px;}
+.cmsg.other .cmsg-bubble{background:var(--card);border:1px solid var(--bdr);border-radius:18px 18px 18px 4px;}
+.cmsg.isAI .cmsg-bubble{background:linear-gradient(135deg,rgba(1,135,95,.12),rgba(0,87,74,.18));border:1.5px solid var(--p);}
+.cmsg.isAI .cmsg-sender{color:#b8860b;font-weight:800;}
+.cmsg-time{font-size:.68rem;color:var(--txt2);margin-top:2px;}
+.typing-indicator{display:none;align-items:center;gap:6px;padding:10px 14px;background:var(--card);border:1px solid var(--bdr);border-radius:18px;align-self:flex-start;margin-bottom:4px;}
+.typing-indicator span{width:7px;height:7px;border-radius:50%;background:var(--p);animation:tbounce .9s infinite;}
 .typing-indicator span:nth-child(2){animation-delay:.2s;}
 .typing-indicator span:nth-child(3){animation-delay:.4s;}
-@keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-6px);}}
-.cmsg.isAI .cmsg-bubble{background:linear-gradient(135deg,rgba(10,106,74,.12),rgba(21,120,80,.18));border:1.5px solid var(--p);color:var(--txt);}
-.cmsg.isAI .cmsg-sender{color:#b8860b;font-weight:800;}
+@keyframes tbounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.chat-input-row{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--bdr);background:var(--nav);}
+.chat-input{flex:1;padding:10px 16px;border:1.5px solid var(--bdr);border-radius:24px;background:var(--inp);color:var(--txt);font-size:.9rem;outline:none;}
+.chat-send{width:42px;height:42px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* PROFILE */
+.profile-view{display:none;padding:20px;}
+.profile-view.active{display:block;}
+.profile-card{background:var(--card);border-radius:var(--radius);padding:20px;text-align:center;border:1px solid var(--bdr);margin-bottom:16px;}
+.profile-avatar{width:80px;height:80px;border-radius:50%;background:var(--p);color:#fff;font-size:2rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+.profile-name{font-size:1.1rem;font-weight:700;margin-bottom:4px;}
+.profile-email{font-size:.85rem;color:var(--txt2);margin-bottom:12px;}
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
+.pstat{text-align:center;}
+.pstat-val{font-size:1.2rem;font-weight:700;color:var(--p);}
+.pstat-lbl{font-size:.72rem;color:var(--txt2);}
+.installed-list{background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid var(--bdr);}
+.installed-title{font-size:.95rem;font-weight:700;margin-bottom:12px;}
+.inst-item{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--bdr);}
+.inst-item:last-child{border-bottom:none;}
+.inst-icon{width:44px;height:44px;border-radius:10px;background:var(--inp);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.inst-info{flex:1;}
+.inst-name{font-size:.9rem;font-weight:600;}
+.inst-cat{font-size:.75rem;color:var(--txt2);}
+.open-app-btn{padding:6px 14px;background:var(--p);color:#fff;border:none;border-radius:20px;font-size:.8rem;font-weight:600;cursor:pointer;}
+
+/* ADMIN */
+.admin-view{display:none;padding:20px;}
+.admin-view.active{display:block;}
+.admin-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.admin-title{font-size:1.2rem;font-weight:700;}
+.admin-badge{background:var(--p);color:#fff;padding:2px 10px;border-radius:10px;font-size:.75rem;font-weight:700;}
+.admin-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;}
+.admin-card{background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid var(--bdr);}
+.admin-card-val{font-size:1.8rem;font-weight:700;color:var(--p);}
+.admin-card-lbl{font-size:.8rem;color:var(--txt2);}
+.publish-form{background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid var(--bdr);margin-bottom:16px;}
+.publish-title{font-size:.95rem;font-weight:700;margin-bottom:12px;}
+.form-field{margin-bottom:10px;}
+.form-label{font-size:.8rem;color:var(--txt2);margin-bottom:4px;display:block;font-weight:600;}
+.form-input{width:100%;padding:10px;border:1.5px solid var(--bdr);border-radius:8px;background:var(--inp);color:var(--txt);font-size:.9rem;outline:none;}
+.form-input:focus{border-color:var(--p);}
+.form-select{width:100%;padding:10px;border:1.5px solid var(--bdr);border-radius:8px;background:var(--inp);color:var(--txt);font-size:.9rem;outline:none;}
+.publish-btn{width:100%;padding:12px;background:var(--p);color:#fff;border:none;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:6px;}
+.apps-manage-list .manage-item{background:var(--card);border-radius:10px;padding:12px;border:1px solid var(--bdr);margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.manage-actions{display:flex;gap:6px;margin-left:auto;}
+.edit-btn{padding:4px 10px;background:var(--inp);border:1px solid var(--bdr);border-radius:6px;font-size:.75rem;cursor:pointer;color:var(--txt);}
+.delete-btn{padding:4px 10px;background:#fce8e6;border:1px solid #f28b82;border-radius:6px;font-size:.75rem;cursor:pointer;color:#c5221f;}
+.unpublish-btn{padding:4px 10px;background:#fef3e2;border:1px solid #fbbc04;border-radius:6px;font-size:.75rem;cursor:pointer;color:#b06000;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--nav);border-top:1px solid var(--bdr);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 4px;background:none;border:none;cursor:pointer;color:var(--txt2);font-size:.65rem;font-weight:500;gap:3px;transition:.15s;}
+.nav-btn svg{width:22px;height:22px;fill:currentColor;}
+.nav-btn.active{color:var(--p);}
+.nav-btn .nav-label{font-size:.65rem;}
+
+/* STORE VIEW */
+.store-view{display:none;padding-bottom:80px;}
+.store-view.active{display:block;}
+
+/* LOGIN MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--card);border-radius:20px;padding:28px 24px;width:90%;max-width:380px;text-align:center;}
+.modal-logo{font-size:3rem;margin-bottom:8px;}
+.modal-title{font-size:1.2rem;font-weight:700;margin-bottom:4px;}
+.modal-sub{font-size:.85rem;color:var(--txt2);margin-bottom:20px;}
+.modal-input{width:100%;padding:12px;border:1.5px solid var(--bdr);border-radius:10px;background:var(--inp);color:var(--txt);font-size:.9rem;outline:none;margin-bottom:10px;}
+.modal-input:focus{border-color:var(--p);}
+.modal-btn{width:100%;padding:13px;background:var(--p);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:8px;}
+.modal-skip{color:var(--p);font-size:.85rem;cursor:pointer;font-weight:600;}
+.modal-err{color:#c5221f;font-size:.82rem;margin-top:6px;}
+
+/* UPDATE BADGE */
+.update-badge{display:inline-block;background:#e8f5e9;color:var(--p);font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:24px;font-size:.85rem;z-index:999;opacity:0;transition:.3s;white-space:nowrap;}
+.toast.show{opacity:1;}
+
+/* FAB THEME */
+.fab-theme{position:fixed;bottom:80px;right:14px;width:46px;height:46px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.3rem;display:flex;align-items:center;justify-content:center;cursor:grab;box-shadow:var(--sh2);z-index:200;touch-action:none;user-select:none;}
+.fab-theme:active{cursor:grabbing;transform:scale(1.1);}
+
+/* UPDATES BANNER */
+.updates-strip{background:linear-gradient(90deg,var(--p),var(--acc));color:#fff;padding:8px 16px;font-size:.8rem;font-weight:600;text-align:center;}
+
+/* RESPONSIVE */
+@media(min-width:600px){
+  .apps-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));}
+  .admin-cards{grid-template-columns:repeat(4,1fr);}
+}
+
+/* SEARCH RESULTS */
+.search-results{padding:16px;padding-bottom:80px;}
+.search-results-title{font-size:.85rem;color:var(--txt2);margin-bottom:12px;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px 20px;color:var(--txt2);}
+.empty-state .empty-icon{font-size:3rem;margin-bottom:8px;}
+.empty-state p{font-size:.9rem;}
 </style>
 </head>
 <body>
 
-<div id="store-view" class="view active">
-  <div class="store-header">
-    <div class="sh-brand">
-      <div class="sh-logo">&#127978;</div>
-      <div>
-        <div class="sh-title">Suleiman Play Store</div>
-        <div class="sh-sub">Never Hide Tech Empire &middot; All apps one place</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <div class="modal-logo">🎮</div>
+    <div class="modal-title">Suleiman Play Store</div>
+    <div class="modal-sub">Never Hide Tech Empire · Sign in to get started</div>
+    <input class="modal-input" id="loginName" placeholder="Your Name" autocomplete="name"/>
+    <input class="modal-input" id="loginEmail" placeholder="Email Address" type="email" autocomplete="email"/>
+    <input class="modal-input" id="loginPass" placeholder="Password" type="password"/>
+    <button class="modal-btn" onclick="doLogin()">Sign In / Register</button>
+    <div class="modal-skip" onclick="continueGuest()">Continue as Guest →</div>
+    <div class="modal-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <a class="logo-wrap" href="#" onclick="showView('storeView')">
+      <svg class="logo-svg" viewBox="0 0 36 36" fill="none">
+        <rect width="36" height="36" rx="10" fill="#01875f"/>
+        <text x="18" y="24" text-anchor="middle" font-size="18" fill="white">🎮</text>
+      </svg>
+      <span class="logo-text">Suleiman Play</span>
+    </a>
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Search apps & games…" oninput="doSearch(this.value)"/>
+    </div>
+    <div class="header-actions">
+      <button class="theme-btn" onclick="toggleTheme()" id="themeBtnHeader">🌙</button>
+      <button class="avatar-btn" id="avatarBtn" onclick="showView('profileView')">G</button>
+    </div>
+  </div>
+</header>
+
+<!-- CATEGORIES -->
+<div class="cats-bar" id="catsBar">
+  <div class="chip active" onclick="filterCat('all',this)">All</div>
+  <div class="chip" onclick="filterCat('Islamic',this)">🕌 Islamic</div>
+  <div class="chip" onclick="filterCat('AI',this)">🤖 AI</div>
+  <div class="chip" onclick="filterCat('Business',this)">💼 Business</div>
+  <div class="chip" onclick="filterCat('Tools',this)">🔧 Tools</div>
+  <div class="chip" onclick="filterCat('Games',this)">🎮 Games</div>
+  <div class="chip" onclick="filterCat('Chat',this)">💬 Chat</div>
+</div>
+
+<!-- STORE VIEW -->
+<div class="store-view active" id="storeView">
+  <!-- Featured banner -->
+  <div class="featured-banner" id="featuredBanner" style="margin:16px 16px 0;">
+    <div class="featured-slide" id="featSlide">
+      <div class="feat-icon" id="featIcon">📖</div>
+      <div class="feat-name" id="featName">Juz Amma Pro Max</div>
+      <div class="feat-desc" id="featDesc">Complete Juz 30 Quran with 4 reciters, memorization tools & Night Radio</div>
+      <div class="feat-install-btn" onclick="openFeatured()">Open App ▸</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- Top Charts -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title">⭐ Top Charts</span>
+        <a class="see-all" href="#" onclick="filterCat('all',null)">See all</a>
+      </div>
+      <div class="apps-scroll" id="topChartsScroll"></div>
+    </div>
+
+    <!-- Islamic Apps -->
+    <div class="section" id="islamicSection">
+      <div class="section-header">
+        <span class="section-title">🕌 Islamic Apps</span>
+        <a class="see-all" href="#" onclick="filterCat('Islamic',document.querySelector('[onclick*=Islamic]'))">See all</a>
+      </div>
+      <div class="apps-scroll" id="islamicScroll"></div>
+    </div>
+
+    <!-- All Apps Grid -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title" id="gridTitle">🏪 All Apps</span>
+      </div>
+      <div class="apps-grid" id="appsGrid"></div>
+      <div class="empty-state" id="emptyState" style="display:none">
+        <div class="empty-icon">🔍</div>
+        <p>No apps found</p>
       </div>
     </div>
   </div>
-  <div class="store-search-wrap">
-    <span>&#128269;</span>
-    <input class="store-search" id="store-search" placeholder="Search apps&hellip;" oninput="filterApps()">
-  </div>
-  <div class="cats-bar" id="cats-bar">
-    <button class="cat-pill on" onclick="setCat('all',this)">All</button>
-    <button class="cat-pill" onclick="setCat('Islamic',this)">&#128332; Islamic</button>
-    <button class="cat-pill" onclick="setCat('Business',this)">&#128188; Business</button>
-    <button class="cat-pill" onclick="setCat('Chat',this)">&#128172; Chat</button>
-    <button class="cat-pill" onclick="setCat('Tools',this)">&#128295; Tools</button>
-    <button class="cat-pill" onclick="setCat('Education',this)">&#128218; Education</button>
-    <button class="cat-pill" onclick="setCat('AI',this)">&#129302; AI</button>
-  </div>
-  <div class="sec-label" id="apps-sec-label">&#128293; Featured Apps</div>
-  <div id="apps-grid"></div>
 </div>
 
-<div id="app-detail-view">
-  <div class="detail-back">
-    <button class="back-btn" onclick="closeDetail()">&#8592; Back</button>
-    <div class="detail-title-hd" id="detail-title-hd">App</div>
-    <div style="width:60px"></div>
-  </div>
-  <div id="detail-content"></div>
-</div>
-
-<div id="chat-view" class="view">
+<!-- COMMUNITY VIEW -->
+<div class="community-view" id="communityView">
   <div class="chat-header">
-    <div class="chat-hdr-av">&#128172;</div>
-    <div>
-      <div class="chat-hdr-name">Community Chat</div>
-      <div class="chat-hdr-sub">Never Hide Tech Empire</div>
+    <div class="chat-online"></div>
+    <div class="chat-title">Community Chat</div>
+    <span style="font-size:.75rem;color:var(--txt2);margin-left:auto;">Never Hide Tech Empire</span>
+  </div>
+  <div class="chat-msgs" id="chatMsgs">
+    <div class="typing-indicator" id="typingIndicator">
+      <span></span><span></span><span></span>
+      <span style="font-size:.75rem;color:var(--txt2);width:auto;height:auto;background:none;animation:none;">Suleiman AI is typing…</span>
     </div>
   </div>
-  <div class="online-bar">&#127802; Community is online</div>
-  <div class="chat-messages" id="chat-messages"><div class="typing-indicator" id="typing-indicator"><span></span><span></span><span></span></div></div>
-  <div class="chat-input-bar">
-    <input class="chat-input" id="chat-input" placeholder="Type a message&hellip;" onkeydown="if(event.key==='Enter')sendMsg()">
-    <button class="chat-send-btn" onclick="sendMsg()">&#10148;</button>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" placeholder="Message the community…" onkeydown="if(event.key==='Enter')sendMsg()"/>
+    <button class="chat-send" onclick="sendMsg()">➤</button>
   </div>
 </div>
 
-<div id="profile-view" class="view">
-  <div class="profile-header">
-    <div class="pf-avatar" id="pf-avatar">&#128100;</div>
-    <div class="pf-name" id="pf-name">Guest User</div>
-    <div class="pf-email" id="pf-email">Sign in to save your data</div>
-    <div class="pf-stats">
-      <div class="pf-stat"><div class="pf-stat-n" id="pf-stat-apps">11</div><div class="pf-stat-l">Apps</div></div>
-      <div class="pf-stat"><div class="pf-stat-n" id="pf-stat-installed">0</div><div class="pf-stat-l">Installed</div></div>
-      <div class="pf-stat"><div class="pf-stat-n">5&#9733;</div><div class="pf-stat-l">Rating</div></div>
+<!-- PROFILE VIEW -->
+<div class="profile-view" id="profileView">
+  <div class="profile-card">
+    <div class="profile-avatar" id="profileAvatar">G</div>
+    <div class="profile-name" id="profileName">Guest</div>
+    <div class="profile-email" id="profileEmail">Not signed in</div>
+    <div class="profile-stats">
+      <div class="pstat"><div class="pstat-val" id="pstatInstalled">0</div><div class="pstat-lbl">Installed</div></div>
+      <div class="pstat"><div class="pstat-val" id="pstatReviews">0</div><div class="pstat-lbl">Reviews</div></div>
+      <div class="pstat"><div class="pstat-val" id="pstatDays">1</div><div class="pstat-lbl">Days</div></div>
     </div>
   </div>
-  <div class="profile-body">
-    <div class="pf-card">
-      <div class="pf-card-title">&#127912; Theme</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button onclick="setTheme('default')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);cursor:pointer;font-size:.8rem;">&#127807; Default</button>
-        <button onclick="setTheme('dark')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);cursor:pointer;font-size:.8rem;">&#127761; Dark</button>
-        <button onclick="setTheme('forest')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);cursor:pointer;font-size:.8rem;">&#127794; Forest</button>
-        <button onclick="setTheme('ocean')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);cursor:pointer;font-size:.8rem;">&#127754; Ocean</button>
-        <button onclick="setTheme('sunset')" style="padding:8px 14px;border-radius:20px;border:1.5px solid var(--bdr);background:var(--card);cursor:pointer;font-size:.8rem;">&#127749; Sunset</button>
+  <div class="installed-list" id="installedList">
+    <div class="installed-title">My Apps</div>
+    <div id="installedApps"></div>
+  </div>
+  <div style="margin-top:12px;text-align:center;">
+    <button onclick="doLogout()" style="padding:10px 28px;background:var(--inp);color:var(--txt);border:1px solid var(--bdr);border-radius:10px;font-size:.9rem;font-weight:600;cursor:pointer;">Sign Out</button>
+  </div>
+</div>
+
+<!-- ADMIN VIEW -->
+<div class="admin-view" id="adminView">
+  <div class="admin-header">
+    <span style="font-size:1.4rem;">⚙️</span>
+    <span class="admin-title">Admin Dashboard</span>
+    <span class="admin-badge">OWNER</span>
+  </div>
+
+  <div class="admin-cards" id="adminStats">
+    <div class="admin-card"><div class="admin-card-val" id="statTotalApps">0</div><div class="admin-card-lbl">Total Apps</div></div>
+    <div class="admin-card"><div class="admin-card-val" id="statPublished">0</div><div class="admin-card-lbl">Published</div></div>
+    <div class="admin-card"><div class="admin-card-val" id="statUsers">—</div><div class="admin-card-lbl">Users</div></div>
+    <div class="admin-card"><div class="admin-card-val" id="statMessages">0</div><div class="admin-card-lbl">Messages</div></div>
+  </div>
+
+  <!-- Publish New App -->
+  <div class="publish-form">
+    <div class="publish-title">➕ Publish New App</div>
+    <div class="form-field">
+      <label class="form-label">App Name *</label>
+      <input class="form-input" id="pubName" placeholder="e.g. Islamic Finance Calc"/>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Category *</label>
+      <select class="form-select" id="pubCat">
+        <option>Islamic</option><option>AI</option><option>Business</option>
+        <option>Tools</option><option>Games</option><option>Chat</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Description *</label>
+      <textarea class="form-input" id="pubDesc" rows="3" placeholder="What does this app do?"></textarea>
+    </div>
+    <div class="form-field">
+      <label class="form-label">App URL *</label>
+      <input class="form-input" id="pubUrl" placeholder="https://yourapp.vercel.app"/>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Icon Emoji *</label>
+      <input class="form-input" id="pubIcon" placeholder="e.g. 📖" maxlength="4"/>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Version</label>
+      <input class="form-input" id="pubVersion" placeholder="1.0.0" value="1.0.0"/>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <input type="checkbox" id="pubFeatured" style="width:16px;height:16px;accent-color:var(--p)"/>
+      <label for="pubFeatured" style="font-size:.85rem;font-weight:600;">Feature this app</label>
+    </div>
+    <button class="publish-btn" onclick="publishApp()">🚀 Publish App</button>
+    <div id="pubMsg" style="margin-top:8px;font-size:.82rem;"></div>
+  </div>
+
+  <!-- Manage Apps -->
+  <div class="publish-form">
+    <div class="publish-title">📱 Manage Apps</div>
+    <div class="apps-manage-list" id="appsManageList"></div>
+  </div>
+</div>
+
+<!-- APP DETAIL SHEET -->
+<div class="sheet-overlay" id="appSheet" onclick="closeSheet(event)">
+  <div class="sheet" id="sheetContent">
+    <div class="sheet-handle"></div>
+    <button class="sheet-close" onclick="closeSheetDirect()">✕</button>
+    <div class="sheet-icon" id="sheetIcon">📱</div>
+    <div class="sheet-name" id="sheetName">App Name</div>
+    <div class="sheet-dev">Never Hide Tech Empire</div>
+    <div class="sheet-stats">
+      <div class="stat-item"><div class="stat-val" id="sheetRating">4.9</div><div class="stat-lbl">★ Rating</div></div>
+      <div class="stat-item"><div class="stat-val" id="sheetDownloads">100K+</div><div class="stat-lbl">Downloads</div></div>
+      <div class="stat-item"><div class="stat-val" id="sheetCat">Islamic</div><div class="stat-lbl">Category</div></div>
+    </div>
+    <button class="install-btn" id="installBtn" onclick="toggleInstall()">Install</button>
+    <button class="open-btn" id="openBtn" onclick="openCurrentApp()">Open ↗</button>
+    <div class="sheet-desc" id="sheetDesc">Description here.</div>
+    <div class="reviews-section">
+      <div class="review-title">⭐ Reviews</div>
+      <div id="reviewsList"></div>
+      <div class="add-review">
+        <div class="star-select" id="starSelect">
+          <span onclick="setStar(1)">★</span>
+          <span onclick="setStar(2)">★</span>
+          <span onclick="setStar(3)">★</span>
+          <span onclick="setStar(4)">★</span>
+          <span onclick="setStar(5)">★</span>
+        </div>
+        <textarea class="review-input" id="reviewText" rows="2" placeholder="Write a review…"></textarea>
+        <button class="submit-review" onclick="submitReview()">Post Review</button>
       </div>
     </div>
-    <div class="pf-card">
-      <div class="pf-card-title">&#128100; Account</div>
-      <input class="pf-field" id="pf-name-inp" placeholder="Display Name">
-      <input class="pf-field" id="pf-email-inp" placeholder="Email" type="email">
-      <button class="pf-btn" onclick="saveProfile()">Save Profile</button>
-    </div>
-    <div class="pf-card">
-      <div class="pf-card-title">&#128222; Help</div>
-      <p style="font-size:.82rem;color:var(--txt2);margin-bottom:8px;">Contact us anytime:</p>
-      <p style="font-size:.85rem;font-weight:700;color:var(--p);">&#128241; 0599931348</p>
-      <p style="font-size:.85rem;font-weight:700;color:var(--p);margin-top:4px;">&#128241; 0248503631</p>
-    </div>
-    <div class="pf-card" id="logout-card" style="display:none">
-      <button class="pf-logout-btn" onclick="logout()">&#128682; Sign Out</button>
-    </div>
   </div>
 </div>
 
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button class="nav-btn active" id="nav-store" onclick="showView('store-view','nav-store')">
-    <span class="nav-icon">&#127978;</span>Store
+  <button class="nav-btn active" id="navStore" onclick="showView('storeView','navStore')">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z"/></svg>
+    <span class="nav-label">Store</span>
   </button>
-  <button class="nav-btn" id="nav-chat" onclick="showView('chat-view','nav-chat')">
-    <span class="nav-icon">&#128172;</span>Community
+  <button class="nav-btn" id="navCommunity" onclick="showView('communityView','navCommunity')">
+    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+    <span class="nav-label">Community</span>
   </button>
-  <button class="nav-btn" id="nav-profile" onclick="showView('profile-view','nav-profile')">
-    <span class="nav-icon">&#128100;</span>Profile
+  <button class="nav-btn" id="navProfile" onclick="showView('profileView','navProfile')">
+    <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+    <span class="nav-label">Profile</span>
+  </button>
+  <button class="nav-btn" id="navAdmin" onclick="handleAdminNav()" style="display:none;">
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    <span class="nav-label">Admin</span>
   </button>
 </nav>
 
-<div class="login-overlay" id="login-overlay">
-  <div class="login-box">
-    <div class="login-logo">&#127978;</div>
-    <div class="login-title">Welcome to Suleiman Store</div>
-    <div class="login-sub">Sign in to access all features</div>
-    <input class="login-field" id="login-name" placeholder="Your Name">
-    <input class="login-field" id="login-email" placeholder="Email Address" type="email">
-    <input class="login-field" id="login-pass" placeholder="Password" type="password">
-    <button class="login-btn" onclick="doLogin()">Sign In / Register</button>
-    <div class="login-err" id="login-err">Please fill in all fields</div>
-    <div class="login-skip" onclick="skipLogin()">Continue as Guest &#8594;</div>
-  </div>
-</div>
-
-<button class="fab-theme" id="fab-theme" title="Drag me anywhere! Tap to switch theme">&#127912;</button>
-<div class="toast" id="toast"></div>
+<button class="fab-theme" id="fabTheme" title="Switch theme" onclick="toggleTheme()">🌙</button>
 
 <script>
-var APPS = [
-  { id:1, name:"Islamic Google", emoji:"🔍", cat:"Islamic", desc:"The ultimate Islamic knowledge search engine. Search Qur'an, Hadith, Scholars and Lectures instantly.", url:"https://sulimanalhassan123as-code.github.io/ISLAMIC-GOOGEL/", rating:4.9, downloads:"1.2M+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
-  { id:2, name:"Dhikr Counter PRO", emoji:"📿", cat:"Islamic", desc:"A luxury digital tasbih. SubhanAllah, Alhamdulillah, Allahu Akbar with beautiful animations and progress tracking.", url:"https://juz-amma-pro-max.vercel.app", rating:4.8, downloads:"500K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
-  { id:3, name:"Business Chat", emoji:"💼", cat:"Chat", desc:"Secure communication hub for the Never Hide Tech Empire. Real-time messaging for your team.", url:"#", rating:5.0, downloads:"10K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
-  { id:4, name:"Never Hide App Store", emoji:"🏪", cat:"Business", desc:"The official app store for all Never Hide Tech Empire projects. Discover, install and review apps.", url:"https://starboy-pi.vercel.app", rating:4.7, downloads:"50K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
-  { id:5, name:"Juz Amma Pro Max", emoji:"📖", cat:"Islamic", desc:"Complete Juz 30 Qur'an app — Read, Listen, Memorize with 4 reciters, Stories of 25 Prophets and Night Radio.", url:"https://juz-amma-pro-max.vercel.app", rating:4.9, downloads:"200K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
-  { id:6, name:"SecureCheck", emoji:"🔒", cat:"Tools", desc:"Professional web security scanner. Detect payment API leaks, exposed keys and vulnerabilities.", url:"#", rating:4.6, downloads:"8K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
-  { id:7, name:"Islamic AI Assistant", emoji:"🤖", cat:"AI", desc:"Ask any Islamic question — Qur'an, Hadith, Fiqh, Fatwa. Powered by Groq AI for instant, scholar-verified answers.", url:"#", rating:4.9, downloads:"75K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
-  { id:8, name:"Never Hide AI Chat", emoji:"💬", cat:"AI", desc:"Smart AI-powered team assistant for the Tech Empire. Ask questions, summarise documents, generate content — all in one place.", url:"#", rating:4.8, downloads:"20K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
-  { id:9, name:"Quran AI Tafsir", emoji:"📖", cat:"AI", desc:"Deep Qur'an understanding powered by AI. Get verse-by-verse Tafsir, word meanings, context and life applications instantly.", url:"#", rating:5.0, downloads:"30K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
-  { id:10, name:"Prayer Times Pro", emoji:"🕌", cat:"Islamic", desc:"Accurate prayer times for any city worldwide. Qibla direction, Hijri calendar, Azan notifications and Ramadan countdown.", url:"#", rating:4.9, downloads:"150K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false },
-  { id:11, name:"Islamic Finance Calc", emoji:"💰", cat:"Business", desc:"Halal finance calculator. Zakat computation, Islamic mortgage comparison, profit-sharing (Musharakah) and Riba-free savings planner.", url:"#", rating:4.7, downloads:"25K+", reviews:[], screenshots:["📱","🌐","✨"], likes:0, installed:false }
-];
+// ═══════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════
+var SUPABASE_URL = "https://fwucqfszwdsizskqtcdh.supabase.co";
+var SUPABASE_KEY = "sb_publishable_l1g77NImCVAYrBxSKthd7g_jisGRFlX";
+var ADMIN_EMAIL  = "suleimanwunnam@gmail.com";
+var ADMIN_PASS   = "juzamma2024";
 
-var installedIds = JSON.parse(localStorage.getItem("nhps_ins") || "[]");
-var currentCat = "all";
-var currentSearch = "";
-var userInfo = JSON.parse(localStorage.getItem("nhps_user") || "null");
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+var allApps      = [];
+var currentCat   = "all";
+var currentSearch= "";
+var currentApp   = null;
+var selectedStar = 0;
+var installedIds = JSON.parse(localStorage.getItem("sps_ins") || "[]");
+var userInfo     = JSON.parse(localStorage.getItem("sps_user") || "null");
+var chatMessages = [];
+var aiTimeout    = null;
+var featuredApps = [];
+var featIdx      = 0;
 
-function showView(id, btnId) {
-  var ids = ["store-view","chat-view","profile-view","admin-view"];
-  for (var i=0; i<ids.length; i++) {
-    var el = document.getElementById(ids[i]);
-    if (el) { el.classList.remove("active"); el.style.display = "none"; }
-  }
-  var t = document.getElementById(id);
-  if (!t) return;
-  t.classList.add("active");
-  t.style.display = (id === "chat-view") ? "flex" : "block";
-  var btns = document.querySelectorAll(".nav-btn");
-  for (var j=0; j<btns.length; j++) btns[j].classList.remove("active");
-  if (btnId) { var b = document.getElementById(btnId); if(b) b.classList.add("active"); }
+// ═══════════════════════════════════════════════════════
+// SUPABASE HELPERS
+// ═══════════════════════════════════════════════════════
+function sbFetch(path, opts) {
+  opts = opts || {};
+  var headers = Object.assign({
+    "apikey": SUPABASE_KEY,
+    "Authorization": "Bearer " + SUPABASE_KEY,
+    "Content-Type": "application/json",
+    "Prefer": "return=representation"
+  }, opts.headers || {});
+  return fetch(SUPABASE_URL + "/rest/v1/" + path, {
+    method: opts.method || "GET",
+    headers: headers,
+    body: opts.body || undefined
+  }).then(function(r){ return r.json(); });
 }
 
-function renderApps() {
-  var grid = document.getElementById("apps-grid");
-  if (!grid) { return; }
-  var q = currentSearch.toLowerCase();
-  var list = [];
-  for (var i=0; i<APPS.length; i++) {
-    var a = APPS[i];
-    var mc = (currentCat === "all" || a.cat === currentCat);
-    var ms = (!q || a.name.toLowerCase().indexOf(q)>=0 || a.desc.toLowerCase().indexOf(q)>=0);
-    if (mc && ms) list.push(a);
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+document.addEventListener("DOMContentLoaded", function() {
+  applyTheme();
+  setupDraggableFAB();
+  initAuth();
+  loadApps();
+  loadChatMessages();
+  setTimeout(function(){
+    setInterval(autoRotateFeatured, 4000);
+  }, 3000);
+});
+
+// ═══════════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════════
+function initAuth() {
+  if (!userInfo) {
+    document.getElementById("loginModal").classList.add("open");
+  } else {
+    applyUserUI();
+    if (userInfo.email === ADMIN_EMAIL) showAdminNav();
   }
-  var lbl = document.getElementById("apps-sec-label");
-  if (lbl) lbl.textContent = q ? ("Results: " + currentSearch) : (currentCat === "all" ? "Featured Apps" : currentCat);
-  if (!list.length) { grid.innerHTML = "<div class=\"empty-state\"><p>No apps found.</p></div>"; return; }
-  var html = "";
-  for (var k=0; k<list.length; k++) {
-    var a = list[k];
-    var inst = installedIds.indexOf(a.id) >= 0;
-    html += "<div class=\"app-card\" onclick=\"openDetail(" + a.id + ")\">";
-    if (a.badge) html += "<div class=\"ac-badge\">" + a.badge + "</div>";
-    html += "<div class=\"ac-icon-wrap\">" + a.emoji + "</div>";
-    html += "<div class=\"ac-name\">" + a.name + "</div>";
-    html += "<div class=\"ac-meta\"><span>&#9733; " + a.rating + "</span><span>" + a.downloads + "</span></div>";
-    html += "<div class=\"ac-desc\">" + a.desc + "</div>";
-    html += "<button class=\"ac-open-btn\" style=\"" + (inst?"background:#22c55e":"") + "\">" + (inst?"Installed":"Open App") + "</button>";
-    html += "</div>";
-  }
-  grid.innerHTML = html;
 }
 
-function filterApps() {
-  var inp = document.getElementById("store-search");
-  currentSearch = inp ? inp.value : "";
-  renderApps();
+function doLogin() {
+  var name  = document.getElementById("loginName").value.trim();
+  var email = document.getElementById("loginEmail").value.trim();
+  var pass  = document.getElementById("loginPass").value.trim();
+  var errEl = document.getElementById("loginErr");
+  if (!name || !email) { errEl.textContent = "Please enter your name and email."; return; }
+  var isAdmin = (email === ADMIN_EMAIL && pass === ADMIN_PASS);
+  userInfo = { name: name, email: email, isAdmin: isAdmin, since: Date.now() };
+  localStorage.setItem("sps_user", JSON.stringify(userInfo));
+  document.getElementById("loginModal").classList.remove("open");
+  applyUserUI();
+  if (isAdmin) showAdminNav();
+  showToast("Welcome, " + name + "! 👋");
 }
 
-function setCat(cat, el) {
+function continueGuest() {
+  userInfo = { name: "Guest", email: "", isAdmin: false, since: Date.now() };
+  localStorage.setItem("sps_user", JSON.stringify(userInfo));
+  document.getElementById("loginModal").classList.remove("open");
+  applyUserUI();
+}
+
+function doLogout() {
+  localStorage.removeItem("sps_user");
+  userInfo = null;
+  document.getElementById("loginModal").classList.add("open");
+  document.getElementById("navAdmin").style.display = "none";
+  showView("storeView","navStore");
+}
+
+function applyUserUI() {
+  if (!userInfo) return;
+  var initial = userInfo.name ? userInfo.name[0].toUpperCase() : "G";
+  document.getElementById("avatarBtn").textContent = initial;
+  document.getElementById("profileAvatar").textContent = initial;
+  document.getElementById("profileName").textContent = userInfo.name;
+  document.getElementById("profileEmail").textContent = userInfo.email || "Guest";
+  updateProfileStats();
+}
+
+function showAdminNav() {
+  document.getElementById("navAdmin").style.display = "flex";
+  loadAdminData();
+}
+
+// ═══════════════════════════════════════════════════════
+// LOAD APPS FROM SUPABASE
+// ═══════════════════════════════════════════════════════
+function loadApps() {
+  sbFetch("apps?order=created_at.desc").then(function(data) {
+    if (!Array.isArray(data)) { console.error("Apps load error:", data); return; }
+    allApps = data;
+    featuredApps = data.filter(function(a){ return a.featured; });
+    renderStore();
+    if (featuredApps.length > 0) renderFeatured(featuredApps[0]);
+  });
+}
+
+function renderStore() {
+  renderTopCharts();
+  renderIslamicScroll();
+  renderGrid(allApps);
+}
+
+function renderFeatured(app) {
+  if (!app) return;
+  document.getElementById("featIcon").textContent  = app.icon || "📱";
+  document.getElementById("featName").textContent  = app.name;
+  document.getElementById("featDesc").textContent  = app.description || "";
+}
+
+function autoRotateFeatured() {
+  if (featuredApps.length < 2) return;
+  featIdx = (featIdx + 1) % featuredApps.length;
+  renderFeatured(featuredApps[featIdx]);
+}
+
+function openFeatured() {
+  if (featuredApps[featIdx]) openAppSheet(featuredApps[featIdx]);
+}
+
+function renderTopCharts() {
+  var sorted = allApps.slice().sort(function(a,b){ return (b.rating||0)-(a.rating||0); }).slice(0,8);
+  var html = sorted.map(function(a) {
+    return '<div class="app-card-sm" onclick="openAppSheet(getAppById(\''+a.id+'\'))">' +
+      '<div class="app-icon">'+( a.icon||"📱")+'</div>' +
+      '<div class="app-name">'+escHtml(a.name)+'</div>' +
+      '<div class="app-cat">'+escHtml(a.category||"")+'</div>' +
+      '<div class="app-rating-sm">★ '+(a.rating||4.5)+'</div>' +
+      '</div>';
+  }).join("");
+  document.getElementById("topChartsScroll").innerHTML = html;
+}
+
+function renderIslamicScroll() {
+  var islamic = allApps.filter(function(a){ return a.category === "Islamic"; }).slice(0,6);
+  if (islamic.length === 0) {
+    document.getElementById("islamicSection").style.display = "none"; return;
+  }
+  document.getElementById("islamicSection").style.display = "";
+  var html = islamic.map(function(a) {
+    return '<div class="app-card-sm" onclick="openAppSheet(getAppById(\''+a.id+'\'))">' +
+      '<div class="app-icon">'+(a.icon||"📱")+'</div>' +
+      '<div class="app-name">'+escHtml(a.name)+'</div>' +
+      '<div class="app-cat">'+escHtml(a.category||"")+'</div>' +
+      '<div class="app-rating-sm">★ '+(a.rating||4.5)+'</div>' +
+      '</div>';
+  }).join("");
+  document.getElementById("islamicScroll").innerHTML = html;
+}
+
+function renderGrid(apps) {
+  var el = document.getElementById("appsGrid");
+  var empty = document.getElementById("emptyState");
+  if (!apps || apps.length === 0) {
+    el.innerHTML = ""; empty.style.display = ""; return;
+  }
+  empty.style.display = "none";
+  el.innerHTML = apps.map(function(a) {
+    var inst = installedIds.indexOf(a.id) !== -1;
+    return '<div class="app-card" onclick="openAppSheet(getAppById(\''+a.id+'\'))">' +
+      '<div class="app-icon">'+(a.icon||"📱")+'</div>' +
+      '<div class="app-name">'+escHtml(a.name)+(inst?'<span class="update-badge">Installed</span>':'')+'</div>' +
+      '<div class="app-cat-badge">'+escHtml(a.category||"")+'</div>' +
+      '<div class="stars">'+starStr(a.rating||4.5)+' <span style="color:var(--txt2)">'+( a.rating||4.5)+'</span></div>' +
+      '<div class="dl-count">'+(a.downloads||"1K+")+'</div>' +
+      '</div>';
+  }).join("");
+}
+
+function getAppById(id) {
+  for (var i=0; i<allApps.length; i++) if (allApps[i].id === id) return allApps[i];
+  return null;
+}
+
+// ═══════════════════════════════════════════════════════
+// SEARCH & FILTER
+// ═══════════════════════════════════════════════════════
+function doSearch(q) {
+  currentSearch = q.toLowerCase();
+  applyFilter();
+}
+
+function filterCat(cat, el) {
   currentCat = cat;
-  var pills = document.querySelectorAll(".cat-pill");
-  for (var i=0; i<pills.length; i++) pills[i].classList.remove("on");
-  if (el) el.classList.add("on");
-  renderApps();
+  currentSearch = "";
+  document.getElementById("searchInput").value = "";
+  document.querySelectorAll(".chip").forEach(function(c){ c.classList.remove("active"); });
+  if (el) el.classList.add("active");
+  applyFilter();
 }
 
-function openDetail(id) {
-  var a = null;
-  for (var i=0; i<APPS.length; i++) { if (APPS[i].id === id) { a = APPS[i]; break; } }
-  if (!a) return;
-  var inst = installedIds.indexOf(a.id) >= 0;
-  var el = document.getElementById("detail-title-hd");
-  if (el) el.textContent = a.name;
-  var dc = document.getElementById("detail-content");
-  if (dc) dc.innerHTML =
-    "<div class=\"detail-hero\"><div class=\"dh-icon\">" + a.emoji + "</div>" +
-    "<div class=\"dh-name\">" + a.name + "</div>" +
-    "<div class=\"dh-meta\"><div class=\"dhm\"><div class=\"dhm-n\">&#9733; " + a.rating + "</div><div class=\"dhm-l\">Rating</div></div>" +
-    "<div class=\"dhm\"><div class=\"dhm-n\">" + a.downloads + "</div><div class=\"dhm-l\">Downloads</div></div></div>" +
-    "<button class=\"dh-open-btn\" onclick=\"window.open('" + a.url + "','_blank')\">Open App</button></div>" +
-    "<div class=\"install-wrap\"><button class=\"install-btn" + (inst?" done":"") + "\" id=\"ib-" + a.id + "\" onclick=\"installApp(" + a.id + ")\">" + (inst?"Installed":"Install") + "</button>" +
-    "<div class=\"prog-bg\" id=\"pb-" + a.id + "\"><div class=\"prog-fill\" id=\"pf-" + a.id + "\"></div></div>" +
-    "<div class=\"prog-lbl\" id=\"pl-" + a.id + "\">Installing...</div></div>" +
-    "<div class=\"share-row\"><button class=\"like-btn\" onclick=\"showToast('Liked!')\">Like</button>" +
-    "<button class=\"share-btn\" onclick=\"shareApp('" + encodeURIComponent(a.name) + "','" + a.url + "')\">Share</button></div>" +
-    "<div class=\"detail-body\"><div class=\"det-sec\"><div class=\"det-sec-title\">About</div><div class=\"det-desc\">" + a.desc + "</div></div>" +
-    "<div class=\"det-sec\"><div class=\"det-sec-title\">Screenshots</div><div class=\"ss-row\">" +
-    (a.screenshots||["&#128241;","&#127758;","&#10024;"]).map(function(s){return "<div class=\"ss-mock\">"+s+"</div>";}).join("") +
-    "</div></div></div>";
-  var dv = document.getElementById("app-detail-view");
-  if (dv) { dv.style.display = "block"; dv.scrollTop = 0; }
+function applyFilter() {
+  var filtered = allApps.filter(function(a) {
+    var matchCat  = currentCat === "all" || a.category === currentCat;
+    var matchQ    = !currentSearch || a.name.toLowerCase().indexOf(currentSearch) !== -1
+                    || (a.description||"").toLowerCase().indexOf(currentSearch) !== -1;
+    return matchCat && matchQ;
+  });
+  var title = currentCat === "all" ? "🏪 All Apps" : "📱 " + currentCat + " Apps";
+  if (currentSearch) title = '🔍 Results for "' + currentSearch + '"';
+  document.getElementById("gridTitle").textContent = title;
+  renderGrid(filtered);
 }
 
-function closeDetail() {
-  var dv = document.getElementById("app-detail-view");
-  if (dv) dv.style.display = "none";
+// ═══════════════════════════════════════════════════════
+// APP SHEET
+// ═══════════════════════════════════════════════════════
+function openAppSheet(app) {
+  if (!app) return;
+  currentApp   = app;
+  selectedStar = 0;
+  document.getElementById("sheetIcon").textContent   = app.icon || "📱";
+  document.getElementById("sheetName").textContent   = app.name;
+  document.getElementById("sheetRating").textContent = (app.rating||4.5) + " ★";
+  document.getElementById("sheetDownloads").textContent = app.downloads || "1K+";
+  document.getElementById("sheetCat").textContent    = app.category || "";
+  document.getElementById("sheetDesc").textContent   = app.description || "";
+  var isInst = installedIds.indexOf(app.id) !== -1;
+  var ib = document.getElementById("installBtn");
+  ib.textContent = isInst ? "✔ Installed" : "Install";
+  ib.className   = isInst ? "install-btn installed" : "install-btn";
+  // Load reviews
+  loadReviews(app.id);
+  // Reset stars
+  document.querySelectorAll("#starSelect span").forEach(function(s){ s.classList.remove("sel"); });
+  document.getElementById("reviewText").value = "";
+  document.getElementById("appSheet").classList.add("open");
 }
 
-function installApp(id) {
-  if (installedIds.indexOf(id) >= 0) return;
-  var btn = document.getElementById("ib-"+id);
-  var bg = document.getElementById("pb-"+id);
-  var fill = document.getElementById("pf-"+id);
-  var lbl = document.getElementById("pl-"+id);
-  if (btn) btn.disabled = true;
-  if (bg) bg.style.display = "block";
-  if (lbl) lbl.style.display = "block";
-  var pct = 0;
-  var iv = setInterval(function() {
-    pct += 5;
-    if (fill) fill.style.width = pct + "%";
-    if (pct >= 100) {
-      clearInterval(iv);
-      installedIds.push(id);
-      localStorage.setItem("nhps_ins", JSON.stringify(installedIds));
-      if (btn) { btn.textContent = "Installed"; btn.classList.add("done"); btn.disabled = false; }
-      if (lbl) lbl.textContent = "Done!";
-      showToast("App installed!");
-      renderApps();
-    }
-  }, 50);
+function closeSheet(e) {
+  if (e.target === document.getElementById("appSheet")) closeSheetDirect();
+}
+function closeSheetDirect() {
+  document.getElementById("appSheet").classList.remove("open");
 }
 
-function shareApp(name, url) {
-  if (navigator.share) { navigator.share({title: decodeURIComponent(name), url: url}); }
-  else { navigator.clipboard.writeText(url).then(function(){ showToast("Link copied!"); }); }
-}
-
-var chatMsgs = [
-  {sender:"Ahmad K", text:"Assalamu Alaikum everyone!", time:"09:00", mine:false},
-  {sender:"Fatima M", text:"Wa Alaikum Assalam! Great store MashaAllah!", time:"09:02", mine:false},
-  {sender:"You", text:"Welcome to Suleiman Play Store!", time:"09:10", mine:true}
-];
-function renderChat() {
-  var box = document.getElementById("chat-messages");
-  if (!box) return;
-  var html = "";
-  for (var i=0; i<chatMsgs.length; i++) {
-    var m = chatMsgs[i];
-    var cls = m.mine ? "mine" : (m.isAI ? "other isAI" : "other");
-    html += "<div class=\"cmsg " + cls + "\">";
-    if (!m.mine) html += "<div class=\"cmsg-sender\">" + m.sender + "</div>";
-    html += "<div class=\"cmsg-bubble\">" + m.text + "</div>";
-    html += "<div class=\"cmsg-meta\">" + m.time + "</div></div>";
+function toggleInstall() {
+  if (!currentApp) return;
+  var idx = installedIds.indexOf(currentApp.id);
+  if (idx === -1) {
+    installedIds.push(currentApp.id);
+    document.getElementById("installBtn").textContent = "✔ Installed";
+    document.getElementById("installBtn").className   = "install-btn installed";
+    showToast(currentApp.name + " installed! ✅");
+  } else {
+    installedIds.splice(idx, 1);
+    document.getElementById("installBtn").textContent = "Install";
+    document.getElementById("installBtn").className   = "install-btn";
+    showToast(currentApp.name + " uninstalled.");
   }
-  var ti = document.getElementById("typing-indicator");
+  localStorage.setItem("sps_ins", JSON.stringify(installedIds));
+  updateProfileStats();
+  renderGrid(allApps);
+}
+
+function openCurrentApp() {
+  if (!currentApp || !currentApp.url || currentApp.url === "#") {
+    showToast("This app is coming soon! 🚧"); return;
+  }
+  window.open(currentApp.url, "_blank");
+}
+
+// ═══════════════════════════════════════════════════════
+// REVIEWS
+// ═══════════════════════════════════════════════════════
+function loadReviews(appId) {
+  var key = "sps_reviews_" + appId;
+  var reviews = JSON.parse(localStorage.getItem(key) || "[]");
+  var el = document.getElementById("reviewsList");
+  if (reviews.length === 0) { el.innerHTML = '<p style="font-size:.82rem;color:var(--txt2);">No reviews yet. Be the first!</p>'; return; }
+  el.innerHTML = reviews.map(function(r) {
+    return '<div class="review-card">' +
+      '<div class="review-meta"><span class="reviewer">'+escHtml(r.author)+'</span>' +
+      '<span class="review-stars">'+starStr(r.rating)+'</span></div>' +
+      '<div class="review-text">'+escHtml(r.text)+'</div>' +
+      '</div>';
+  }).join("");
+}
+
+function setStar(n) {
+  selectedStar = n;
+  document.querySelectorAll("#starSelect span").forEach(function(s,i){
+    s.classList.toggle("sel", i < n);
+  });
+}
+
+function submitReview() {
+  if (!currentApp) return;
+  var txt = document.getElementById("reviewText").value.trim();
+  if (!txt || !selectedStar) { showToast("Please select stars and write a review."); return; }
+  var author = (userInfo && userInfo.name) ? userInfo.name : "Guest";
+  var key     = "sps_reviews_" + currentApp.id;
+  var reviews = JSON.parse(localStorage.getItem(key) || "[]");
+  reviews.push({ author: author, rating: selectedStar, text: txt, date: new Date().toISOString() });
+  localStorage.setItem(key, JSON.stringify(reviews));
+  loadReviews(currentApp.id);
+  document.getElementById("reviewText").value = "";
+  selectedStar = 0;
+  document.querySelectorAll("#starSelect span").forEach(function(s){ s.classList.remove("sel"); });
+  showToast("Review posted! ⭐");
+}
+
+// ═══════════════════════════════════════════════════════
+// COMMUNITY CHAT + GROQ AI
+// ═══════════════════════════════════════════════════════
+function loadChatMessages() {
+  sbFetch("community_posts?order=created_at.asc&limit=50").then(function(data) {
+    if (!Array.isArray(data)) return;
+    chatMessages = data.map(function(m) {
+      return { sender: m.author || "User", text: m.content, time: formatTime(m.created_at), mine: false, isAI: m.is_ai || false };
+    });
+    renderChat();
+  });
+}
+
+function sendMsg() {
+  var inp = document.getElementById("chatInput");
+  var txt = inp.value.trim();
+  if (!txt) return;
+  var now    = new Date();
+  var t      = pad(now.getHours()) + ":" + pad(now.getMinutes());
+  var sender = (userInfo && userInfo.name) ? userInfo.name : "Guest";
+  chatMessages.push({ sender: sender, text: txt, time: t, mine: true, isAI: false });
+  inp.value = "";
+  renderChat();
+
+  // Save to Supabase
+  sbFetch("community_posts", {
+    method: "POST",
+    body: JSON.stringify({ author: sender, content: txt, is_ai: false })
+  }).catch(function(){});
+
+  // Groq AI after 5s silence
+  if (aiTimeout) clearTimeout(aiTimeout);
+  var msgCount = chatMessages.length;
+  aiTimeout = setTimeout(function() {
+    if (chatMessages.length !== msgCount) return;
+    showTyping();
+    fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: txt, history: chatMessages.slice(-8) })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d) {
+      hideTyping();
+      if (!d.reply) return;
+      var t2 = new Date();
+      var tt = pad(t2.getHours()) + ":" + pad(t2.getMinutes());
+      chatMessages.push({ sender: "Suleiman AI 🤖", text: d.reply, time: tt, mine: false, isAI: true });
+      // Save AI reply to Supabase
+      sbFetch("community_posts", {
+        method: "POST",
+        body: JSON.stringify({ author: "Suleiman AI", content: d.reply, is_ai: true })
+      }).catch(function(){});
+      renderChat();
+    })
+    .catch(function(){ hideTyping(); });
+  }, 5000);
+}
+
+function renderChat() {
+  var box = document.getElementById("chatMsgs");
+  var ti  = document.getElementById("typingIndicator");
+  var html = chatMessages.map(function(m) {
+    var cls = m.mine ? "mine" : (m.isAI ? "other isAI" : "other");
+    return '<div class="cmsg '+cls+'">' +
+      '<div class="cmsg-sender">'+escHtml(m.sender)+'</div>' +
+      '<div class="cmsg-bubble">'+escHtml(m.text)+'</div>' +
+      '<div class="cmsg-time">'+m.time+'</div>' +
+      '</div>';
+  }).join("");
   box.innerHTML = html;
   if (ti) box.appendChild(ti);
   box.scrollTop = box.scrollHeight;
 }
 
-
-var aiTypingTimeout = null;
-
-function showTypingIndicator() {
-  var ti = document.getElementById("typing-indicator");
-  if (ti) { ti.style.display = "flex"; }
-  var box = document.getElementById("chat-messages");
+function showTyping() {
+  var ti = document.getElementById("typingIndicator");
+  if (ti) ti.style.display = "flex";
+  var box = document.getElementById("chatMsgs");
   if (box) box.scrollTop = box.scrollHeight;
 }
-function hideTypingIndicator() {
-  var ti = document.getElementById("typing-indicator");
-  if (ti) { ti.style.display = "none"; }
+function hideTyping() {
+  var ti = document.getElementById("typingIndicator");
+  if (ti) ti.style.display = "none";
 }
 
-function sendMsg() {
-  var inp = document.getElementById("chat-input");
-  var txt = inp.value.trim();
-  if (!txt) return;
-  var now = new Date();
-  var t = now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0");
-  var userName = (userInfo && userInfo.name) ? userInfo.name : "You";
-  chatMsgs.push({sender: userName, text: txt, time: t, mine: true});
-  inp.value = "";
-  renderChat();
-
-  // Real Groq AI — fires after 5s if no human reply came
-  var msgCountBefore = chatMsgs.length;
-  aiTypingTimeout = setTimeout(function() {
-    if (chatMsgs.length !== msgCountBefore) return; // a human replied
-    showTypingIndicator();
-    fetch("/api/chat", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ message: txt, history: chatMsgs.slice(-8) })
-    })
-    .then(function(r){ return r.json(); })
-    .then(function(data) {
-      hideTypingIndicator();
-      if (!data.reply) return;
-      var t2 = new Date();
-      var tt = t2.getHours().toString().padStart(2,"0")+":"+t2.getMinutes().toString().padStart(2,"0");
-      chatMsgs.push({sender:"Suleiman AI 🤖", text: data.reply, time: tt, mine: false, isAI: true});
-      renderChat();
-    })
-    .catch(function(e) {
-      hideTypingIndicator();
-      console.error("Groq fetch error:", e);
-    });
-  }, 5000);
-}
-
-function setTheme(t) {
-  document.documentElement.setAttribute("data-theme", t);
-  localStorage.setItem("nhps_theme", t);
-}
-
-function doLogin() {
-  var n = document.getElementById("login-name").value.trim();
-  var e = document.getElementById("login-email").value.trim();
-  var p = document.getElementById("login-pass").value.trim();
-  if (!n||!e||!p) { document.getElementById("login-err").style.display="block"; return; }
-  userInfo = {name:n, email:e};
-  localStorage.setItem("nhps_user", JSON.stringify(userInfo));
-  document.getElementById("login-overlay").classList.remove("open");
-  updateProfileUI();
-  showToast("Welcome, " + n + "!");
-}
-
-function skipLogin() {
-  document.getElementById("login-overlay").classList.remove("open");
-}
-
-function logout() {
-  userInfo = null;
-  localStorage.removeItem("nhps_user");
-  updateProfileUI();
-  showToast("Signed out");
-}
-
-function saveProfile() {
-  var n = document.getElementById("pf-name-inp").value.trim();
-  var e = document.getElementById("pf-email-inp").value.trim();
-  if (n) { userInfo = userInfo||{}; userInfo.name=n; userInfo.email=e; localStorage.setItem("nhps_user",JSON.stringify(userInfo)); updateProfileUI(); }
-  showToast("Profile saved!");
-}
-
-function updateProfileUI() {
-  var pn = document.getElementById("pf-name");
-  var pe = document.getElementById("pf-email");
-  var pa = document.getElementById("pf-avatar");
-  var lc = document.getElementById("logout-card");
-  if (userInfo) {
-    if(pn) pn.textContent = userInfo.name;
-    if(pe) pe.textContent = userInfo.email;
-    if(pa) pa.textContent = userInfo.name[0].toUpperCase();
-    if(lc) lc.style.display = "block";
-  } else {
-    if(pn) pn.textContent = "Guest User";
-    if(pe) pe.textContent = "Sign in to save your data";
-    if(pa) pa.textContent = String.fromCodePoint(128100);
-    if(lc) lc.style.display = "none";
+// ═══════════════════════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════════════════════
+function handleAdminNav() {
+  if (!userInfo || !userInfo.isAdmin) {
+    showToast("Admin access only! 🔒"); return;
   }
-  var si = document.getElementById("pf-stat-installed");
-  if(si) si.textContent = installedIds.length;
+  showView("adminView","navAdmin");
+  loadAdminData();
 }
 
-function showToast(msg) {
-  var t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(function(){ t.classList.remove("show"); }, 2500);
-}
-
-// INIT
-(function() {
-  var savedTheme = localStorage.getItem("nhps_theme");
-  if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
-  renderApps();
-  renderChat();
-  updateProfileUI();
-  if (!userInfo) {
-    setTimeout(function() {
-      var ol = document.getElementById("login-overlay");
-      if (ol) ol.classList.add("open");
-    }, 2000);
-  }
-  if (window.location.hash === "#admin2026") showView("admin-view", null);
-  window.addEventListener("hashchange", function() {
-    if (window.location.hash === "#admin2026") showView("admin-view", null);
+function loadAdminData() {
+  sbFetch("apps?order=created_at.desc").then(function(data) {
+    if (!Array.isArray(data)) return;
+    document.getElementById("statTotalApps").textContent  = data.length;
+    document.getElementById("statPublished").textContent  = data.length;
+    renderAdminApps(data);
   });
-})();
+  sbFetch("community_posts?order=created_at.desc").then(function(data) {
+    if (!Array.isArray(data)) return;
+    document.getElementById("statMessages").textContent = data.length;
+  });
+}
 
-// ═══════════════════════════════════════
-//  DRAGGABLE FAB
-// ═══════════════════════════════════════
-(function() {
-  var fab = document.getElementById("fab-theme");
+function renderAdminApps(apps) {
+  var el = document.getElementById("appsManageList");
+  if (!apps.length) { el.innerHTML = '<p style="font-size:.82rem;color:var(--txt2);">No apps yet.</p>'; return; }
+  el.innerHTML = apps.map(function(a) {
+    return '<div class="manage-item">' +
+      '<div style="font-size:1.6rem;">'+(a.icon||"📱")+'</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:.9rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+escHtml(a.name)+'</div>' +
+        '<div style="font-size:.75rem;color:var(--txt2);">'+escHtml(a.category||"")+'</div>' +
+      '</div>' +
+      '<div class="manage-actions">' +
+        '<button class="delete-btn" onclick="deleteApp(\''+a.id+'\')">Delete</button>' +
+      '</div>' +
+      '</div>';
+  }).join("");
+}
+
+function publishApp() {
+  var name = document.getElementById("pubName").value.trim();
+  var cat  = document.getElementById("pubCat").value;
+  var desc = document.getElementById("pubDesc").value.trim();
+  var url  = document.getElementById("pubUrl").value.trim();
+  var icon = document.getElementById("pubIcon").value.trim() || "📱";
+  var ver  = document.getElementById("pubVersion").value.trim() || "1.0.0";
+  var feat = document.getElementById("pubFeatured").checked;
+  var msg  = document.getElementById("pubMsg");
+  if (!name || !cat || !desc || !url) { msg.style.color="#c5221f"; msg.textContent = "Please fill all required fields."; return; }
+  msg.style.color = "var(--txt2)"; msg.textContent = "Publishing…";
+
+  sbFetch("apps", {
+    method: "POST",
+    body: JSON.stringify({ name:name, category:cat, description:desc, url:url, icon:icon, version:ver, featured:feat, rating:4.5, downloads:"0" })
+  }).then(function(d) {
+    if (d && d[0]) {
+      msg.style.color = "var(--p)"; msg.textContent = "✅ " + name + " published!";
+      document.getElementById("pubName").value = "";
+      document.getElementById("pubDesc").value = "";
+      document.getElementById("pubUrl").value  = "";
+      document.getElementById("pubIcon").value = "";
+      loadApps();
+      loadAdminData();
+    } else {
+      msg.style.color = "#c5221f"; msg.textContent = "Error: " + JSON.stringify(d);
+    }
+  });
+}
+
+function deleteApp(id) {
+  if (!confirm("Delete this app?")) return;
+  fetch(SUPABASE_URL + "/rest/v1/apps?id=eq." + id, {
+    method: "DELETE",
+    headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY }
+  }).then(function() {
+    showToast("App deleted."); loadApps(); loadAdminData();
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// VIEW ROUTING
+// ═══════════════════════════════════════════════════════
+function showView(viewId, btnId) {
+  var views = ["storeView","communityView","profileView","adminView"];
+  views.forEach(function(v) {
+    var el = document.getElementById(v);
+    if (!el) return;
+    el.classList.remove("active");
+    el.style.display = "none";
+  });
+  var target = document.getElementById(viewId);
+  if (target) {
+    target.classList.add("active");
+    target.style.display = (viewId === "communityView") ? "flex" : "block";
+  }
+  document.querySelectorAll(".nav-btn").forEach(function(b){ b.classList.remove("active"); });
+  if (btnId) { var b = document.getElementById(btnId); if(b) b.classList.add("active"); }
+  // Hide categories bar on non-store views
+  document.getElementById("catsBar").style.display = (viewId === "storeView") ? "flex" : "none";
+}
+
+function updateProfileStats() {
+  document.getElementById("pstatInstalled").textContent = installedIds.length;
+  var reviews = 0;
+  allApps.forEach(function(a){ reviews += JSON.parse(localStorage.getItem("sps_reviews_"+a.id)||"[]").length; });
+  document.getElementById("pstatReviews").textContent = reviews;
+  if (userInfo && userInfo.since) {
+    var days = Math.max(1, Math.ceil((Date.now()-userInfo.since)/86400000));
+    document.getElementById("pstatDays").textContent = days;
+  }
+  // Installed apps list
+  var instApps = allApps.filter(function(a){ return installedIds.indexOf(a.id) !== -1; });
+  var el = document.getElementById("installedApps");
+  if (!instApps.length) { el.innerHTML = '<p style="font-size:.82rem;color:var(--txt2);">No apps installed yet.</p>'; return; }
+  el.innerHTML = instApps.map(function(a){
+    return '<div class="inst-item">' +
+      '<div class="inst-icon">'+(a.icon||"📱")+'</div>' +
+      '<div class="inst-info"><div class="inst-name">'+escHtml(a.name)+'</div><div class="inst-cat">'+escHtml(a.category||"")+'</div></div>' +
+      (a.url && a.url !== "#" ? '<button class="open-app-btn" onclick="window.open(\''+a.url+'\',\'_blank\')">Open</button>' : '') +
+      '</div>';
+  }).join("");
+}
+
+// ═══════════════════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════════════════
+function applyTheme() {
+  var dark = localStorage.getItem("sps_theme") === "dark";
+  document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+  var icon = dark ? "☀️" : "🌙";
+  var fb = document.getElementById("fabTheme"); if(fb) fb.textContent = icon;
+  var tb = document.getElementById("themeBtnHeader"); if(tb) tb.textContent = icon;
+}
+function toggleTheme() {
+  var dark = document.documentElement.getAttribute("data-theme") === "dark";
+  localStorage.setItem("sps_theme", dark ? "light" : "dark");
+  applyTheme();
+}
+
+// ═══════════════════════════════════════════════════════
+// DRAGGABLE FAB
+// ═══════════════════════════════════════════════════════
+function setupDraggableFAB() {
+  var fab = document.getElementById("fabTheme");
   if (!fab) return;
-  var dragging = false, startX, startY, startLeft, startTop, moved;
+  var dragging = false, startX, startY, startLeft, startTop;
+  var pos = JSON.parse(localStorage.getItem("sps_fab") || "null");
+  if (pos) { fab.style.left = pos.l + "px"; fab.style.top = pos.t + "px"; fab.style.right = "auto"; fab.style.bottom = "auto"; }
 
-  // Tap = toggle theme
-  fab.addEventListener("click", function() {
-    if (moved) { moved = false; return; }
-    var cur = document.documentElement.getAttribute("data-theme") || "default";
-    var themes = ["default","dark","forest","ocean","sunset","gold"];
-    var next = themes[(themes.indexOf(cur) + 1) % themes.length];
-    setTheme(next);
-    showToast("Theme: " + next.charAt(0).toUpperCase() + next.slice(1));
+  fab.addEventListener("touchstart", function(e) {
+    if (e.touches.length !== 1) return;
+    dragging = true;
+    var t = e.touches[0];
+    startX = t.clientX; startY = t.clientY;
+    var r = fab.getBoundingClientRect();
+    startLeft = r.left; startTop = r.top;
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener("touchmove", function(e) {
+    if (!dragging || e.touches.length !== 1) return;
+    var t = e.touches[0];
+    var nl = startLeft + (t.clientX - startX);
+    var nt = startTop  + (t.clientY - startY);
+    nl = Math.max(0, Math.min(window.innerWidth  - fab.offsetWidth,  nl));
+    nt = Math.max(0, Math.min(window.innerHeight - fab.offsetHeight, nt));
+    fab.style.left = nl + "px"; fab.style.top = nt + "px";
+    fab.style.right = "auto"; fab.style.bottom = "auto";
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener("touchend", function() {
+    if (!dragging) return;
+    dragging = false;
+    localStorage.setItem("sps_fab", JSON.stringify({ l: parseInt(fab.style.left), t: parseInt(fab.style.top) }));
   });
 
   // Mouse drag
   fab.addEventListener("mousedown", function(e) {
-    e.preventDefault();
-    dragging = true; moved = false;
-    var rect = fab.getBoundingClientRect();
+    dragging = true;
     startX = e.clientX; startY = e.clientY;
-    startLeft = rect.left; startTop = rect.top;
-    fab.style.cursor = "grabbing";
+    var r = fab.getBoundingClientRect();
+    startLeft = r.left; startTop = r.top;
+    e.preventDefault();
   });
   document.addEventListener("mousemove", function(e) {
     if (!dragging) return;
-    var dx = e.clientX - startX, dy = e.clientY - startY;
-    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
-    var newLeft = Math.max(0, Math.min(window.innerWidth - 50, startLeft + dx));
-    var newTop  = Math.max(0, Math.min(window.innerHeight - 50, startTop + dy));
-    fab.style.left   = newLeft + "px";
-    fab.style.top    = newTop  + "px";
-    fab.style.right  = "auto";
-    fab.style.bottom = "auto";
+    var nl = startLeft + (e.clientX - startX);
+    var nt = startTop  + (e.clientY - startY);
+    nl = Math.max(0, Math.min(window.innerWidth  - fab.offsetWidth,  nl));
+    nt = Math.max(0, Math.min(window.innerHeight - fab.offsetHeight, nt));
+    fab.style.left = nl + "px"; fab.style.top = nt + "px";
+    fab.style.right = "auto"; fab.style.bottom = "auto";
   });
   document.addEventListener("mouseup", function() {
     if (!dragging) return;
     dragging = false;
-    fab.style.cursor = "grab";
-    saveFabPos();
+    localStorage.setItem("sps_fab", JSON.stringify({ l: parseInt(fab.style.left), t: parseInt(fab.style.top) }));
   });
+}
 
-  // Touch drag
-  fab.addEventListener("touchstart", function(e) {
-    e.preventDefault();
-    var t = e.touches[0];
-    dragging = true; moved = false;
-    var rect = fab.getBoundingClientRect();
-    startX = t.clientX; startY = t.clientY;
-    startLeft = rect.left; startTop = rect.top;
-  }, {passive:false});
-  fab.addEventListener("touchmove", function(e) {
-    if (!dragging) return;
-    e.preventDefault();
-    var t = e.touches[0];
-    var dx = t.clientX - startX, dy = t.clientY - startY;
-    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
-    var newLeft = Math.max(0, Math.min(window.innerWidth - 50, startLeft + dx));
-    var newTop  = Math.max(0, Math.min(window.innerHeight - 50, startTop + dy));
-    fab.style.left   = newLeft + "px";
-    fab.style.top    = newTop  + "px";
-    fab.style.right  = "auto";
-    fab.style.bottom = "auto";
-  }, {passive:false});
-  fab.addEventListener("touchend", function() {
-    dragging = false;
-    saveFabPos();
-  });
-
-  // Save/restore position
-  function saveFabPos() {
-    localStorage.setItem("fab_pos", JSON.stringify({left: fab.style.left, top: fab.style.top}));
-  }
-  var savedPos = JSON.parse(localStorage.getItem("fab_pos") || "null");
-  if (savedPos && savedPos.left) {
-    fab.style.left   = savedPos.left;
-    fab.style.top    = savedPos.top;
-    fab.style.right  = "auto";
-    fab.style.bottom = "auto";
-  }
-})();
-
+// ═══════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════
+function escHtml(s) {
+  if (!s) return "";
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function starStr(r) {
+  var full = Math.floor(r||0), out = "";
+  for (var i=0; i<5; i++) out += i < full ? "★" : "☆";
+  return out;
+}
+function pad(n){ return n < 10 ? "0"+n : String(n); }
+function formatTime(iso) {
+  if (!iso) return "";
+  try { var d = new Date(iso); return pad(d.getHours())+":"+pad(d.getMinutes()); } catch(e){ return ""; }
+}
+function showToast(msg) {
+  var t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  setTimeout(function(){ t.classList.remove("show"); }, 3000);
+}
 </script>
 </body>
 </html>
